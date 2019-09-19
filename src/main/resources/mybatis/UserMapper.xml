@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ssd.admin.business.mapper.UserMapper">
+    <select id="findUserByUserName" resultType="com.ssd.admin.business.vo.UserVO" parameterType="java.lang.String">
+        SELECT
+        id,
+        user_name as userName,
+        password,
+        nick_name as nickName,
+        role_code as roleCode
+        FROM
+        sys_user
+        WHERE
+        deleted = 0 AND sys_user.user_name = #{userName}
+    </select>
+</mapper>
