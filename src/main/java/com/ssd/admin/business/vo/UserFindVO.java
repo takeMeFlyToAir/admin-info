@@ -19,6 +19,10 @@ public class UserFindVO {
 
     private Integer roleCode;
 
+    private Integer organizationId;
+
+    private String  organizationName;
+
     public String getRoleDisplay(){
         if(this.roleCode != null){
             return RoleEnum.fromCode(roleCode).getDisplay();

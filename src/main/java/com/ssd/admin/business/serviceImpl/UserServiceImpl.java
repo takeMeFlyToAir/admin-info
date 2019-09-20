@@ -2,11 +2,13 @@ package com.ssd.admin.business.serviceImpl;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.ssd.admin.business.entity.OrganizationEntity;
 import com.ssd.admin.business.entity.UserEntity;
 import com.ssd.admin.business.enums.RoleEnum;
 import com.ssd.admin.business.mapper.UserMapper;
 import com.ssd.admin.business.qo.UserModifyPasswordQO;
 import com.ssd.admin.business.qo.UserQO;
+import com.ssd.admin.business.service.OrganizationService;
 import com.ssd.admin.business.service.UserService;
 import com.ssd.admin.business.vo.UserFindVO;
 import com.ssd.admin.business.vo.UserVO;
@@ -30,6 +32,8 @@ public class UserServiceImpl extends BaseService<UserEntity> implements UserServ
 
     @Autowired
     private UserMapper userMapper;
+    @Autowired
+    private OrganizationService organizationService;
 
     @Override
     public PagerResultForDT<UserFindVO> selectPage(PagerForDT<UserQO> pager) {
@@ -50,7 +54,14 @@ public class UserServiceImpl extends BaseService<UserEntity> implements UserServ
         PageHelper.offsetPage(pager.getiDisplayStart(),pager.getiDisplayLength());
         List<UserEntity> userEntityList = this.selectByExample(example);
         PageInfo<UserEntity> pageInfo = new PageInfo<>(userEntityList);
-        PagerResultForDT<UserFindVO> pagerResult = new PagerResultForDT<UserFindVO>(UserEntity.toVOList(userEntityList),allList.size(),pageInfo.getTotal());
+        List<UserFindVO> userFindVOList = UserEntity.toVOList(userEntityList);
+        for (UserFindVO userFindVO : userFindVOList) {
+            OrganizationEntity organizationEntity = organizationService.selectByKey(userFindVO.getOrganizationId());
+            if(organizationEntity != null){
+                userFindVO.setOrganizationName(organizationEntity.getName());
+            }
+        }
+        PagerResultForDT<UserFindVO> pagerResult = new PagerResultForDT<UserFindVO>(userFindVOList,allList.size(),pageInfo.getTotal());
         return pagerResult;
     }
 
@@ -96,6 +107,11 @@ public class UserServiceImpl extends BaseService<UserEntity> implements UserServ
     @Override
     public UserFindVO getUserById(Integer userId) {
         UserEntity userEntity = userMapper.selectByPrimaryKey(userId);
-        return UserEntity.toVO(userEntity);
+        UserFindVO userFindVO = UserEntity.toVO(userEntity);
+        OrganizationEntity organizationEntity = organizationService.selectByKey(userFindVO.getOrganizationId());
+        if(organizationEntity != null){
+            userFindVO.setOrganizationName(organizationEntity.getName());
+        }
+        return userFindVO;
     }
 }

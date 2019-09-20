@@ -41,6 +41,7 @@
 				<th >id</th>
 				<th >用户名</th>
 				<th >昵称</th>
+				<th >所属组织</th>
 				<th >角色</th>
 				<th >操作</th>
 			</tr>
@@ -81,6 +82,7 @@
             {"mData": "id", "bSortable": false},
             {"mData": "userName"},
             {"mData": "nickName"},
+            {"mData": "organizationName"},
             {"mData": "roleDisplay"}
 
         ],
@@ -90,7 +92,7 @@
                 "visible":false
             },
             {
-                "targets": [4],
+                "targets": [5],
                 "data": "id",
                 "render": function(data, type, full) {
                     var roleCode = full.roleCode;

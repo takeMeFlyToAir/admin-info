@@ -18,6 +18,9 @@ $(function(){
             nickName:{
                 required:true
             },
+            organizationId:{
+                required:true
+            },
             password:{
                 required:true
             }
@@ -30,6 +33,9 @@ $(function(){
             nickName:{
                 required: "请输入昵称"
             },
+            organizationId:{
+                required: "请选择组织"
+            },
             password:{
                 required: "请输入默认密码"
             }
@@ -38,6 +44,11 @@ $(function(){
         focusCleanup:true,
         success:"valid",
         submitHandler:function(form){
+            var organizationId = $("#organizationId").val();
+            if(!organizationId){
+                tip("请选择组织")
+                return;
+            }
             $.ajax({
                 type : "post",
                 url : '/user/add',
@@ -62,11 +73,17 @@ $(function(){
         rules:{
             nickName:{
                 required:true
+            },
+            organizationId:{
+                required:true
             }
         },
         messages: {
             nickName:{
                 required: "请输入昵称"
+            },
+            organizationId:{
+                required: "请选择组织"
             }
         },
         onkeyup:false,
@@ -75,10 +92,15 @@ $(function(){
         submitHandler:function(form){
             var id = $("#id").val();
             var nickName = $("#nickName").val();
+            var organizationId = $("#organizationId").val();
+            if(!organizationId){
+                tip("请选择组织")
+                return;
+            }
             $.ajax({
                 type : "post",
                 url : '/user/edit',
-                data : {"id":id,"nickName":nickName},
+                data : {"id":id,"nickName":nickName,"organizationId":organizationId},
                 dataType : "json",
                 async : false,
                 success : function(data) {
@@ -146,6 +168,48 @@ $(function(){
 
 
 
+function allOrganization(addFlag,organizationId) {
+    $.ajax({
+        type : "get",
+        url : '/organization/findAll',
+        dataType : "json",
+        async : false,
+        success : function(data) {
+            if (data.result) {
+                var content = '';
+                var result = data.data;
+                if (result == null || result.length === 0) {
+                    content += ('<option value="">请先添加组织</option>')
+                    $('#organizationId').html(content);
+                } else {
+                    if(addFlag){
+                        content += ('<option  value="">请选择组织</option>')
+                        for (var i = 0; i < result.length; i++) {
+                            content += ('<option  value='+ result[i].id +'>'+ result[i].name +'</option>')
+                        }
+                        console.log(content)
+                        $('#organizationId').html(content);
+                    }else{
+                        var organizationIdHtml = ('<option  value="">请选择组织</option>');
+                        for (var i = 0; i < result.length; i++) {
+                            if(result[i].id == organizationId){
+                                organizationIdHtml += ('<option selected="selected" value='+ result[i].id +'>'+ result[i].name +'</option>')
+                            }else{
+                                organizationIdHtml += ('<option  value='+ result[i].id +'>'+ result[i].name +'</option>')
+                            }
+                        }
+                        $('#organizationId').html(organizationIdHtml);
+                    }
+                }
+
+            }else{
+            }
+        }
+    });
+
+}
+
+
 function getDetail() {
     var id = getUrlParam("userId");
     $.ajax({
@@ -156,6 +220,7 @@ function getDetail() {
         success : function(data) {
             if (data.result) {
                 initFormValue("form-user-edit",data.data);
+                allOrganization(false, data.data.organizationId);
             }else{
                 layer.msg(data.message,{icon:2,time:1000});
             }

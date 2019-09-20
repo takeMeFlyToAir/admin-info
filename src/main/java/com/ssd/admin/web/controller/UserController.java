@@ -78,6 +78,9 @@ public class UserController {
             if(StringUtils.isNotBlank(userEditQO.getNickName())){
                 user.setNickName(userEditQO.getNickName());
             }
+            if(userEditQO.getOrganizationId() != null){
+                user.setOrganizationId(userEditQO.getOrganizationId());
+            }
             userService.updateNotNull(user);
             resp.isSuccess().setMessage("修改成功");
         }catch (Exception e){

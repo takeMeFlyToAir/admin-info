@@ -27,6 +27,8 @@ public class UserEntity extends BaseEntity implements Serializable {
 
     private String nickName;
 
+    private Integer organizationId;
+
     public static List<UserFindVO> toVOList(List<UserEntity> userEntityList){
         ArrayList<UserFindVO> userFindVOArrayList = new ArrayList<UserFindVO>();
         if(userEntityList != null){
@@ -43,6 +45,7 @@ public class UserEntity extends BaseEntity implements Serializable {
         userFindVO.setNickName(userEntity.getNickName());
         userFindVO.setRoleCode(userEntity.getRoleCode());
         userFindVO.setId(userEntity.getId());
+        userFindVO.setOrganizationId(userEntity.getOrganizationId());
         return userFindVO;
     }
 }
