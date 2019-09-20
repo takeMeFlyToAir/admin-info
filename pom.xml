@@ -211,8 +211,60 @@
       <scope>test</scope>
     </dependency>
   </dependencies>
+  <profiles>
+    <profile>
+      <id>dev</id>
+      <activation>
+        <activeByDefault>true</activeByDefault>
+      </activation>
+      <properties>
+        <jdbc.url>jdbc:mysql://localhost:3306/admin-info</jdbc.url>
+        <jdbc.username>root</jdbc.username>
+        <jdbc.password>root</jdbc.password>
+        <log.level>INFO</log.level>
+      </properties>
+    </profile>
+    <profile>
+      <id>preProduction</id>
+      <properties>
+        <jdbc.url>jdbc:mysql://localhost:3306/admin-info</jdbc.url>
+        <jdbc.username>root</jdbc.username>
+        <jdbc.password>root123456</jdbc.password>
+        <log.level>INFO</log.level>
+      </properties>
+    </profile>
+    <profile>
+      <id>production</id>
+      <properties>
+        <jdbc.url>jdbc:mysql://localhost:3306/admin-info</jdbc.url>
+        <jdbc.username>root</jdbc.username>
+        <jdbc.password>root123456</jdbc.password>
+        <log.level>INFO</log.level>
+      </properties>
+    </profile>
+  </profiles>
   <build>
     <finalName>admin-info</finalName>
+    <resources>
+      <resource>
+        <directory>src/main/resources</directory>
+        <filtering>true</filtering>
+      </resource>
+      <resource>
+        <filtering>true</filtering>
+        <directory>src/main/resources</directory>
+        <includes>
+          <include>**/*.xml</include>
+        </includes>
+      </resource>
+    </resources>
+    <testResources>
+      <testResource>
+        <directory>src/test/resources</directory>
+        <filtering>true</filtering>
+      </testResource>
+    </testResources>
+
     <pluginManagement><!-- lock down plugins versions to avoid using Maven defaults (may be moved to parent pom) -->
       <plugins>
         <plugin>

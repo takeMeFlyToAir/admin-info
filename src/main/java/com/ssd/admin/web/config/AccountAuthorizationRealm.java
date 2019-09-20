@@ -45,7 +45,7 @@ public class AccountAuthorizationRealm extends AuthorizingRealm {
             //密码错误
             throw new AuthenticationException("用户名或密码错误");
         }
-        ShiroUser shiroUser = new ShiroUser(userVO.getId(), userVO.getUserName(), userVO.getNickName());
+        ShiroUser shiroUser = new ShiroUser(userVO.getId(), userVO.getUserName(), userVO.getNickName(),userVO.getOrganizationId(),userVO.getRoleCode());
         return new SimpleAuthenticationInfo(shiroUser, CyptoUtils.md5(new String(token.getPassword())), getName());
     }
 

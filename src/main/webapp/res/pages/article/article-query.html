@@ -1,0 +1,234 @@
+<!--_meta 作为公共模版分离出去-->
+<!DOCTYPE HTML>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="renderer" content="webkit|ie-comp|ie-stand">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+	<meta http-equiv="Cache-Control" content="no-siteapp" />
+	<link rel="Bookmark" href="/favicon.ico" >
+	<link rel="Shortcut Icon" href="/favicon.ico" />
+	<!--[if lt IE 9]>
+	<script type="text/javascript"  src="/res/lib/html5shiv.js"></script>
+	<script type="text/javascript"  src="/res/lib/respond.min.js"></script>
+	<![endif]-->
+	<link rel="stylesheet" type="text/css"  href="/res/static/h-ui/css/H-ui.min.css" />
+	<link rel="stylesheet" type="text/css"  href="/res/static/h-ui.admin/css/H-ui.admin.css" />
+	<link rel="stylesheet" type="text/css"  href="/res/lib/Hui-iconfont/1.0.8/iconfont.css" />
+	<link rel="stylesheet" type="text/css"  href="/res/static/h-ui.admin/skin/default/skin.css" id="skin" />
+	<link rel="stylesheet" type="text/css"  href="/res/static/h-ui.admin/css/style.css" />
+	<!--[if IE 6]>
+	<script type="text/javascript"  src="/res/lib/DD_belatedPNG_0.0.8a-min.js" ></script>
+	<script>DD_belatedPNG.fix('*');</script>
+	<![endif]-->
+	<!--/meta 作为公共模版分离出去-->
+
+	<title>新增文章 - 系统管理 - 推荐系统 v2.0</title>
+	<meta name="keywords" content="推荐系统 v2.0">
+	<meta name="description" content="推荐系统 v2.0">
+</head>
+<body>
+<article class="page-container">
+	<form class="form form-horizontal" id="form-article">
+		<div class="row cl hide">
+			<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>id：</label>
+			<div class="formControls col-xs-8 col-sm-9">
+				<input type="text" class="input-text" value="" placeholder="" id="id" name="id">
+			</div>
+		</div>
+		<div class="row cl hide">
+			<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>状态：</label>
+			<div class="formControls col-xs-8 col-sm-9">
+				<input type="text" class="input-text" value="0" placeholder="" id="status" name="status">
+			</div>
+		</div>
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>标题：</label>
+			<div class="formControls col-xs-8 col-sm-9">
+				<input type="text" class="input-text" value="" placeholder="" id="title" name="title">
+			</div>
+		</div>
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>作者：</label>
+			<div class="formControls col-xs-8 col-sm-9">
+				<input type="text" class="input-text" value="" placeholder="" id="author" name="author">
+			</div>
+		</div>
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>作者单位：</label>
+			<div class="formControls col-xs-8 col-sm-9">
+				<input type="text" class="input-text" value="" placeholder="" id="organizationName" name="organizationName">
+			</div>
+		</div>
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>来源：</label>
+			<div class="formControls col-xs-8 col-sm-9">
+				<input type="text" class="input-text" value="" placeholder="" id="source" name="source">
+			</div>
+		</div>
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-2">页：</label>
+			<div class="formControls col-xs-8 col-sm-9">
+				<input type="text" class="input-text" value="" placeholder="" id="page" name="page">
+			</div>
+		</div>
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-2">出版年份：</label>
+			<div class="formControls col-xs-8 col-sm-9">
+				<input type="text" class="input-text" value="" placeholder="" id="publishYear" name="publishYear">
+			</div>
+		</div>
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-2">学科领域：</label>
+			<div class="formControls col-xs-8 col-sm-9">
+				<input type="text" class="input-text" value="" placeholder="" id="subjectArea" name="subjectArea">
+			</div>
+		</div>
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-2">影响因子：</label>
+			<div class="formControls col-xs-8 col-sm-9">
+				<input type="text" class="input-text" value="" placeholder="" id="influenceFactor" name="influenceFactor">
+			</div>
+		</div>
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-2">统计年份：</label>
+			<div class="formControls col-xs-8 col-sm-9">
+				<input type="text" class="input-text" value="" placeholder="" id="statisticsYear" name="statisticsYear">
+			</div>
+		</div>
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-2">新增引用次数：</label>
+			<div class="formControls col-xs-8 col-sm-9">
+				<input type="text" class="input-text" value="" placeholder="" id="quoteCount" name="quoteCount">
+			</div>
+		</div>
+		<div class="row cl">
+			<div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-2">
+				<button class="btn btn-primary radius" style="display: none" id="claimArticleButton" type="button" onclick="claimArticleForQuery()"><i class="Hui-iconfont">&#xe632;</i> 认领</button>
+				<button class="btn btn-primary radius" style="display: none" id="auditArticleButton" type="button" onclick="auditArticleForQuery()"><i class="Hui-iconfont">&#xe632;</i> 审核</button>
+				<button class="btn btn-primary radius" style="display: none" id="rejectClaimArticleButton" type="button" onclick="rejectClaimArticleForQuery()"><i class="Hui-iconfont">&#xe632;</i> 退领</button>
+				<button onClick="cancelEdit();" class="btn btn-default radius" type="button">&nbsp;&nbsp;取消&nbsp;&nbsp;</button>
+			</div>
+		</div>
+	</form>
+</article>
+
+<!--_footer 作为公共模版分离出去-->
+<script type="text/javascript"  src="/res/lib/jquery/1.9.1/jquery.min.js"></script>
+<script type="text/javascript"  src="/res/lib/layer/2.4/layer.js"></script>
+<script type="text/javascript"  src="/res/static/h-ui/js/H-ui.min.js"></script>
+<script type="text/javascript"  src="/res/static/h-ui.admin/js/H-ui.admin.js"></script> <!--/_footer /作为公共模版分离出去-->
+<script type="text/javascript" src="/res/lib/datatables/1.10.0/jquery.dataTables.min.js"></script>
+<script type="text/javascript"  src="/res/static/js/common.js"></script>
+<script type="text/javascript"  src="/res/static/js/business/article.js"></script>
+
+<!--请在下方写此页面业务相关的脚本-->
+<script type="text/javascript"  src="/res/lib/jquery.validation/1.14.0/jquery.validate.js"></script>
+<script type="text/javascript"  src="/res/lib/jquery.validation/1.14.0/validate-methods.js"></script>
+<script type="text/javascript"  src="/res/lib/jquery.validation/1.14.0/messages_zh.js"></script>
+<script type="text/javascript">
+    $(function () {
+        getDetail();
+    })
+
+    function claimArticleForQuery(){
+        var id = $("#id").val();
+        var message = "确定要认领吗？";
+        layer.confirm(message,function(){
+            $.ajax({
+                type: 'POST',
+                url: '/article/modifyArticleStatus?id='+id+"&status=10",
+                dataType: 'json',
+                success: function(data){
+                    if(data.result){
+                        layer.msg(data.message,{icon:1,time:1000});
+                        parent.dataTable.api().ajax.reload();
+                        cancelEdit();
+                    }else{
+                        layer.msg(data.message,{icon:2,time:1000});
+                    }
+                },
+                error:function(data) {
+                    console.log(data.msg);
+                },
+            });
+        });
+    }
+
+    function auditArticleForQuery(){
+        var id = $("#id").val();
+        layer.confirm('审核文章认领？', {
+                btn: ['通过','不通过','取消'],
+                shade: false,
+                closeBtn: 0
+            },
+            function(){
+                $.ajax({
+                    type: 'POST',
+                    url: '/article/modifyArticleStatus?id='+id+"&status=20",
+                    dataType: 'json',
+                    success: function(data){
+                        if(data.result){
+                            layer.msg(data.message,{icon:1,time:1000});
+                            parent.dataTable.api().ajax.reload();
+                            cancelEdit();
+                        }else{
+                            layer.msg(data.message,{icon:2,time:1000});
+                        }
+                    },
+                    error:function(data) {
+                        console.log(data.msg);
+                    },
+                });
+            },
+            function(){
+                $.ajax({
+                    type: 'POST',
+                    url: '/article/modifyArticleStatus?id='+id+"&status=0",
+                    dataType: 'json',
+                    success: function(data){
+                        if(data.result){
+                            layer.msg(data.message,{icon:1,time:1000});
+                            parent.dataTable.api().ajax.reload();
+                            cancelEdit();
+                        }else{
+                            layer.msg(data.message,{icon:2,time:1000});
+                        }
+                    },
+                    error:function(data) {
+                        console.log(data.msg);
+                    },
+                });
+            });
+    }
+
+
+    function rejectClaimArticleForQuery(){
+        var id = $("#id").val();
+        var message = "确定要退领吗？";
+        layer.confirm(message,function(){
+            $.ajax({
+                type: 'POST',
+                url: '/article/modifyArticleStatus?id='+id+"&status=0",
+                dataType: 'json',
+                success: function(data){
+                    if(data.result){
+                        layer.msg(data.message,{icon:1,time:1000});
+                        parent.dataTable.api().ajax.reload();
+                        cancelEdit();
+                    }else{
+                        layer.msg(data.message,{icon:2,time:1000});
+                    }
+                },
+                error:function(data) {
+                    console.log(data.msg);
+                },
+            });
+        });
+    }
+
+</script>
+<!--/请在上方写此页面业务相关的脚本-->
+</body>
+</html>

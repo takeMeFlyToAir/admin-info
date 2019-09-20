@@ -13,6 +13,8 @@ public class UserVO {
     private String userName;
 
     private String password;
+    private Integer roleCode;
 
     private String nickName;
+    private Integer organizationId;
 }
