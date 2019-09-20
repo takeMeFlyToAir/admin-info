@@ -1,16 +1,16 @@
 
 $(function(){
     //表单验证
-    $("#form-power").validate({
+    $("#form-organization").validate({
         rules:{
-            code:{
+            name:{
                 required:true,
                 remote: {
-                    url: "/power/validateCode",
+                    url: "/organization/validateName",
                     type: "post",
                     data: {
-                        code: function () {
-                            return $('#code').val();
+                        name: function () {
+                            return $('#name').val();
                         },
                         id: function(){
                             return $('#id').val();
@@ -23,9 +23,9 @@ $(function(){
             }
         },
         messages: {
-            code: {
-                required: "请输入code值",
-                remote: "此code已存在"
+            name: {
+                required: "请输入组织名称",
+                remote: "此组织名称已存在"
             },
             remark:{
                 required: "请输入备注"
@@ -37,8 +37,8 @@ $(function(){
         submitHandler:function(form){
             $.ajax({
                 type : "post",
-                url : '/power/addOrUpdate',
-                data : $("#form-power").serialize(),
+                url : '/organization/addOrUpdate',
+                data : $("#form-organization").serialize(),
                 dataType : "json",
                 async : false,
                 success : function(data) {
@@ -57,15 +57,15 @@ $(function(){
 
 
 function getDetail() {
-    var id = getUrlParam("powerId");
+    var id = getUrlParam("organizationId");
     $.ajax({
         type : "get",
-        url : '/power/detail?id='+id,
+        url : '/organization/detail?id='+id,
         dataType : "json",
         async : false,
         success : function(data) {
             if (data.result) {
-                initFormValue("form-power",data.data);
+                initFormValue("form-organization",data.data);
             }else{
                 layer.msg(data.message,{icon:2,time:1000});
             }

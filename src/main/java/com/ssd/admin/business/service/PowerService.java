@@ -22,7 +22,7 @@ public interface PowerService extends IService<PowerEntity> {
      */
     PagerResultForDT<PowerEntity> selectPage(PagerForDT<String> pager);
 
-    Boolean hasCode(String code);
+    Boolean validateCode(Integer id,String code);
 
     List<PowerEntity> findAll();
     /**

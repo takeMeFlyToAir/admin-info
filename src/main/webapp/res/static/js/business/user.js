@@ -1,7 +1,7 @@
 
 $(function(){
     //表单验证
-    $("#form-user").validate({
+    $("#form-user-add").validate({
         rules:{
             userName:{
                 required:true,
@@ -41,7 +41,7 @@ $(function(){
             $.ajax({
                 type : "post",
                 url : '/user/add',
-                data : $("#form-user").serialize(),
+                data : $("#form-user-add").serialize(),
                 dataType : "json",
                 async : false,
                 success : function(data) {

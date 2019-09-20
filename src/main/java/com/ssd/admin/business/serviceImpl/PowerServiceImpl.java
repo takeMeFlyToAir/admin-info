@@ -11,6 +11,7 @@ import com.ssd.admin.common.PagerResultForDT;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 import tk.mybatis.mapper.entity.Example;
 
 import java.util.List;
@@ -46,11 +47,25 @@ public class PowerServiceImpl extends BaseService<PowerEntity> implements PowerS
     }
 
     @Override
-    public Boolean hasCode(String code) {
+    public Boolean validateCode(Integer id,String code) {
+        if(id == null){
+            return validateCode(code);
+        }else {
+            PowerEntity powerEntity = powerMapper.selectByPrimaryKey(id);
+            // id不为空代表修改操作，如果转入的code为原来的code，则返回true
+            if (code.equals(powerEntity.getCode())) {
+                return true;
+            } else { // 如果修改了名字，还是要对名字进行校验
+                return validateCode(code);
+            }
+        }
+    }
+
+    private Boolean validateCode(String code) {
         Example example = new Example(PowerEntity.class);
         example.createCriteria().andEqualTo("deleted",0).andEqualTo("code",code);
         List<PowerEntity> allList = this.selectByExample(example);
-        if(allList != null && allList.size() > 0){
+        if (CollectionUtils.isEmpty(allList)) {
             return true;
         }
         return false;
