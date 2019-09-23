@@ -39,7 +39,10 @@
 	</div>
 	<div class="cl pd-5 bg-1 bk-gray mt-20 hide power "  code="article:add">
 		<span class="l">
-			<a href="javascript:;" onclick="article_add('添加文章','/res/pages/article/article-add.html')" class="btn btn-primary radius"><i class="Hui-iconfont">&#xe600;</i> 添加</a>
+			<a href="javascript:;" onclick="article_add('添加文章','/res/pages/article/article-add.html')" class="btn btn-primary radius"><i class="Hui-iconfont">&#xe604;</i> 添加</a>
+			<a href="/article/downloadTemplate" class="btn btn-primary radius"><i class="Hui-iconfont">&#xe640;</i> 下载模板</a>
+			<a href="javascript:;" onclick="$('#uploadArticle').trigger('click');" class="btn btn-primary radius"><i class="Hui-iconfont">&#xe645;</i> 导入</a>
+			<input type="file" id="uploadArticle" style="display:none;;" name="file" class="file" onchange="uploadArticle('uploadArticle');"/>
 		</span>
 	</div>
 	<div class="mt-20">
@@ -71,6 +74,7 @@
 <script type="text/javascript" src="/res/static/h-ui/js/H-ui.min.js"></script>
 <script type="text/javascript" src="/res/static/h-ui.admin/js/H-ui.admin.js"></script> <!--/_footer 作为公共模版分离出去-->
 <script type="text/javascript"  src="/res/static/js/common.js"></script>
+<script type="text/javascript"  src="/res/static/js/ajaxfileupload.js"></script>
 
 <!--请在下方写此页面业务相关的脚本-->
 <script type="text/javascript" src="/res/lib/My97DatePicker/4.8/WdatePicker.js"></script>
@@ -199,6 +203,40 @@
         });
     }
 
+    //导入用户
+    function uploadArticle(fileElementId){
+        var message = "确定要导入吗？";
+        layer.confirm(message,function(){
+            console.log("333")
+            $.ajaxFileUpload({
+                url:"/article/importArticle",
+                data: {},
+                async : true,   //是否是异步
+                secureuri: false,   //是否启用安全提交，默认为false。
+                loading: "正在保存数据...",
+                dataType: 'json', // 这里修改为content
+                fileElementId:fileElementId,
+                success:function(data){
+                    if(data.result){
+                        $("#uploadArticle").val("");
+                        layer.msg(data.message,{icon:1,time:1000});
+                        dataTable.api().ajax.reload();
+                    }else{
+                        $("#uploadArticle").val("");
+                        layer.msg(data.message,{icon:2,time:3000});
+                    }
+                },
+                error:function(data){
+                    $("#uploadArticle").val("");
+                    console.log(data.msg);
+                }
+            });
+        });
+    }
+    
+    function article_download() {
+		
+    }
 </script>
 </body>
 </html>

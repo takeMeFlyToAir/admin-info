@@ -38,4 +38,12 @@
         <property name="suffix" value=".html" /><!--可为空,方便实现自已的依据扩展名来选择视图解释类的逻辑 -->
         <property name="order" value="1"/>
     </bean>
+
+
+    <!--文件上传-->
+    <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+        <!-- one of the properties available; the maximum file size in bytes -->
+        <property name="maxUploadSize" value="1024000000"/>
+    </bean>
+
 </beans>

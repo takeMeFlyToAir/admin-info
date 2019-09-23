@@ -7,15 +7,23 @@ import com.ssd.admin.business.service.ArticleService;
 import com.ssd.admin.common.JsonResp;
 import com.ssd.admin.common.PagerForDT;
 import com.ssd.admin.common.PagerResultForDT;
+import com.ssd.admin.util.FileDownloadUtil;
+import com.ssd.admin.util.excel.ExcelDataUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @Author: zhaozhirong
@@ -104,5 +112,42 @@ public class ArticleController {
             logger.error("modifyArticleStatus is error,",e);
         }
         return resp;
+    }
+
+
+    @RequestMapping(value = "/importArticle")
+    @ResponseBody
+    public JsonResp importArticle(@RequestParam("file") MultipartFile file){
+        JsonResp resp = new JsonResp();
+        try {
+            ExcelDataUtil.ExcelData importUser = ExcelDataUtil.readExcel(file, "ImportArticle");
+            List<ArticleEntity> list =importUser.getDatas();
+            List<ExcelDataUtil.ErrorLine> errorList = importUser.getErrorList();
+            if(errorList != null && errorList.size() > 0){
+                 resp.isFail().setMessage(errorList.toString());
+            }else {
+                for (ArticleEntity articleEntity : list) {
+                    articleEntity.setStatus(ArticleStatusEnum.WAIT_CLAIM.getCode());
+                    articleService.save(articleEntity);
+                }
+                resp.isSuccess().setMessage("导入成功");
+            }
+        }catch (Exception e){
+            resp.isFail().setMessage("导入异常");
+            logger.error("importArticle is error,",e);
+        }
+        return resp;
+    }
+
+
+    @RequestMapping(value="/downloadTemplate",method = {RequestMethod.POST,RequestMethod.GET})
+    public void downloadTemplate(HttpServletRequest request, HttpServletResponse response, Integer materEqpmTypeCde) {
+        try {
+            String filePath = request.getServletContext().getRealPath("/excel") + "/importArticle.xlsx";
+            String fileName = "文章模板.xlsx";
+            FileDownloadUtil.downloadFile(filePath, fileName, request, response);
+        } catch (Exception e) {
+            logger.error("downloadTemplate is error,",e);
+        }
     }
 }

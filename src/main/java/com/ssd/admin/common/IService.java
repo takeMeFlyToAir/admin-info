@@ -47,5 +47,7 @@ public interface IService<T extends BaseEntity> {
 
     int delete(Integer id);
 
+    void saveList(List<T> entityList);
+
     //TODO 其他...
 }

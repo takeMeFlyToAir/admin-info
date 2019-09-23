@@ -85,4 +85,10 @@ public abstract class BaseService<T  extends BaseEntity> implements IService<T> 
         return myMapper.selectAll();
     }
 
+    @Override
+    public void saveList(List<T> entityList) {
+        for (T t : entityList) {
+            save(t);
+        }
+    }
 }
