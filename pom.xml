@@ -244,7 +244,8 @@
         <activeByDefault>true</activeByDefault>
       </activation>
       <properties>
-        <jdbc.url>jdbc:mysql://localhost:3306/admin-info</jdbc.url>
+        <jdbc.driver>com.mysql.jdbc.Driver</jdbc.driver>
+        <jdbc.url><![CDATA[jdbc:mysql://localhost:3306/admin-info?useUnicode=true&amp;characterEncoding=utf-8&amp;autoreconnect=true]]></jdbc.url>
         <jdbc.username>root</jdbc.username>
         <jdbc.password>root</jdbc.password>
         <log.level>INFO</log.level>
@@ -253,7 +254,8 @@
     <profile>
       <id>preProduction</id>
       <properties>
-        <jdbc.url>jdbc:mysql://localhost:3306/admin-info</jdbc.url>
+        <jdbc.driver>com.mysql.jdbc.Driver</jdbc.driver>
+        <jdbc.url><![CDATA[jdbc:mysql://localhost:3306/admin-info?useUnicode=true&amp;characterEncoding=utf-8&amp;autoreconnect=true]]></jdbc.url>
         <jdbc.username>root</jdbc.username>
         <jdbc.password>root123456</jdbc.password>
         <log.level>INFO</log.level>
@@ -262,7 +264,8 @@
     <profile>
       <id>production</id>
       <properties>
-        <jdbc.url>jdbc:mysql://localhost:3306/admin-info</jdbc.url>
+        <jdbc.driver>com.mysql.jdbc.Driver</jdbc.driver>
+        <jdbc.url><![CDATA[jdbc:mysql://localhost:3306/admin-info?useUnicode=true&amp;characterEncoding=utf-8&amp;autoreconnect=true]]></jdbc.url>
         <jdbc.username>root</jdbc.username>
         <jdbc.password>root123456</jdbc.password>
         <log.level>INFO</log.level>

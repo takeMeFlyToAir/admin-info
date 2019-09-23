@@ -110,7 +110,29 @@
                 "targets":[1],
                 "data": "statusDisplay",
                 "render": function(data, type, full) {
-                    var html = '<span class="label label-success radius">'+data+'</span>';
+                    var html = ''
+                    if(full.status == 0){
+                        html = '<span class="label label-danger  radius">'+data+'</span>';
+                    }else  if (full.status == 10){
+                        html = '<span class="label label-warning radius">'+data+'</span>';
+                    }else  if (full.status == 20){
+                        html = '<span class="label label-success radius">'+data+'</span>';
+                    }
+                    return html;
+                }
+            },
+            {
+                "targets":[2],
+                "data": "title",
+                "render": function(data, type, full) {
+                    var temp_data = data;
+                    var html='';
+                    if(data.length > 20){
+                        temp_data  = data.substring(0,20);
+                        html = '<button class="btn btn-primary radius" data-toggle="tooltip" data-placement="top" title="'+data+'">'+temp_data+'</button>';
+                    }else{
+                        html = data;
+                    }
                     return html;
                 }
             },
@@ -119,8 +141,8 @@
                 "data": "id",
                 "render": function(data, type, full) {
                     var html = "";
-                    html += ' <a style="text-decoration:none" class="ml-5" onClick="auditArticle(\''+data+'\')" href="javascript:;" title="审核">审核</a>';
-                    html += '<a title="查看文章" href="javascript:;" onclick="article_query(\'查看文章\',\'/res/pages/article/article-query.html?type=audit&articleId='+full.id+'\')"  class="ml-5" style="text-decoration:none">查看</a>';
+                    html += '<button class="btn btn-secondary round"    onclick="article_query(\'查看文章\',\'/res/pages/article/article-query.html?type=audit&articleId='+full.id+'\')"  title="查看文章" >查看</button>';
+                    html += '<button class="btn btn-success round"  onClick="auditArticle(\''+data+'\')" title="审核" >审核</button>';
                     return html;
                 }
             }
