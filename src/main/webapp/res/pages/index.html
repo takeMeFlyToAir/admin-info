@@ -31,6 +31,8 @@
 		<div class="container-fluid cl"> <a class="logo navbar-logo f-l mr-10 hidden-xs" href="/">信息管理系统</a>
 		<nav id="Hui-userbar" class="nav navbar-nav navbar-userbar hidden-xs">
 			<ul class="cl">
+				<li id="organizationName"></li>
+				<li>---</li>
 				<li id="roleName"></li>
 				<li class="dropDown dropDown_hover">
 					<a href="#" class="dropDown_A" > <span id="nickName"></span><i class="Hui-iconfont">&#xe6d5;</i></a>
@@ -152,6 +154,7 @@ function getLoginUserInfo() {
             var userInfo = data.data;
             $("#roleName").html(userInfo.roleDisplay);
             $("#nickName").html(userInfo.nickName);
+            $("#organizationName").html(userInfo.organizationName);
         }
     });
 }

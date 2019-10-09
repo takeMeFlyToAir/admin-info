@@ -45,16 +45,21 @@ public class ArticleServiceImpl extends BaseService<ArticleEntity> implements Ar
         example = new Example(ArticleEntity.class);
         Example.Criteria criteria = example.createCriteria()
                 .andEqualTo("deleted",0);
-        if(StringUtils.isNotEmpty(articleQO.getTitle())){
-            criteria.andLike("title", "%"+articleQO.getTitle()+"%");
+        if(StringUtils.isNotBlank(articleQO.getAut())){
+            criteria.andLike("aut","%"+articleQO.getAut()+"%");
         }
-        if(StringUtils.isNotEmpty(articleQO.getAuthor())){
-            criteria.andLike("author", "%"+articleQO.getAuthor()+"%");
+        if(StringUtils.isNotBlank(articleQO.getAti())){
+            criteria.andLike("ati","%"+articleQO.getAti()+"%");
         }
-        if(articleQO.getStatus() != null){
-            criteria.andEqualTo("status", articleQO.getStatus());
+        if(StringUtils.isNotBlank(articleQO.getAso())){
+            criteria.andLike("aso","%"+articleQO.getAso()+"%");
         }
-
+        if(StringUtils.isNotBlank(articleQO.getApy())){
+            criteria.andLike("apy","%"+articleQO.getApy()+"%");
+        }
+        if(StringUtils.isNotBlank(articleQO.getAc1())){
+            criteria.andLike("ac1","%"+articleQO.getAc1()+"%");
+        }
         ShiroUser currentUser = UserUtil.getCurrentUser();
         //查找审核中，即认领中的
         if(StringUtils.isNotBlank(articleQO.getAudit())){
@@ -81,17 +86,6 @@ public class ArticleServiceImpl extends BaseService<ArticleEntity> implements Ar
 
         PageHelper.offsetPage(pager.getiDisplayStart(),pager.getiDisplayLength());
         List<ArticleEntity> articleEntityList = this.selectByExample(example);
-        if(articleEntityList != null){
-            for (ArticleEntity articleEntity : articleEntityList) {
-                if(ArticleStatusEnum.fromCode(articleEntity.getStatus()) != ArticleStatusEnum.WAIT_CLAIM){
-                    UserFindVO userById = userService.getUserById(articleEntity.getClaimUserId());
-                    if(userById != null){
-                        articleEntity.setClaimUserName(userById.getUserName());
-                        articleEntity.setClaimNickName(userById.getNickName());
-                    }
-                }
-            }
-        }
         PageInfo<ArticleEntity> pageInfo = new PageInfo<>(articleEntityList);
         PagerResultForDT<ArticleEntity> pagerResult = new PagerResultForDT<ArticleEntity>(articleEntityList,allList.size(),pageInfo.getTotal());
         return pagerResult;
@@ -101,14 +95,7 @@ public class ArticleServiceImpl extends BaseService<ArticleEntity> implements Ar
 
     @Override
     public void modifyArticleStatus(Integer id, ArticleStatusEnum articleStatusEnum) {
-        ArticleEntity articleEntity = this.selectByKey(id);
-        articleEntity.setStatus(articleStatusEnum.getCode());
-        if(articleStatusEnum == ArticleStatusEnum.CLAIM_ING){
-            ShiroUser currentUser = UserUtil.getCurrentUser();
-            articleEntity.setClaimUserId(currentUser.getId());
-            articleEntity.setClaimUserOrganizationId(currentUser.getOrganizationId());
-        }
-        this.updateNotNull(articleEntity);
+
     }
 
 

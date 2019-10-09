@@ -14,13 +14,15 @@ public class ShiroUser implements Serializable {
 	public String nickName;
 	public Integer roleCode;
 	private Integer organizationId;
+	private String organizationName;
 
-	public ShiroUser(Integer id, String userName, String nickName,Integer organizationId,Integer roleCode) {
+	public ShiroUser(Integer id, String userName, String nickName,Integer organizationId,Integer roleCode, String organizationName) {
 		this.id = id;
 		this.userName = userName;
 		this.nickName = nickName;
 		this.organizationId = organizationId;
 		this.roleCode = roleCode;
+		this.organizationName = organizationName;
 	}
 
 	public Integer getId() {
@@ -61,6 +63,14 @@ public class ShiroUser implements Serializable {
 
 	public void setRoleCode(Integer roleCode) {
 		this.roleCode = roleCode;
+	}
+
+	public String getOrganizationName() {
+		return organizationName;
+	}
+
+	public void setOrganizationName(String organizationName) {
+		this.organizationName = organizationName;
 	}
 
 	/**

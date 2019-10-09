@@ -89,6 +89,8 @@ function initFormValue(formId,jsonValue) {
 
 function cancelEdit() {
     var index = parent.layer.getFrameIndex(window.name);
+    console.log(window.name)
+    console.log(index)
     parent.layer.close(index);
 }
 

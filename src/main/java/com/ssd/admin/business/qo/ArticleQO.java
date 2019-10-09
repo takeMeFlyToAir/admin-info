@@ -4,9 +4,11 @@ import lombok.Data;
 
 @Data
 public class ArticleQO {
-    private String title;
-    private String author;
-    private Integer status;
+    private String aut;
+    private String ati;
+    private String aso;
+    private String apy;
+    private String ac1;
 
     /**
      * 是否查找的是我的审核

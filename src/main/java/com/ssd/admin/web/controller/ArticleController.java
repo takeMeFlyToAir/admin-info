@@ -21,9 +21,9 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 /**
  * @Author: zhaozhirong
@@ -117,17 +117,20 @@ public class ArticleController {
 
     @RequestMapping(value = "/importArticle")
     @ResponseBody
-    public JsonResp importArticle(@RequestParam("file") MultipartFile file){
+    public JsonResp importArticle(@RequestParam("file") MultipartFile file,@RequestParam(value = "subject",required = true) Integer subject){
         JsonResp resp = new JsonResp();
         try {
             ExcelDataUtil.ExcelData importUser = ExcelDataUtil.readExcel(file, "ImportArticle");
             List<ArticleEntity> list =importUser.getDatas();
             List<ExcelDataUtil.ErrorLine> errorList = importUser.getErrorList();
             if(errorList != null && errorList.size() > 0){
-                 resp.isFail().setMessage(errorList.toString());
+                 resp.isFail().setMessage(errorList.get(0).error.get(0).getErrorMessage());
             }else {
                 for (ArticleEntity articleEntity : list) {
-                    articleEntity.setStatus(ArticleStatusEnum.WAIT_CLAIM.getCode());
+                    articleEntity.setHighCited(0);
+                    articleEntity.setHotSpot(0);
+                    articleEntity.setSubject(subject);
+                    articleEntity.setApd(getDateTime(articleEntity.getApd()));
                     articleService.save(articleEntity);
                 }
                 resp.isSuccess().setMessage("导入成功");
@@ -137,6 +140,25 @@ public class ArticleController {
             logger.error("importArticle is error,",e);
         }
         return resp;
+    }
+
+
+    /**
+     * 解析时间
+     */
+    public   String getDateTime(String time) {
+        SimpleDateFormat sdf = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy", Locale.US);
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+        Date d2 = null;
+        String format= null;
+        try {
+            d2 = sdf.parse(time);
+            format = formatter.format(d2);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        return format;
     }
 
 

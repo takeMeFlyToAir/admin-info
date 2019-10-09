@@ -1,5 +1,7 @@
 package com.ssd.admin.web.config;
 
+import com.ssd.admin.business.entity.OrganizationEntity;
+import com.ssd.admin.business.service.OrganizationService;
 import com.ssd.admin.business.service.UserService;
 import com.ssd.admin.business.vo.UserVO;
 import lombok.extern.slf4j.Slf4j;
@@ -19,6 +21,9 @@ public class AccountAuthorizationRealm extends AuthorizingRealm {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private OrganizationService organizationService;
 
     /**
      * 查询获得用户信息 AuthenticationToken 用于收集用户提交的身份（如用户名）及凭据（如密码）
@@ -45,7 +50,8 @@ public class AccountAuthorizationRealm extends AuthorizingRealm {
             //密码错误
             throw new AuthenticationException("用户名或密码错误");
         }
-        ShiroUser shiroUser = new ShiroUser(userVO.getId(), userVO.getUserName(), userVO.getNickName(),userVO.getOrganizationId(),userVO.getRoleCode());
+        OrganizationEntity organizationEntity = organizationService.selectByKey(userVO.getOrganizationId());
+        ShiroUser shiroUser = new ShiroUser(userVO.getId(), userVO.getUserName(), userVO.getNickName(),userVO.getOrganizationId(),userVO.getRoleCode(),organizationEntity.getName());
         return new SimpleAuthenticationInfo(shiroUser, CyptoUtils.md5(new String(token.getPassword())), getName());
     }
 
