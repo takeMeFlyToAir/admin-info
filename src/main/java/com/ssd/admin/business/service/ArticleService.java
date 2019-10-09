@@ -32,6 +32,8 @@ public interface ArticleService extends IService<ArticleEntity> {
      */
     void modifyArticleStatus(Integer id, ArticleStatusEnum articleStatusEnum);
 
+    ArticleEntity getByAut(String aut);
+
 
 
 }

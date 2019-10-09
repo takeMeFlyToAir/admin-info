@@ -76,6 +76,7 @@
             success:function(data){
                 if(data.result){
                     layer.msg(data.message,{icon:1,time:1000});
+                    parent.dataTable.api().ajax.reload();
                     cancelEdit();
                 }else{
                     layer.msg(data.message,{icon:2,time:3000});

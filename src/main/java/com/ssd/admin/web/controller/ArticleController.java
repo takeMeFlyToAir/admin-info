@@ -9,6 +9,7 @@ import com.ssd.admin.common.PagerForDT;
 import com.ssd.admin.common.PagerResultForDT;
 import com.ssd.admin.util.FileDownloadUtil;
 import com.ssd.admin.util.excel.ExcelDataUtil;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -120,9 +121,9 @@ public class ArticleController {
     public JsonResp importArticle(@RequestParam("file") MultipartFile file,@RequestParam(value = "subject",required = true) Integer subject){
         JsonResp resp = new JsonResp();
         try {
-            ExcelDataUtil.ExcelData importUser = ExcelDataUtil.readExcel(file, "ImportArticle");
-            List<ArticleEntity> list =importUser.getDatas();
-            List<ExcelDataUtil.ErrorLine> errorList = importUser.getErrorList();
+            ExcelDataUtil.ExcelData importArticle = ExcelDataUtil.readExcel(file, "ImportArticle");
+            List<ArticleEntity> list =importArticle.getDatas();
+            List<ExcelDataUtil.ErrorLine> errorList = importArticle.getErrorList();
             if(errorList != null && errorList.size() > 0){
                  resp.isFail().setMessage(errorList.get(0).error.get(0).getErrorMessage());
             }else {
@@ -131,6 +132,9 @@ public class ArticleController {
                     articleEntity.setHotSpot(0);
                     articleEntity.setSubject(subject);
                     articleEntity.setApd(getDateTime(articleEntity.getApd()));
+                    if(StringUtils.isNotBlank(articleEntity.getAut())){
+                        articleEntity.setAut(articleEntity.getAut().trim());
+                    }
                     articleService.save(articleEntity);
                 }
                 resp.isSuccess().setMessage("导入成功");
@@ -138,6 +142,60 @@ public class ArticleController {
         }catch (Exception e){
             resp.isFail().setMessage("导入异常");
             logger.error("importArticle is error,",e);
+        }
+        return resp;
+    }
+
+    @RequestMapping(value = "/importHotSpotArticle")
+    @ResponseBody
+    public JsonResp importHotSpotArticle(@RequestParam("file") MultipartFile file){
+        JsonResp resp = new JsonResp();
+        try {
+            ExcelDataUtil.ExcelData importArticle = ExcelDataUtil.readExcel(file, "ImportArticle");
+            List<ArticleEntity> list =importArticle.getDatas();
+            List<ExcelDataUtil.ErrorLine> errorList = importArticle.getErrorList();
+            if(errorList != null && errorList.size() > 0){
+                resp.isFail().setMessage(errorList.get(0).error.get(0).getErrorMessage());
+            }else {
+                for (ArticleEntity articleEntity : list) {
+                    ArticleEntity byAut = articleService.getByAut(articleEntity.getAut());
+                    if(byAut != null){
+                        byAut.setHotSpot(1);
+                        articleService.updateNotNull(byAut);
+                    }
+                }
+                resp.isSuccess().setMessage("导入成功");
+            }
+        }catch (Exception e){
+            resp.isFail().setMessage("导入异常");
+            logger.error("importHotSpotArticle is error,",e);
+        }
+        return resp;
+    }
+
+    @RequestMapping(value = "/importHighCitedArticle")
+    @ResponseBody
+    public JsonResp importHighCitedArticle(@RequestParam("file") MultipartFile file){
+        JsonResp resp = new JsonResp();
+        try {
+            ExcelDataUtil.ExcelData importArticle = ExcelDataUtil.readExcel(file, "ImportArticle");
+            List<ArticleEntity> list =importArticle.getDatas();
+            List<ExcelDataUtil.ErrorLine> errorList = importArticle.getErrorList();
+            if(errorList != null && errorList.size() > 0){
+                resp.isFail().setMessage(errorList.get(0).error.get(0).getErrorMessage());
+            }else {
+                for (ArticleEntity articleEntity : list) {
+                    ArticleEntity byAut = articleService.getByAut(articleEntity.getAut());
+                    if(byAut != null){
+                        byAut.setHighCited(1);
+                        articleService.updateNotNull(byAut);
+                    }
+                }
+                resp.isSuccess().setMessage("导入成功");
+            }
+        }catch (Exception e){
+            resp.isFail().setMessage("导入异常");
+            logger.error("importHighCitedArticle is error,",e);
         }
         return resp;
     }

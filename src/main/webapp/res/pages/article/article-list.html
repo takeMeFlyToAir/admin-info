@@ -45,6 +45,8 @@
 			<tr class="text-c">
 				<th rowspan="2">id</th>
 				<th rowspan="2">学科</th>
+				<th rowspan="2">高被引</th>
+				<th rowspan="2">热点</th>
 				<th >WoS文章编号</th>
 				<th >文章名</th>
 				<th >刊物名</th>
@@ -126,6 +128,8 @@
         "columns": [
             {"mData": "id", "bSortable": false},
             {"mData": "subjectStr"},
+            {"mData": "highCitedStr"},
+            {"mData": "hotSpotStr"},
             {"mData": "aut"},
             {"mData": "ati"},
             {"mData": "aso"},
@@ -157,7 +161,7 @@
                 }
             },
             {
-                "targets":[10],
+                "targets":[12],
                 "data": "ac1",
                 "render": function(data, type, full) {
                     var temp_data = data;
@@ -172,7 +176,7 @@
                 }
             },
             {
-                "targets": [11],
+                "targets": [13],
                 "data": "id",
                 "render": function(data, type, full) {
                     var html = "";
@@ -198,9 +202,7 @@
         dataTableSettings.fnServerParams = function (aoData) {
             aoData._rand = Math.random();
             aoData.push(
-                { "name": "aut", "value": $('#aut').val() },
                 { "name": "ati", "value": $('#ati').val() },
-                { "name": "aso", "value": $('#aso').val() },
                 { "name": "apy", "value": $('#apy').val() },
                 { "name": "ac1", "value": $('#ac1').val() }
             );

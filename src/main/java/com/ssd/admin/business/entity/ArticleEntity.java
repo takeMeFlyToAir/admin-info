@@ -1,6 +1,7 @@
 package com.ssd.admin.business.entity;
 
 
+import com.ssd.admin.business.enums.BooleanEnum;
 import com.ssd.admin.business.enums.SubjectEnum;
 import com.ssd.admin.common.BaseEntity;
 import lombok.Data;
@@ -132,9 +133,20 @@ public class ArticleEntity extends BaseEntity {
     private String claimNickName;
     @Transient
     private String subjectStr;
+    @Transient
+    private String highCitedStr;
+    @Transient
+    private String hotSpotStr;
 
     public String getSubjectStr(){
         return SubjectEnum.fromCode(subject).getDisplay();
     }
 
+    public String getHighCitedStr(){
+        return BooleanEnum.fromCode(highCited).getDisplay();
+    }
+
+    public String getHotSpotStr(){
+        return BooleanEnum.fromCode(hotSpot).getDisplay();
+    }
 }

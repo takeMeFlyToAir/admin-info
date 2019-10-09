@@ -98,5 +98,14 @@ public class ArticleServiceImpl extends BaseService<ArticleEntity> implements Ar
 
     }
 
-
+    @Override
+    public ArticleEntity getByAut(String aut) {
+        Example example = new Example(ArticleEntity.class);
+        example.createCriteria().andEqualTo("deleted",0).andEqualTo("aut",aut.trim());
+        List<ArticleEntity> articleEntityList = this.selectByExample(example);
+        if(articleEntityList != null && articleEntityList.size() > 0){
+            return articleEntityList.get(0);
+        }
+        return null;
+    }
 }
