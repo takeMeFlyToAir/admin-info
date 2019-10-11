@@ -53,14 +53,14 @@ public class ArticleClaimController {
 
     @ResponseBody
     @RequestMapping(value = "claimArticle", method ={ RequestMethod.POST,RequestMethod.GET})
-    public JsonResp claimArticle(Integer articleId, Integer author, Integer claimUserId) {
+    public JsonResp claimArticle(Integer articleId, Integer author, Integer claimUserId, Integer authorType) {
         JsonResp resp = new JsonResp();
         try {
-            ArticleClaimEntity byArticleIdAndAuthor = articleClaimService.getByArticleIdAndAuthor(articleId, author);
+            ArticleClaimEntity byArticleIdAndAuthor = articleClaimService.getByArticleIdAndAuthor(articleId, author,authorType);
             if(byArticleIdAndAuthor != null){
                 resp.isFail().setMessage("已存在认领记录");
             }else {
-                articleClaimService.claimArticle(articleId, author,claimUserId);
+                articleClaimService.claimArticle(articleId, author,claimUserId,authorType);
                 resp.isSuccess().setMessage("认领成功");
             }
         }catch (Exception e){
@@ -132,14 +132,14 @@ public class ArticleClaimController {
 
     @RequestMapping(value = "/findByArticleIdAndStatus")
     @ResponseBody
-    public JsonResp findByArticleIdAndStatus(Integer articleId){
+    public JsonResp findByArticleIdAndStatus(Integer articleId,Integer authorType){
         JsonResp resp = new JsonResp();
         try {
             List<Integer> allList = new ArrayList<>();
             for (int i = 1; i < 11; i++){
                 allList.add(i);
             }
-            List<Integer> byArticleIdAndStatus = articleClaimService.findByArticleIdAndStatus(articleId);
+            List<Integer> byArticleIdAndStatus = articleClaimService.findByArticleIdAndStatus(articleId,authorType);
             allList.removeAll(byArticleIdAndStatus);
             resp.isSuccess().setData(allList);
         }catch (Exception e){

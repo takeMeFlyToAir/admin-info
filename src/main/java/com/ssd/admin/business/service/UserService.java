@@ -37,5 +37,5 @@ public interface UserService extends IService<UserEntity> {
 
     Boolean hasUserName(String userName);
 
-    List<UserFindVO> findByOrganizationId(Integer organizationId);
+    List<UserFindVO> findByOrganizationIdAndUserType(Integer organizationId,Integer userType);
 }

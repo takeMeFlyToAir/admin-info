@@ -40,10 +40,10 @@ public class UserController {
 
     @ResponseBody
     @RequestMapping(value = "findByOrganizationId", method = RequestMethod.GET)
-    public JsonResp findByOrganizationId(Integer organizationId) {
+    public JsonResp findByOrganizationId(Integer organizationId,Integer userType) {
         JsonResp resp = new JsonResp();
         try {
-            List<UserFindVO> userFindVOList = userService.findByOrganizationId(organizationId);
+            List<UserFindVO> userFindVOList = userService.findByOrganizationIdAndUserType(organizationId,userType);
             resp.isSuccess().setData(userFindVOList);
         }catch (Exception e){
             logger.error("user findAll is error", e);

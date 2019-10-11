@@ -132,7 +132,9 @@
 						<thead>
 						<tr class="text-c">
 							<th >id</th>
+							<th style="width: 50px;">作者类型</th>
 							<th style="width: 50px;">第几作者</th>
+							<th style="width: 50px;">作者所属组织</th>
 							<th style="width: 50px;">作者账号</th>
 							<th style="width: 50px;" >作者昵称</th>
 							<th style="width: 50px;" >状态</th>
@@ -175,7 +177,9 @@
         "sAjaxSource": "/articleClaim/findPage",
         "columns": [
             {"mData": "id", "bSortable": false},
+            {"mData": "authorTypeStr"},
             {"mData": "author"},
+            {"mData": "claimUserOrganizationName"},
             {"mData": "claimUserName"},
             {"mData": "claimNickName"},
             {"mData": "statusDisplay"},
@@ -189,7 +193,7 @@
                 "visible":false
             },
             {
-                "targets":[4],
+                "targets":[6],
                 "data": "statusDisplay",
                 "render": function(data, type, full) {
                     var html = ''

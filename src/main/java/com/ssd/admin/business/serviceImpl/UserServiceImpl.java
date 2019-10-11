@@ -116,9 +116,9 @@ public class UserServiceImpl extends BaseService<UserEntity> implements UserServ
     }
 
     @Override
-    public List<UserFindVO> findByOrganizationId(Integer organizationId) {
+    public List<UserFindVO> findByOrganizationIdAndUserType(Integer organizationId,Integer userType) {
         Example example = new Example(UserEntity.class);
-        example.createCriteria().andEqualTo("deleted",0).andEqualTo("organizationId",organizationId);
+        example.createCriteria().andEqualTo("deleted",0).andEqualTo("organizationId",organizationId).andEqualTo("userType",userType);
         List<UserEntity> allList = this.selectByExample(example);
         return UserEntity.toVOList(allList);
     }

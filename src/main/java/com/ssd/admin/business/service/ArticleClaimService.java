@@ -41,7 +41,7 @@ public interface ArticleClaimService extends IService<ArticleClaimEntity> {
      * @param author 第几作者
      * @param claimUserId 认领作者id
      */
-    void claimArticle(Integer articleId, Integer author, Integer claimUserId) throws InvocationTargetException, IllegalAccessException;
+    void claimArticle(Integer articleId, Integer author, Integer claimUserId,Integer authorType) throws InvocationTargetException, IllegalAccessException;
 
     /**
      * 查看某文章是否存在第几作者的认领记录
@@ -49,13 +49,13 @@ public interface ArticleClaimService extends IService<ArticleClaimEntity> {
      * @param author
      * @return
      */
-    ArticleClaimEntity getByArticleIdAndAuthor(Integer articleId, Integer author);
+    ArticleClaimEntity getByArticleIdAndAuthor(Integer articleId, Integer author, Integer authorType);
 
     /**
      * 查询某文章的审核中或者审核通过的认领记录的所有第几作者的集合
      * @param articleId
      * @return
      */
-    List<Integer> findByArticleIdAndStatus(Integer articleId);
+    List<Integer> findByArticleIdAndStatus(Integer articleId,Integer authorType);
 
 }

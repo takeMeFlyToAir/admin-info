@@ -108,7 +108,20 @@
 			<div class="panel-header">选择认领人</div>
 			<div class="panel-body">
 				<div class="row cl">
-					<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>作者：</label>
+					<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>作者类型：</label>
+					<div class="formControls col-xs-8 col-sm-9">
+						<div class="radio-box">
+							<input name="authorType" type="radio" id="authorTypeTeacher" value="0" checked onchange="authorChange()">
+							<label for="authorTypeTeacher">老师</label>
+						</div>
+						<div class="radio-box">
+							<input type="radio"  id="authorTypeStudent" value="1" name="authorType" onchange="authorChange()">
+							<label for="authorTypeStudent">学生</label>
+						</div>
+					</div>
+				</div>
+				<div class="row cl">
+					<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>第几作者：</label>
 					<div class="formControls col-xs-8 col-sm-9">
 						<span class="select-box">
 							<select name="author" class="select" id="author">
@@ -150,7 +163,9 @@
 						<thead>
 						<tr class="text-c">
 							<th >id</th>
+							<th style="width: 50px;">作者类型</th>
 							<th style="width: 50px;">第几作者</th>
+							<th style="width: 50px;">作者所属组织</th>
 							<th style="width: 50px;">作者账号</th>
 							<th style="width: 50px;" >作者昵称</th>
 							<th style="width: 50px;" >状态</th>
@@ -194,7 +209,9 @@
         "sAjaxSource": "/articleClaim/findPage",
         "columns": [
             {"mData": "id", "bSortable": false},
+            {"mData": "authorTypeStr"},
             {"mData": "author"},
+            {"mData": "claimUserOrganizationName"},
             {"mData": "claimUserName"},
             {"mData": "claimNickName"},
             {"mData": "statusDisplay"},
@@ -208,7 +225,7 @@
                 "visible":false
             },
             {
-                "targets":[4],
+                "targets":[6],
                 "data": "statusDisplay",
                 "render": function(data, type, full) {
                     var html = ''
@@ -231,13 +248,12 @@
     $(function () {
         getDetail();
         initAuthorSelect();
-        $('#organizationId').searchableSelect({"zindex":true});
+        allOrganization();
         var id = $("#id").val();
         dataTableSettings.sAjaxSource = "/articleClaim/findPage?articleId="+id;
         dataTable = $('.table-sort').dataTable(dataTableSettings);
 
     })
-    allOrganization();
 
     function allOrganization() {
         $.ajax({
@@ -261,6 +277,8 @@
                     }
                 }else{
                 }
+                $("div.searchable-select-zindex").remove();
+                $('#organizationId').searchableSelect({"zindex":true});
             }
         });
     }
@@ -271,17 +289,18 @@
 
     function allUser() {
         var organizationId = $("#organizationId").val();
+        var authorType = $("input[name='authorType']:checked").val()
         if(!organizationId){
             var content = '';
             content += ('<option value="">请先选择组织</option>')
             $('#userId').html(content);
+            $("div.searchable-select").remove();
             $('#userId').searchableSelect();
             return;
 		}
-        $("div.searchable-select").remove();
         $.ajax({
             type : "get",
-            url : '/user/findByOrganizationId?organizationId='+organizationId,
+            url : '/user/findByOrganizationId?organizationId='+organizationId+"&userType="+authorType,
 //            url : '/user/findByOrganizationId?organizationId=7',
             dataType : "json",
             async : false,
@@ -290,7 +309,7 @@
                     var content = '';
                     var result = data.data;
                     if (result == null || result.length === 0) {
-                        content += ('<option value="">请先添加用户</option>')
+                        content += ('<option value="">请添加用户</option>')
                         $('#userId').html(content);
                     } else {
                         content += ('<option  value="">请选择作者</option>')
@@ -301,6 +320,8 @@
                     }
                 }else{
                 }
+                $("div.searchable-select").remove();
+
                 $('#userId').searchableSelect();
             }
         });
@@ -310,11 +331,18 @@
     function claimArticle(){
         var articleId = $("#id").val();
         var author = $("#author").val();
+        var claimUserOrganizationId = $("#organizationId").val();
         var claimUserId = $("#userId").val();
+        var authorType = $("input[name='authorType']:checked").val()
+		console.log(claimUserOrganizationId)
         if(!author){
             tip("请选择第几作者");
             return;
 		}
+        if(!claimUserOrganizationId){
+            tip("请选择组织");
+            return;
+        }
         if(!claimUserId){
             tip("请选择作者");
             return;
@@ -323,7 +351,7 @@
         layer.confirm(message,function(){
             $.ajax({
                 type: 'POST',
-                url: '/articleClaim/claimArticle?articleId='+articleId+"&author="+author+"&claimUserId="+claimUserId,
+                url: '/articleClaim/claimArticle?articleId='+articleId+"&author="+author+"&claimUserId="+claimUserId+"&authorType="+authorType,
                 dataType: 'json',
                 success: function(data){
                     if(data.result){
@@ -341,12 +369,18 @@
         });
     }
 
+    function authorChange() {
+        allOrganization();
+        allUser();
+        initAuthorSelect();
+    }
 
     function initAuthorSelect() {
         var articleId = $("#id").val();
+        var authorType = $("input[name='authorType']:checked").val()
         $.ajax({
             type: 'POST',
-            url: '/articleClaim/findByArticleIdAndStatus?articleId='+articleId,
+            url: '/articleClaim/findByArticleIdAndStatus?articleId='+articleId+"&authorType="+authorType,
             dataType: 'json',
             success: function(data){
                 if(data.result){
@@ -355,6 +389,7 @@
                         content += '<option value="'+data.data[i]+'">第'+data.data[i]+'作者</option>';
 					}
 					$("#author").html(content);
+
                 }else{
                     layer.msg(data.message,{icon:2,time:1000});
                 }

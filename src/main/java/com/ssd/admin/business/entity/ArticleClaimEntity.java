@@ -3,6 +3,7 @@ package com.ssd.admin.business.entity;
 
 import com.ssd.admin.business.enums.ArticleStatusClaimEnum;
 import com.ssd.admin.business.enums.SubjectEnum;
+import com.ssd.admin.business.enums.UserTypeEnum;
 import com.ssd.admin.common.BaseEntity;
 import lombok.Data;
 
@@ -50,7 +51,7 @@ public class ArticleClaimEntity extends BaseEntity {
     /**
      * 认领作者所属组织id
      */
-    private Integer claimUserOrganizationName;
+    private String claimUserOrganizationName;
 
     /**
      * 认领人账号
@@ -75,7 +76,7 @@ public class ArticleClaimEntity extends BaseEntity {
     /**
      * 操作人所属组织id
      */
-    private Integer operateUserOrganizationName;
+    private String operateUserOrganizationName;
 
     /**
      * 操作人账号
@@ -101,7 +102,7 @@ public class ArticleClaimEntity extends BaseEntity {
     /**
      * 审批人所属组织id
      */
-    private Integer auditUserOrganizationName;
+    private String auditUserOrganizationName;
 
     /**
      * 审批人账号
@@ -165,6 +166,10 @@ public class ArticleClaimEntity extends BaseEntity {
 
 
     @Transient
+    private String authorTypeStr;
+
+
+    @Transient
     private String statusDisplay;
 
     public String getSubjectStr(){
@@ -174,6 +179,13 @@ public class ArticleClaimEntity extends BaseEntity {
     public String getStatusDisplay(){
         String display = ArticleStatusClaimEnum.fromCode(status).getDisplay();
         return display;
+    }
+
+    public String getAuthorTypeStr(){
+        if(this.authorType != null){
+            return UserTypeEnum.fromCode(authorType).getDisplay();
+        }
+        return UserTypeEnum.TEACHER.getDisplay();
     }
 
 }

@@ -11,6 +11,7 @@ import com.ssd.admin.business.mapper.ArticleClaimMapper;
 import com.ssd.admin.business.qo.ArticleClaimQO;
 import com.ssd.admin.business.service.ArticleClaimService;
 import com.ssd.admin.business.service.ArticleService;
+import com.ssd.admin.business.service.OrganizationService;
 import com.ssd.admin.business.service.UserService;
 import com.ssd.admin.common.BaseService;
 import com.ssd.admin.common.PagerForDT;
@@ -42,6 +43,9 @@ public class ArticleClaimServiceImpl extends BaseService<ArticleClaimEntity> imp
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private OrganizationService organizationService;
 
     @Override
     public PagerResultForDT<ArticleClaimEntity> selectPage(PagerForDT<ArticleClaimQO> pager) {
@@ -125,7 +129,7 @@ public class ArticleClaimServiceImpl extends BaseService<ArticleClaimEntity> imp
     }
 
     @Override
-    public void claimArticle(Integer articleId, Integer author, Integer claimUserId) throws InvocationTargetException, IllegalAccessException {
+    public void claimArticle(Integer articleId, Integer author, Integer claimUserId,Integer authorType) throws InvocationTargetException, IllegalAccessException {
         ArticleEntity articleEntity = articleService.selectByKey(articleId);
         ArticleClaimEntity articleClaimEntity = new ArticleClaimEntity();
         BeanUtils.copyProperties(articleClaimEntity, articleEntity);
@@ -139,23 +143,26 @@ public class ArticleClaimServiceImpl extends BaseService<ArticleClaimEntity> imp
         articleClaimEntity.setClaimUserName(claimUser.getUserName());
         articleClaimEntity.setClaimUserId(claimUserId);
         articleClaimEntity.setClaimUserOrganizationId(claimUser.getOrganizationId());
+        articleClaimEntity.setClaimUserOrganizationName(organizationService.selectByKey(claimUser.getOrganizationId()).getName());
         //赋值操作人信息
         articleClaimEntity.setOperateNickName(operateUser.getNickName());
         articleClaimEntity.setOperateUserName(operateUser.getUserName());
         articleClaimEntity.setOperateUserId(operateUser.getId());
         articleClaimEntity.setOperateUserOrganizationId(operateUser.getOrganizationId());
+        articleClaimEntity.setOperateUserOrganizationName(organizationService.selectByKey(operateUser.getOrganizationId()).getName());
         articleClaimEntity.setStatus(ArticleStatusClaimEnum.AUDIT_ING.getCode());
         articleClaimEntity.setRemark("");
+        articleClaimEntity.setAuthorType(authorType);
         this.save(articleClaimEntity);
     }
 
     @Override
-    public ArticleClaimEntity getByArticleIdAndAuthor(Integer articleId, Integer author) {
+    public ArticleClaimEntity getByArticleIdAndAuthor(Integer articleId, Integer author,Integer authorType) {
         Example example = new Example(ArticleClaimEntity.class);
         List<Integer> statusList = new ArrayList<>();
         statusList.add(ArticleStatusClaimEnum.AUDIT_ING.getCode());
         statusList.add(ArticleStatusClaimEnum.AUDIT_ED.getCode());
-        example.createCriteria().andEqualTo("deleted",0).andEqualTo("articleId",articleId).andEqualTo("author",author).andIn("status",statusList);
+        example.createCriteria().andEqualTo("deleted",0).andEqualTo("articleId",articleId).andEqualTo("author",author).andIn("status",statusList).andEqualTo("authorType",authorType);
         List<ArticleClaimEntity> articleClaimEntityList = this.selectByExample(example);
         if(articleClaimEntityList != null && articleClaimEntityList.size() > 0){
             return articleClaimEntityList.get(0);
@@ -164,13 +171,13 @@ public class ArticleClaimServiceImpl extends BaseService<ArticleClaimEntity> imp
     }
 
     @Override
-    public List<Integer> findByArticleIdAndStatus(Integer articleId) {
+    public List<Integer> findByArticleIdAndStatus(Integer articleId,Integer authorType) {
         List<Integer> authorList = new ArrayList<>();
         Example example = new Example(ArticleClaimEntity.class);
         List<Integer> statusList = new ArrayList<>();
         statusList.add(ArticleStatusClaimEnum.AUDIT_ING.getCode());
         statusList.add(ArticleStatusClaimEnum.AUDIT_ED.getCode());
-        example.createCriteria().andEqualTo("deleted",0).andEqualTo("articleId",articleId).andIn("status",statusList);
+        example.createCriteria().andEqualTo("deleted",0).andEqualTo("articleId",articleId).andIn("status",statusList).andEqualTo("authorType",authorType);
         List<ArticleClaimEntity> articleClaimEntityList = this.selectByExample(example);
         if(articleClaimEntityList != null && articleClaimEntityList.size() > 0){
             for (ArticleClaimEntity articleClaimEntity : articleClaimEntityList) {
