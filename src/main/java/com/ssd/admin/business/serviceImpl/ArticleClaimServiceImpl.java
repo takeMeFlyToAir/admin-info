@@ -144,7 +144,7 @@ public class ArticleClaimServiceImpl extends BaseService<ArticleClaimEntity> imp
         articleClaimEntity.setClaimUserName(claimUser.getUserName());
         articleClaimEntity.setClaimUserId(claimUserId);
         articleClaimEntity.setClaimUserOrganizationId(claimUser.getOrganizationId());
-        articleClaimEntity.setClaimUserOrganizationName(organizationService.selectByKey(claimUser.getOrganizationId()).getName());
+        articleClaimEntity.setClaimUserOrganizationName(operateUser.getOrganizationName());
         //赋值操作人信息
         articleClaimEntity.setOperateNickName(operateUser.getNickName());
         articleClaimEntity.setOperateUserName(operateUser.getUserName());
@@ -186,5 +186,19 @@ public class ArticleClaimServiceImpl extends BaseService<ArticleClaimEntity> imp
             }
         }
         return authorList;
+    }
+
+    @Override
+    public void audit(Integer id, Integer status, String remark) {
+        ArticleClaimEntity articleClaimEntity = this.selectByKey(id);
+        articleClaimEntity.setStatus(status);
+        articleClaimEntity.setRemark(remark);
+        ShiroUser auditUser = UserUtil.getCurrentUser();
+        articleClaimEntity.setAuditUserId(auditUser.getId());
+        articleClaimEntity.setAuditNickName(auditUser.getNickName());
+        articleClaimEntity.setAuditUserName(auditUser.getUserName());
+        articleClaimEntity.setAuditUserOrganizationId(auditUser.getOrganizationId());
+        articleClaimEntity.setAuditUserOrganizationName(auditUser.getOrganizationName());
+        this.updateNotNull(articleClaimEntity);
     }
 }

@@ -117,10 +117,7 @@ public class ArticleClaimController {
     public JsonResp audit(Integer id,Integer status, @RequestParam(value = "remark",required = false, defaultValue = "")String remark){
         JsonResp resp = new JsonResp();
         try {
-            ArticleClaimEntity articleClaimEntity = articleClaimService.selectByKey(id);
-            articleClaimEntity.setStatus(status);
-            articleClaimEntity.setRemark(remark);
-            articleClaimService.updateNotNull(articleClaimEntity);
+            articleClaimService.audit(id,status,remark);
             resp.isSuccess().setMessage("审核成功");
         }catch (Exception e){
             resp.isFail().setMessage("操作异常");

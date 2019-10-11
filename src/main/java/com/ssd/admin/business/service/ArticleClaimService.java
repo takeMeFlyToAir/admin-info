@@ -58,4 +58,12 @@ public interface ArticleClaimService extends IService<ArticleClaimEntity> {
      */
     List<Integer> findByArticleIdAndStatus(Integer articleId,Integer authorType);
 
+    /**
+     * 审核
+     * @param id
+     * @param status
+     * @param remark
+     */
+    void audit(Integer id,Integer status,String remark);
+
 }
