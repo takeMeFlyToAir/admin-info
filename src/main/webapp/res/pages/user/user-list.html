@@ -39,6 +39,7 @@
 			<thead>
 			<tr class="text-c">
 				<th >id</th>
+				<th >用户类型</th>
 				<th >用户名</th>
 				<th >昵称</th>
 				<th >所属组织</th>
@@ -80,6 +81,7 @@
         "sAjaxSource": "/user/findPage",
         "columns": [
             {"mData": "id", "bSortable": false},
+            {"mData": "userTypeStr"},
             {"mData": "userName"},
             {"mData": "nickName"},
             {"mData": "organizationName"},
@@ -92,7 +94,7 @@
                 "visible":false
             },
             {
-                "targets": [5],
+                "targets": [6],
                 "data": "id",
                 "render": function(data, type, full) {
                     var roleCode = full.roleCode;

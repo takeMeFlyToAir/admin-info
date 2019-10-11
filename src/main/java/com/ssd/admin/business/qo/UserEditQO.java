@@ -8,4 +8,5 @@ public class UserEditQO {
     private String userName;
     private String nickName;
     private Integer organizationId;
+    private Integer userType;
 }

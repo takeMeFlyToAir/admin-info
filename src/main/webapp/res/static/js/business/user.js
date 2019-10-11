@@ -92,6 +92,7 @@ $(function(){
         submitHandler:function(form){
             var id = $("#id").val();
             var nickName = $("#nickName").val();
+            var userType = $("input[name='userType']:checked").val()
             var organizationId = $("#organizationId").val();
             if(!organizationId){
                 tip("请选择组织")
@@ -100,7 +101,7 @@ $(function(){
             $.ajax({
                 type : "post",
                 url : '/user/edit',
-                data : {"id":id,"nickName":nickName,"organizationId":organizationId},
+                data : {"id":id,"nickName":nickName,"organizationId":organizationId,"userType":userType},
                 dataType : "json",
                 async : false,
                 success : function(data) {

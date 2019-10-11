@@ -98,6 +98,7 @@ public class UserController {
             if(userEditQO.getOrganizationId() != null){
                 user.setOrganizationId(userEditQO.getOrganizationId());
             }
+            user.setUserType(userEditQO.getUserType());
             userService.updateNotNull(user);
             resp.isSuccess().setMessage("修改成功");
         }catch (Exception e){

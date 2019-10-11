@@ -32,6 +32,11 @@ public class ArticleClaimEntity extends BaseEntity {
     private Integer author;
 
     /**
+     * 作者类型：0老师，1学生
+     */
+    private Integer authorType;
+
+    /**
      * 认领作者id
      */
     private Integer claimUserId;
@@ -40,6 +45,12 @@ public class ArticleClaimEntity extends BaseEntity {
      * 认领作者所属组织id
      */
     private Integer claimUserOrganizationId;
+
+
+    /**
+     * 认领作者所属组织id
+     */
+    private Integer claimUserOrganizationName;
 
     /**
      * 认领人账号
@@ -62,6 +73,11 @@ public class ArticleClaimEntity extends BaseEntity {
     private Integer operateUserOrganizationId;
 
     /**
+     * 操作人所属组织id
+     */
+    private Integer operateUserOrganizationName;
+
+    /**
      * 操作人账号
      */
     private String operateUserName;
@@ -70,6 +86,33 @@ public class ArticleClaimEntity extends BaseEntity {
      * 操作人昵称
      */
     private String operateNickName;
+
+
+    /**
+     * 审批人id
+     */
+    private Integer auditUserId;
+
+    /**
+     * 审批人所属组织id
+     */
+    private Integer auditUserOrganizationId;
+
+    /**
+     * 审批人所属组织id
+     */
+    private Integer auditUserOrganizationName;
+
+    /**
+     * 审批人账号
+     */
+    private String auditUserName;
+
+    /**
+     * 审批人昵称
+     */
+    private String auditNickName;
+
 
 
     /**
