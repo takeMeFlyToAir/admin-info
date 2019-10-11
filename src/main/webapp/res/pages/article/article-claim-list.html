@@ -25,26 +25,47 @@
 <nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span> 文章管理 <span class="c-gray en">&gt;</span> 文章认领 <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a></nav>
 <div class="page-container">
 	<div class="text-c">
-		标题：<input type="text" class="input-text" style="width:250px" placeholder="输入文章标题" id="title" name="title">
+		<span class="select-box" style="width:200px" >
+			<select class="select"  size="1" id="status" name="status">
+				<option value="">全部</option>
+				<option value="0">审核中</option>
+				<option value="10">被驳回</option>
+				<option value="20">已通过</option>
+				<option value="30">已退领</option>
+			</select>
+		</span>
+		文章名：<input type="text" class="input-text" style="width:200px" placeholder="文章名" id="ati" name="ati">
+		刊登年份：<input type="text" class="input-text" style="width:200px" placeholder="刊登年份" id="apy" name="apy">
 		<button type="button" class="btn btn-success radius" id="btn_search" name=""><i class="Hui-iconfont">&#xe665;</i> 搜索</button>
 	</div>
 	<div class="mt-20">
 		<table class="table table-border table-bordered table-bg table-hover table-sort table-responsive">
 			<thead>
 			<tr class="text-c">
-				<th >id</th>
-				<th >状态(认领人)</th>
-				<th >标题</th>
-				<th >作者</th>
-				<th >作者单位</th>
-				<th >来源</th>
-				<th >页</th>
-				<th >出版年份</th>
-				<th >学科领域</th>
-				<th >影响因子</th>
-				<th >统计年份</th>
-				<th >新增引用次数</th>
-				<th >操作</th>
+				<th rowspan="2">id</th>
+				<th rowspan="2">学科</th>
+				<th >WoS文章编号</th>
+				<th >文章名</th>
+				<th >刊物名</th>
+				<th >文章类型</th>
+				<th >刊登日期</th>
+				<th >刊登年份</th>
+				<th >卷</th>
+				<th >期</th>
+				<th >著作人及单位</th>
+				<th rowspan="2">状态</th>
+				<th rowspan="2" width="20px">操作</th>
+			</tr>
+			<tr class="text-c">
+				<th >UT</th>
+				<th >TI</th>
+				<th >SO</th>
+				<th >DT</th>
+				<th >PD</th>
+				<th >PY</th>
+				<th >VL</th>
+				<th >IS</th>
+				<th >C1</th>
 			</tr>
 			</thead>
 
@@ -76,6 +97,7 @@
         });
         layer.full(index);
     }
+
     dataTableSettings = {
         "bSort": false,
         "serverSide": true,  //启用服务器端分页
@@ -84,21 +106,20 @@
         },
         "bStateSave": true,//状态保存
         "pading":false,
-        "sAjaxSource": "/article/findPage?claim=claim",
+        "sAjaxSource": "/articleClaim/findPage?claim=claim",
         "columns": [
             {"mData": "id", "bSortable": false},
-            {"mData": "statusDisplay"},
-            {"mData": "title"},
-            {"mData": "author"},
-            {"mData": "organizationName"},
-            {"mData": "source"},
-            {"mData": "page"},
-            {"mData": "publishYear"},
-            {"mData": "subjectArea"},
-            {"mData": "influenceFactor"},
-            {"mData": "statisticsYear"},
-            {"mData": "quoteCount"}
-
+            {"mData": "subjectStr"},
+            {"mData": "aut"},
+            {"mData": "ati"},
+            {"mData": "aso"},
+            {"mData": "adt"},
+            {"mData": "apd"},
+            {"mData": "apy"},
+            {"mData": "avl"},
+            {"mData": "ais"},
+            {"mData": "ac1"},
+            {"mData": "statusDisplay"}
         ],
         "columnDefs": [
             {
@@ -106,23 +127,8 @@
                 "visible":false
             },
             {
-                "targets":[1],
-                "data": "statusDisplay",
-                "render": function(data, type, full) {
-                    var html = ''
-                    if(full.status == 0){
-                        html = '<span class="label label-danger  radius">'+data+'</span>';
-                    }else  if (full.status == 10){
-                        html = '<span class="label label-warning radius">'+data+'</span>';
-                    }else  if (full.status == 20){
-                        html = '<span class="label label-success radius">'+data+'</span>';
-                    }
-                    return html;
-                }
-            },
-            {
-                "targets":[2],
-                "data": "title",
+                "targets":[10],
+                "data": "ac1",
                 "render": function(data, type, full) {
                     var temp_data = data;
                     var html='';
@@ -135,14 +141,32 @@
                     return html;
                 }
             },
-
+            {
+                "targets":[11],
+                "data": "statusDisplay",
+                "render": function(data, type, full) {
+                    var html = ''
+                    if(full.status == 0){
+                        html = '<span class="label label-warning  radius">'+data+'</span>';
+                    }else  if (full.status == 10){
+                        html = '<span class="label label-danger radius">'+data+'</span>';
+                    }else  if (full.status == 20){
+                        html = '<span class="label label-success radius">'+data+'</span>';
+                    }else  if (full.status == 30){
+                        html = '<span class="label label-secondary radius">'+data+'</span>';
+                    }
+                    return html;
+                }
+            },
             {
                 "targets": [12],
                 "data": "id",
                 "render": function(data, type, full) {
                     var html = "";
-                    html += '<button class="btn btn-secondary round"    onclick="article_query(\'查看文章\',\'/res/pages/article/article-query.html?type=rejectClaim&articleId='+full.id+'\')"  title="查看文章" >查看</button>';
-                    html += '<button class="btn btn-danger round"  onClick="rejectClaimArticle(\''+data+'\')" title="退领" >退领</button>';
+                    html += '<button class="btn btn-secondary round"    onclick="article_query(\'查看认领\',\'/res/pages/article/article-reject-claim.html?id='+full.id+'\')"  title="查看认领" >查看</button>';
+                    if(full.status == 0 || full.status == 20){
+                        html += '<button class="btn btn-danger round"  onClick="rejectClaimArticle(\''+data+'\')" title="退领" >退领</button>';
+                    }
                     return html;
                 }
             }
@@ -156,7 +180,9 @@
         dataTableSettings.fnServerParams = function (aoData) {
             aoData._rand = Math.random();
             aoData.push(
-                { "name": "title", "value": $('#title').val() }
+                { "name": "ati", "value": $('#ati').val() },
+                { "name": "apy", "value": $('#apy').val() },
+                { "name": "status", "value": $('#status').val() }
             );
         }
         //搜索就是设置参数，然后销毁datatable重新再建一个
@@ -168,14 +194,14 @@
 
 
     function rejectClaimArticle(id){
-        var message = "确定要退领吗？";
-        layer.confirm(message,function(){
+        layer.prompt({title: '填写退领备注并确认', formType: 2}, function(text, index){
             $.ajax({
                 type: 'POST',
-                url: '/article/modifyArticleStatus?id='+id+"&status=0",
+                url: '/articleClaim/rejectClaim?id='+id+"&remark="+text,
                 dataType: 'json',
                 success: function(data){
                     if(data.result){
+                        layer.close(index);
                         layer.msg(data.message,{icon:1,time:1000});
                         dataTable.api().ajax.reload();
                     }else{

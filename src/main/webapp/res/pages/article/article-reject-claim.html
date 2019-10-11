@@ -1,0 +1,249 @@
+<!--_meta 作为公共模版分离出去-->
+<!DOCTYPE HTML>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="renderer" content="webkit|ie-comp|ie-stand">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+	<meta http-equiv="Cache-Control" content="no-siteapp" />
+	<link rel="Bookmark" href="/favicon.ico" >
+	<link rel="Shortcut Icon" href="/favicon.ico" />
+	<!--[if lt IE 9]>
+	<script type="text/javascript"  src="/res/lib/html5shiv.js"></script>
+	<script type="text/javascript"  src="/res/lib/respond.min.js"></script>
+	<![endif]-->
+	<link rel="stylesheet" type="text/css"  href="/res/static/h-ui/css/H-ui.min.css" />
+	<link rel="stylesheet" type="text/css"  href="/res/static/h-ui.admin/css/H-ui.admin.css" />
+	<link rel="stylesheet" type="text/css"  href="/res/lib/Hui-iconfont/1.0.8/iconfont.css" />
+	<link rel="stylesheet" type="text/css"  href="/res/static/h-ui.admin/skin/default/skin.css" id="skin" />
+	<link rel="stylesheet" type="text/css"  href="/res/static/h-ui.admin/css/style.css" />
+	<link href="/res/static/css/jquery.searchableSelect.css" rel="stylesheet" type="text/css">
+	<!--[if IE 6]>
+	<script type="text/javascript"  src="/res/lib/DD_belatedPNG_0.0.8a-min.js" ></script>
+	<script>DD_belatedPNG.fix('*');</script>
+	<![endif]-->
+	<!--/meta 作为公共模版分离出去-->
+
+	<title>新增文章 - 系统管理 - 推荐系统 v2.0</title>
+	<meta name="keywords" content="推荐系统 v2.0">
+	<meta name="description" content="推荐系统 v2.0">
+</head>
+<body>
+<article class="page-container">
+	<form class="form form-horizontal" id="form-article">
+		<div class="panel panel-primary">
+			<div class="panel-header">文章信息</div>
+			<div class="panel-body">
+
+				<div class="row cl hide">
+					<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>id：</label>
+					<div class="formControls col-xs-8 col-sm-9">
+						<input type="text" class="input-text" value="" placeholder="" id="id" name="id">
+					</div>
+				</div>
+				<div class="row cl hide">
+					<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>articleId：</label>
+					<div class="formControls col-xs-8 col-sm-9">
+						<input type="text" class="input-text" value="" placeholder="" id="articleId" name="articleId">
+					</div>
+				</div>
+				<div class="row cl">
+					<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>学科：</label>
+					<div class="formControls col-xs-8 col-sm-9">
+						<span id="subject"></span>
+					</div>
+				</div>
+				<div class="row cl">
+					<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>WoS文章编号：</label>
+					<div class="formControls col-xs-8 col-sm-9">
+						<span id="aut"></span>
+					</div>
+				</div>
+				<div class="row cl">
+					<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>文章名：</label>
+					<div class="formControls col-xs-8 col-sm-9">
+						<span id="ati"></span>
+					</div>
+				</div>
+				<div class="row cl">
+					<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>刊物名：</label>
+					<div class="formControls col-xs-8 col-sm-9">
+						<span id="aso"></span>
+					</div>
+				</div>
+				<div class="row cl">
+					<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>文章类型：</label>
+					<div class="formControls col-xs-8 col-sm-9">
+						<span id="adt"></span>
+					</div>
+				</div>
+				<div class="row cl">
+					<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>刊登日期：</label>
+					<div class="formControls col-xs-8 col-sm-9">
+						<span id="apd"></span>
+					</div>
+				</div>
+				<div class="row cl">
+					<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>刊登年份：</label>
+					<div class="formControls col-xs-8 col-sm-9">
+						<span id="apy"></span>
+					</div>
+				</div>
+				<div class="row cl">
+					<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>卷：</label>
+					<div class="formControls col-xs-8 col-sm-9">
+						<span id="avl"></span>
+					</div>
+				</div>
+				<div class="row cl">
+					<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>期：</label>
+					<div class="formControls col-xs-8 col-sm-9">
+						<span id="ais"></span>
+					</div>
+				</div>
+				<div class="row cl">
+					<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>著作人及单位：</label>
+					<div class="formControls col-xs-8 col-sm-9">
+						<span id="ac1"></span>
+					</div>
+				</div>
+				<div class="row cl">
+					<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>认领备注：</label>
+					<div class="formControls col-xs-8 col-sm-9">
+						<span id="remark"></span>
+					</div>
+				</div>
+				<div class="row cl">
+					<div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-2">
+						<!--<button class="btn btn-primary radius"  id="claimArticleButton" type="button" onclick="claimArticleForQuery()"><i class="Hui-iconfont">&#xe632;</i> 认领</button>-->
+						<!--<button class="btn btn-primary radius" style="display: none" id="auditArticleButton" type="button" onclick="auditArticleForQuery()"><i class="Hui-iconfont">&#xe632;</i> 审核</button>-->
+						<button class="btn btn-danger radius" style="display: none" id="rejectClaimArticleButton" type="button" onclick="rejectClaimArticleForQuery()"><i class="Hui-iconfont">&#xe632;</i> 退领</button>
+						<button onClick="cancelEdit();" class="btn btn-default radius" type="button">&nbsp;&nbsp;取消&nbsp;&nbsp;</button>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="panel panel-secondary">
+			<div class="panel-header">文章的相关认领记录</div>
+			<div class="panel-body" style="height: 500px">
+				<div class="mt-20">
+					<table class="table table-border table-bordered table-bg table-hover table-sort table-responsive">
+						<thead>
+						<tr class="text-c">
+							<th >id</th>
+							<th style="width: 50px;">第几作者</th>
+							<th style="width: 50px;">作者账号</th>
+							<th style="width: 50px;" >作者昵称</th>
+							<th style="width: 50px;" >状态</th>
+							<th style="width: 50px;" >操作人账号</th>
+							<th style="width: 50px;" >操作人昵称</th>
+							<th >备注</th>
+						</tr>
+						</thead>
+					</table>
+				</div>
+			</div>
+		</div>
+	</form>
+</article>
+<!--_footer 作为公共模版分离出去-->
+<script type="text/javascript"  src="/res/lib/jquery/1.9.1/jquery.min.js"></script>
+<script type="text/javascript"  src="/res/lib/layer/2.4/layer.js"></script>
+<script type="text/javascript"  src="/res/static/h-ui/js/H-ui.min.js"></script>
+<script type="text/javascript"  src="/res/static/h-ui.admin/js/H-ui.admin.js"></script> <!--/_footer /作为公共模版分离出去-->
+<script type="text/javascript" src="/res/lib/datatables/1.10.0/jquery.dataTables.min.js"></script>
+<script type="text/javascript"  src="/res/static/js/common.js"></script>
+<script type="text/javascript"  src="/res/static/js/business/articleClaim.js"></script>
+
+<!--请在下方写此页面业务相关的脚本-->
+<script type="text/javascript"  src="/res/lib/jquery.validation/1.14.0/jquery.validate.js"></script>
+<script type="text/javascript"  src="/res/lib/jquery.validation/1.14.0/validate-methods.js"></script>
+<script type="text/javascript"  src="/res/lib/jquery.validation/1.14.0/messages_zh.js"></script>
+
+
+<script type="text/javascript">
+
+    dataTableSettings = {
+        "bSort": false,
+        "serverSide": true,  //启用服务器端分页
+        "language": {
+            url:"/res/static/zh_CN.txt"
+        },
+        "bStateSave": true,//状态保存
+        "pading":false,
+        "sAjaxSource": "/articleClaim/findPage",
+        "columns": [
+            {"mData": "id", "bSortable": false},
+            {"mData": "author"},
+            {"mData": "claimUserName"},
+            {"mData": "claimNickName"},
+            {"mData": "statusDisplay"},
+            {"mData": "operateUserName"},
+            {"mData": "operateNickName"},
+            {"mData": "remark"}
+        ],
+        "columnDefs": [
+            {
+                "targets":[0],
+                "visible":false
+            },
+            {
+                "targets":[4],
+                "data": "statusDisplay",
+                "render": function(data, type, full) {
+                    var html = ''
+                    if(full.status == 0){
+                        html = '<span class="label label-warning  radius">'+data+'</span>';
+                    }else  if (full.status == 10){
+                        html = '<span class="label label-danger radius">'+data+'</span>';
+                    }else  if (full.status == 20){
+                        html = '<span class="label label-success radius">'+data+'</span>';
+                    }else  if (full.status == 30){
+                        html = '<span class="label label-secondary radius">'+data+'</span>';
+                    }
+                    return html;
+                }
+            }
+        ]
+    }
+
+    var dataTable;
+    $(function () {
+        getDetail();
+        var id = $("#articleId").val();
+        dataTableSettings.sAjaxSource = "/articleClaim/findPage?articleId="+id;
+        dataTable = $('.table-sort').dataTable(dataTableSettings);
+    })
+
+
+
+    function rejectClaimArticleForQuery(){
+        var id = $("#id").val();
+        layer.prompt({title: '填写退领备注并确认', formType: 2}, function(text, index){
+            $.ajax({
+                type: 'POST',
+                url: '/articleClaim/rejectClaim?id='+id+"&remark="+text,
+                dataType: 'json',
+                success: function(data){
+                    if(data.result){
+                        layer.close(index);
+                        layer.msg(data.message,{icon:1,time:1000});
+                        parent.dataTable.api().ajax.reload();
+                        cancelEdit();
+                    }else{
+                        layer.msg(data.message,{icon:2,time:1000});
+                    }
+                },
+                error:function(data) {
+                    console.log(data.msg);
+                },
+            });
+        });
+    }
+
+
+</script>
+<!--/请在上方写此页面业务相关的脚本-->
+</body>
+</html>

@@ -10,6 +10,8 @@ import com.ssd.admin.common.IService;
 import com.ssd.admin.common.PagerForDT;
 import com.ssd.admin.common.PagerResultForDT;
 
+import java.util.List;
+
 /**
  * zhaozhirong
  */
@@ -34,4 +36,6 @@ public interface UserService extends IService<UserEntity> {
     void modifyPassword(UserModifyPasswordQO userModifyPasswordQO);
 
     Boolean hasUserName(String userName);
+
+    List<UserFindVO> findByOrganizationId(Integer organizationId);
 }

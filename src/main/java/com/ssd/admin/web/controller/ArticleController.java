@@ -1,7 +1,7 @@
 package com.ssd.admin.web.controller;
 
 import com.ssd.admin.business.entity.ArticleEntity;
-import com.ssd.admin.business.enums.ArticleStatusEnum;
+import com.ssd.admin.business.enums.ArticleStatusClaimEnum;
 import com.ssd.admin.business.qo.ArticleQO;
 import com.ssd.admin.business.service.ArticleService;
 import com.ssd.admin.common.JsonResp;
@@ -106,7 +106,7 @@ public class ArticleController {
     public JsonResp modifyArticleStatus(Integer id,Integer status){
         JsonResp resp = new JsonResp();
         try {
-            articleService.modifyArticleStatus(id,ArticleStatusEnum.fromCode(status));
+//            articleService.modifyArticleStatus(id, ArticleStatusClaimEnum.fromCode(status));
             resp.isSuccess().setMessage("操作成功");
         }catch (Exception e){
             resp.isFail().setMessage("操作异常");

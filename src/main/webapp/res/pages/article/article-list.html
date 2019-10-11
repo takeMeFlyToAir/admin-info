@@ -180,15 +180,10 @@
                 "data": "id",
                 "render": function(data, type, full) {
                     var html = "";
-                    if(isHasPower("article:edit")){
-                        html += '<button class="btn btn-default round"  onclick="article_edit(\'编辑文章\',\'/res/pages/article/article-edit.html?articleId='+full.id+'\')" title="编辑" >编辑</button>';
-                    }
-                    html += '<button class="btn btn-secondary round"   onclick="article_query(\'查看文章\',\'/res/pages/article/article-query.html?type=claim&articleId='+full.id+'\')"  title="查看文章" >查看</button>';
-
-                    if(full.status == 0){
-                        html += '<button class="btn btn-warning round"  onClick="claimArticle(\''+data+'\')" title="认领" >认领</button>';
-					}
-
+//                    if(isHasPower("article:edit")){
+//                        html += '<button class="btn btn-default round"  onclick="article_edit(\'编辑文章\',\'/res/pages/article/article-edit.html?articleId='+full.id+'\')" title="编辑" >编辑</button>';
+//                    }
+                    html += '<button class="btn btn-secondary round"   onclick="article_query(\'认领文章\',\'/res/pages/article/article-claim.html?articleId='+full.id+'\')"  title="认领文章" >认领</button>';
                     return html;
                 }
             }
@@ -214,28 +209,6 @@
         dataTable.fnPageChange(0);
     });
 
-
-    function claimArticle(id){
-        var message = "确定要认领吗？";
-        layer.confirm(message,function(){
-            $.ajax({
-                type: 'POST',
-                url: '/article/modifyArticleStatus?id='+id+"&status=10",
-                dataType: 'json',
-                success: function(data){
-                    if(data.result){
-                        layer.msg(data.message,{icon:1,time:1000});
-                        dataTable.api().ajax.reload();
-                    }else{
-                        layer.msg(data.message,{icon:2,time:1000});
-                    }
-                },
-                error:function(data) {
-                    console.log(data.msg);
-                },
-            });
-        });
-    }
 </script>
 </body>
 </html>

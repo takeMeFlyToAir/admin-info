@@ -10,13 +10,5 @@ public class ArticleQO {
     private String apy;
     private String ac1;
 
-    /**
-     * 是否查找的是我的审核
-     */
-    private String audit;
 
-    /**
-     * 是否查找的是我的认领
-     */
-    private String claim;
 }

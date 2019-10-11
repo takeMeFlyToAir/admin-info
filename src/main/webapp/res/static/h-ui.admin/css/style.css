@@ -4,3 +4,6 @@
     display: none !important;
 }
 
+.table th, .table td{
+    word-break: normal;
+}

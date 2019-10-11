@@ -57,7 +57,6 @@ $(function(){
 
 function getDetail() {
     var id = getUrlParam("articleId");
-    var type = getUrlParam("type");
     $.ajax({
         type : "get",
         url : '/article/detail?id='+id,
@@ -65,14 +64,17 @@ function getDetail() {
         async : false,
         success : function(data) {
             if (data.result) {
-                initFormValue("form-article",data.data);
-                if(type =="claim" && data.data.status == 0){
-                    $("#claimArticleButton").show();
-                }else if(type == "audit"){
-                    $("#auditArticleButton").show();
-                }else if(type == "rejectClaim"){
-                    $("#rejectClaimArticleButton").show();
-                }
+                $("#id").val(data.data.id);
+                $("#subject").text(data.data.subjectStr);
+                $("#aut").text(data.data.aut);
+                $("#ati").text(data.data.ati);
+                $("#aso").text(data.data.aso);
+                $("#adt").text(data.data.adt);
+                $("#apd").text(data.data.apd);
+                $("#apy").text(data.data.apy);
+                $("#avl").text(data.data.avl);
+                $("#ais").text(data.data.ais);
+                $("#ac1").text(data.data.ac1);
             }else{
                 layer.msg(data.message,{icon:2,time:1000});
             }
