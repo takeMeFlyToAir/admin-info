@@ -90,12 +90,15 @@
 <script type="text/javascript"  src="/res/lib/jquery.validation/1.14.0/messages_zh.js"></script>
 <script type="text/javascript">
     function article_query(title,url){
-        var index = layer.open({
-            type: 2,
-            title: title,
-            content: url
-        });
-        layer.full(index);
+//        var index = layer.open({
+//            type: 2,
+//            title: title,
+//            content: url
+//        });
+//        layer.full(index);
+
+        layer_show(title,url);
+
     }
 
     dataTableSettings = {
