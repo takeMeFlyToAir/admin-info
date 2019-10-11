@@ -32,7 +32,7 @@
 	</div>
 	<div class="cl pd-5 bg-1 bk-gray mt-20 hide power "  code="article:add">
 		<span class="l">
-			<a href="javascript:;" onclick="article_add('添加文章','/res/pages/article/article-add.html')" class="btn btn-primary radius"><i class="Hui-iconfont">&#xe604;</i> 添加</a>
+			<!--<a href="javascript:;" onclick="article_add('添加文章','/res/pages/article/article-add.html')" class="btn btn-primary radius"><i class="Hui-iconfont">&#xe604;</i> 添加</a>-->
 			<a href="/article/downloadTemplate" class="btn btn-primary radius"><i class="Hui-iconfont">&#xe640;</i> 下载模板</a>
 			<a href="javascript:;" onclick="article_import('导入原始文章','/res/pages/article/article-import.html','','300')" class="btn btn-primary radius"><i class="Hui-iconfont">&#xe645;</i> 导入原始文章</a>
 			<a href="javascript:;" onclick="article_import('导入高被引文章','/res/pages/article/article-import-highcited.html','','300')" class="btn btn-primary radius"><i class="Hui-iconfont">&#xe645;</i> 导入高被引文章</a>
@@ -100,15 +100,8 @@
         });
         layer.full(index);
     }
-    function article_edit(title,url){
-        var index = layer.open({
-            type: 2,
-            title: title,
-            content: url
-        });
-        layer.full(index);
-    }
-    function article_query(title,url){
+
+    function article_claim(title,url){
         var index = layer.open({
             type: 2,
             title: title,
@@ -183,7 +176,7 @@
 //                    if(isHasPower("article:edit")){
 //                        html += '<button class="btn btn-default round"  onclick="article_edit(\'编辑文章\',\'/res/pages/article/article-edit.html?articleId='+full.id+'\')" title="编辑" >编辑</button>';
 //                    }
-                    html += '<button class="btn btn-secondary round"   onclick="article_query(\'认领文章\',\'/res/pages/article/article-claim.html?articleId='+full.id+'\')"  title="认领文章" >认领</button>';
+                    html += '<button class="btn btn-secondary round"   onclick="article_claim(\'认领文章\',\'/res/pages/article/article-claim.html?articleId='+full.id+'\')"  title="认领文章" >认领</button>';
                     return html;
                 }
             }

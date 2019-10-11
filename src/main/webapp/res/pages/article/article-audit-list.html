@@ -25,17 +25,9 @@
 <nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span> 文章管理 <span class="c-gray en">&gt;</span> 文章认领 <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a></nav>
 <div class="page-container">
 	<div class="text-c">
-		<span class="select-box" style="width:200px" >
-			<select class="select"  size="1" id="status" name="status">
-				<option value="">全部</option>
-				<option value="0">审核中</option>
-				<option value="10">被驳回</option>
-				<option value="20">已通过</option>
-				<option value="30">已退领</option>
-			</select>
-		</span>
 		文章名：<input type="text" class="input-text" style="width:200px" placeholder="文章名" id="ati" name="ati">
 		刊登年份：<input type="text" class="input-text" style="width:200px" placeholder="刊登年份" id="apy" name="apy">
+		著作人及单位：<input type="text" class="input-text" style="width:200px" placeholder="著作人及单位" id="ac1" name="ac1">
 		<button type="button" class="btn btn-success radius" id="btn_search" name=""><i class="Hui-iconfont">&#xe665;</i> 搜索</button>
 	</div>
 	<div class="mt-20">
@@ -53,7 +45,6 @@
 				<th >卷</th>
 				<th >期</th>
 				<th >著作人及单位</th>
-				<th rowspan="2">状态</th>
 				<th rowspan="2" width="20px">操作</th>
 			</tr>
 			<tr class="text-c">
@@ -118,8 +109,7 @@
             {"mData": "apy"},
             {"mData": "avl"},
             {"mData": "ais"},
-            {"mData": "ac1"},
-            {"mData": "statusDisplay"}
+            {"mData": "ac1"}
         ],
         "columnDefs": [
             {
@@ -142,31 +132,11 @@
                 }
             },
             {
-                "targets":[11],
-                "data": "statusDisplay",
-                "render": function(data, type, full) {
-                    var html = ''
-                    if(full.status == 0){
-                        html = '<span class="label label-warning  radius">'+data+'</span>';
-                    }else  if (full.status == 10){
-                        html = '<span class="label label-danger radius">'+data+'</span>';
-                    }else  if (full.status == 20){
-                        html = '<span class="label label-success radius">'+data+'</span>';
-                    }else  if (full.status == 30){
-                        html = '<span class="label label-secondary radius">'+data+'</span>';
-                    }
-                    return html;
-                }
-            },
-            {
-                "targets": [12],
+                "targets": [11],
                 "data": "id",
                 "render": function(data, type, full) {
                     var html = "";
-                    html += '<button class="btn btn-secondary round"    onclick="article_query(\'查看认领\',\'/res/pages/article/article-reject-claim.html?id='+full.id+'\')"  title="查看认领" >查看</button>';
-                    if(full.status == 0 || full.status == 20){
-                        html += '<button class="btn btn-danger round"  onClick="rejectClaimArticle(\''+data+'\')" title="退领" >退领</button>';
-                    }
+                    html += '<button class="btn btn-secondary round"    onclick="article_audit(\'审核认领\',\'/res/pages/article/article-audit.html?id='+full.id+'\')"  title="审核认领" >审核</button>';
                     return html;
                 }
             }
@@ -182,7 +152,7 @@
             aoData.push(
                 { "name": "ati", "value": $('#ati').val() },
                 { "name": "apy", "value": $('#apy').val() },
-                { "name": "status", "value": $('#status').val() }
+                { "name": "ac1", "value": $('#ac1').val() }
             );
         }
         //搜索就是设置参数，然后销毁datatable重新再建一个
@@ -192,27 +162,13 @@
         dataTable.fnPageChange(0);
     });
 
-
-    function rejectClaimArticle(id){
-        layer.prompt({title: '填写退领备注并确认', formType: 2}, function(text, index){
-            $.ajax({
-                type: 'POST',
-                url: '/articleClaim/rejectClaim?id='+id+"&remark="+text,
-                dataType: 'json',
-                success: function(data){
-                    if(data.result){
-                        layer.close(index);
-                        layer.msg(data.message,{icon:1,time:1000});
-                        dataTable.api().ajax.reload();
-                    }else{
-                        layer.msg(data.message,{icon:2,time:1000});
-                    }
-                },
-                error:function(data) {
-                    console.log(data.msg);
-                },
-            });
+    function article_audit(title,url){
+        var index = layer.open({
+            type: 2,
+            title: title,
+            content: url
         });
+        layer.full(index);
     }
 
 </script>

@@ -108,7 +108,7 @@ public class ArticleClaimController {
     }
 
     /**
-     * 退领
+     * 审核
      * @param id
      * @return
      */
