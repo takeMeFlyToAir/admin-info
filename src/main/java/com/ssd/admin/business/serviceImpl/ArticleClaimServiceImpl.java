@@ -57,6 +57,7 @@ public class ArticleClaimServiceImpl extends BaseService<ArticleClaimEntity> imp
         example = new Example(ArticleClaimEntity.class);
         Example.Criteria criteria = example.createCriteria()
                 .andEqualTo("deleted",0);
+        example.setOrderByClause("id desc");
         if(articleClaimQO.getArticleId() != null){
             criteria.andEqualTo("articleId", articleClaimQO.getArticleId());
         }

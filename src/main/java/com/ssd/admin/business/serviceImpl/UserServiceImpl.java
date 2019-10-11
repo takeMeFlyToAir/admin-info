@@ -45,6 +45,7 @@ public class UserServiceImpl extends BaseService<UserEntity> implements UserServ
         example = new Example(UserEntity.class);
         Example.Criteria criteria = example.createCriteria()
                 .andEqualTo("deleted",0);
+        example.setOrderByClause("id desc");
         if(StringUtils.isNotEmpty(userQO.getUserName())){
             criteria.andLike("userName", "%"+userQO.getUserName()+"%");
         }

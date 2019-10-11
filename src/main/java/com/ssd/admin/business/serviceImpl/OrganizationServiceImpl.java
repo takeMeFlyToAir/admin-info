@@ -37,6 +37,8 @@ public class OrganizationServiceImpl extends BaseService<OrganizationEntity> imp
         example = new Example(OrganizationEntity.class);
         Example.Criteria criteria = example.createCriteria()
                 .andEqualTo("deleted",0);
+        example.setOrderByClause("id desc");
+
         if(StringUtils.isNotEmpty(name)){
             criteria.andLike("name", "%"+name+"%");
         }

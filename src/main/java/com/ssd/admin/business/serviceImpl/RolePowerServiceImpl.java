@@ -46,6 +46,8 @@ public class RolePowerServiceImpl extends BaseService<RolePowerEntity> implement
     @Override
     public List<RolePowerEntity> findByRoleCode(Integer roleCode) {
         Example example = new Example(RolePowerEntity.class);
+        example.setOrderByClause("id desc");
+
         example.createCriteria().andEqualTo("deleted",0).andEqualTo("roleCode",roleCode);
         return rolePowerMapper.selectByExample(example);
     }

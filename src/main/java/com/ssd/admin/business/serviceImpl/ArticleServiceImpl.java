@@ -44,6 +44,7 @@ public class ArticleServiceImpl extends BaseService<ArticleEntity> implements Ar
         example = new Example(ArticleEntity.class);
         Example.Criteria criteria = example.createCriteria()
                 .andEqualTo("deleted",0);
+        example.setOrderByClause("id desc");
         if(StringUtils.isNotBlank(articleQO.getAut())){
             criteria.andLike("aut","%"+articleQO.getAut()+"%");
         }

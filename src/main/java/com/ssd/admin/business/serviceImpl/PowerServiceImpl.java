@@ -36,6 +36,8 @@ public class PowerServiceImpl extends BaseService<PowerEntity> implements PowerS
         example = new Example(PowerEntity.class);
         Example.Criteria criteria = example.createCriteria()
                 .andEqualTo("deleted",0);
+        example.setOrderByClause("id desc");
+
         if(StringUtils.isNotEmpty(code)){
             criteria.andLike("code", "%"+code+"%");
         }
