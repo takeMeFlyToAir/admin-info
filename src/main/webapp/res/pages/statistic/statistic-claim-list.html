@@ -55,6 +55,9 @@
 	$(function () {
         initColumn();
     });
+    function article_detail(title,url){
+        layer_show(title,url);
+    }
 
 	var columns = [];
     function initColumn() {
@@ -75,7 +78,18 @@
                         "bStateSave": true,//状态保存
                         "pading":false,
                         "sAjaxSource": "/statistic/findOrganizationIdAuthorCount",
-                        "columns":columns
+                        "columns":columns,
+                        "columnDefs": [
+                            {
+                                "targets":[1],
+                                "data": "aut",
+                                "render": function(data, type, full) {
+                                    var html = "";
+                                    html += '<button class="btn btn-success round"   onclick="article_detail(\'查看文章详情\',\'/res/pages/article/article-detail.html?articleId='+full.articleId+'\')"  title="查看文章详情" >'+data+'</button>';
+                                    return html;
+                                }
+                            }
+                        ]
                     }
 
                     dataTable = $('.table-sort').dataTable(dataTableSettings);

@@ -70,6 +70,11 @@
 <script type="text/javascript" src="/res/lib/laypage/1.2/laypage.js"></script>
 
 <script type="text/javascript">
+
+
+    function article_detail(title,url){
+        layer_show(title,url);
+    }
     dataTableSettings = {
         "bSort": false,
         "serverSide": true,  //启用服务器端分页
@@ -92,6 +97,15 @@
         ],
         "columnDefs": [
             {
+                "targets":[1],
+                "data": "aut",
+                "render": function(data, type, full) {
+                    var html = "";
+                    html += '<button class="btn btn-success round"   onclick="article_detail(\'查看文章详情\',\'/res/pages/article/article-detail.html?articleId='+full.id+'\')"  title="查看文章详情" >'+data+'</button>';
+                    return html;
+                }
+            },
+            {
                 "targets":[2],
                 "data": "ati",
                 "render": function(data, type, full) {
@@ -103,6 +117,15 @@
                     }else{
                         html = data;
                     }
+                    return html;
+                }
+            },
+            {
+                "targets":[8],
+                "data": "atcRate",
+                "render": function(data, type, full) {
+                    var html = "";
+                    html += '<button class="btn btn-danger radius"  >'+data+'</button>';
                     return html;
                 }
             }
