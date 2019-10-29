@@ -32,10 +32,23 @@ public class StatisticController {
     private StatisticService statisticService;
 
     @ResponseBody
-    @RequestMapping(value = "/findPage", method = RequestMethod.GET)
-    public PagerResultForDT findPage(HttpServletRequest request, PagerForDT pagerForDataTable, ArticleQO articleQO) {
+    @RequestMapping(value = "/findOrganizationIdAuthorCount", method = RequestMethod.GET)
+    public PagerResultForDT findOrganizationIdAuthorCount(HttpServletRequest request, PagerForDT pagerForDataTable, ArticleQO articleQO) {
         pagerForDataTable.setCondition(articleQO);
         PagerResultForDT pagerResult = statisticService.findOrganizationIdAuthorCount(pagerForDataTable);
+        return pagerResult.initsEcho(request.getParameter("sEcho"));
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/findTcRate", method = RequestMethod.GET)
+    public PagerResultForDT findPage(HttpServletRequest request, PagerForDT pagerForDataTable, ArticleQO articleQO) {
+        pagerForDataTable.setCondition(articleQO);
+        PagerResultForDT pagerResult = null;
+        try {
+            pagerResult = statisticService.findTcRate(pagerForDataTable);
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        }
         return pagerResult.initsEcho(request.getParameter("sEcho"));
     }
 

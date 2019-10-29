@@ -138,6 +138,13 @@ public class ArticleEntity extends BaseEntity {
     @Transient
     private String hotSpotStr;
 
+    //学科某年的总引用数
+    @Transient
+    private String allAtc;
+    //引用占比
+    @Transient
+    private Double atcRate;
+
     public String getSubjectStr(){
         return SubjectEnum.fromCode(subject).getDisplay();
     }

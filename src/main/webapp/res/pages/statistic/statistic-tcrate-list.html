@@ -27,47 +27,29 @@
 	<div class="text-c">
 		文章名：<input type="text" class="input-text" style="width:200px" placeholder="文章名" id="ati" name="ati">
 		刊登年份：<input type="text" class="input-text" style="width:200px" placeholder="刊登年份" id="apy" name="apy">
-		著作人及单位：<input type="text" class="input-text" style="width:200px" placeholder="著作人及单位" id="ac1" name="ac1">
 		<button type="button" class="btn btn-success radius" id="btn_search" name=""><i class="Hui-iconfont">&#xe665;</i> 搜索</button>
-	</div>
-	<div class="cl pd-5 bg-1 bk-gray mt-20 hide power "  code="article:add">
-		<span class="l">
-			<!--<a href="javascript:;" onclick="article_add('添加文章','/res/pages/article/article-add.html')" class="btn btn-primary radius"><i class="Hui-iconfont">&#xe604;</i> 添加</a>-->
-			<a href="/article/downloadTemplate" class="btn btn-primary radius"><i class="Hui-iconfont">&#xe640;</i> 下载模板</a>
-			<a href="javascript:;" onclick="article_import('导入原始文章','/res/pages/article/article-import.html','','300')" class="btn btn-primary radius"><i class="Hui-iconfont">&#xe645;</i> 导入原始文章</a>
-			<a href="javascript:;" onclick="article_import('导入高被引文章','/res/pages/article/article-import-highcited.html','','300')" class="btn btn-primary radius"><i class="Hui-iconfont">&#xe645;</i> 导入高被引文章</a>
-			<a href="javascript:;" onclick="article_import('导入热点文章','/res/pages/article/article-import-hotspot.html','','300')" class="btn btn-primary radius"><i class="Hui-iconfont">&#xe645;</i> 导入热点文章</a>
-		</span>
 	</div>
 	<div class="mt-20">
 		<table class="table table-border table-bordered table-bg table-hover table-sort table-responsive">
 			<thead>
 			<tr class="text-c">
-				<th rowspan="2">id</th>
 				<th rowspan="2">学科</th>
-				<th rowspan="2">高被引</th>
-				<th rowspan="2">热点</th>
 				<th >WoS文章编号</th>
 				<th >文章名</th>
 				<th >刊物名</th>
-				<th >文章类型</th>
 				<th >刊登日期</th>
 				<th >刊登年份</th>
-				<th >卷</th>
-				<th >期</th>
-				<th >著作人及单位</th>
-				<th rowspan="2" width="20px">操作</th>
+				<th >引用数</th>
+				<th rowspan="2">总引用数</th>
+				<th rowspan="2">引用占比</th>
 			</tr>
 			<tr class="text-c">
 				<th >UT</th>
 				<th >TI</th>
 				<th >SO</th>
-				<th >DT</th>
 				<th >PD</th>
 				<th >PY</th>
-				<th >VL</th>
-				<th >IS</th>
-				<th >C1</th>
+				<th >TC</th>
 			</tr>
 			</thead>
 
@@ -88,29 +70,6 @@
 <script type="text/javascript" src="/res/lib/laypage/1.2/laypage.js"></script>
 
 <script type="text/javascript">
-    function article_import(title,url,w,h){
-        layer_show(title,url,w,h);
-    }
-
-    function article_add(title,url){
-        var index = layer.open({
-            type: 2,
-            title: title,
-            content: url
-        });
-        layer.full(index);
-    }
-
-    function article_claim(title,url){
-//        var index = layer.open({
-//            type: 2,
-//            title: title,
-//            content: url
-//        });
-//        layer.full(index);
-
-        layer_show(title,url);
-    }
     dataTableSettings = {
         "bSort": false,
         "serverSide": true,  //启用服务器端分页
@@ -119,30 +78,22 @@
         },
         "bStateSave": true,//状态保存
         "pading":false,
-        "sAjaxSource": "/article/findPage",
+        "sAjaxSource": "/statistic/findTcRate",
         "columns": [
-            {"mData": "id", "bSortable": false},
             {"mData": "subjectStr"},
-            {"mData": "highCitedStr"},
-            {"mData": "hotSpotStr"},
             {"mData": "aut"},
             {"mData": "ati"},
             {"mData": "aso"},
-            {"mData": "adt"},
             {"mData": "apd"},
             {"mData": "apy"},
-            {"mData": "avl"},
-            {"mData": "ais"},
-            {"mData": "ac1"}
+            {"mData": "atc"},
+            {"mData": "allAtc"},
+            {"mData": "atcRate"}
         ],
         "columnDefs": [
             {
-                "targets":[0],
-                "visible":false
-            },
-            {
-                "targets":[12],
-                "data": "ac1",
+                "targets":[2],
+                "data": "ati",
                 "render": function(data, type, full) {
                     var temp_data = data;
                     var html='';
@@ -152,18 +103,6 @@
                     }else{
                         html = data;
                     }
-                    return html;
-                }
-            },
-            {
-                "targets": [13],
-                "data": "id",
-                "render": function(data, type, full) {
-                    var html = "";
-//                    if(isHasPower("article:edit")){
-//                        html += '<button class="btn btn-default round"  onclick="article_edit(\'编辑文章\',\'/res/pages/article/article-edit.html?articleId='+full.id+'\')" title="编辑" >编辑</button>';
-//                    }
-                    html += '<button class="btn btn-secondary round"   onclick="article_claim(\'认领文章\',\'/res/pages/article/article-claim.html?articleId='+full.id+'\')"  title="认领文章" >认领</button>';
                     return html;
                 }
             }
@@ -178,8 +117,7 @@
             aoData._rand = Math.random();
             aoData.push(
                 { "name": "ati", "value": $('#ati').val() },
-                { "name": "apy", "value": $('#apy').val() },
-                { "name": "ac1", "value": $('#ac1').val() }
+                { "name": "apy", "value": $('#apy').val() }
             );
         }
         //搜索就是设置参数，然后销毁datatable重新再建一个

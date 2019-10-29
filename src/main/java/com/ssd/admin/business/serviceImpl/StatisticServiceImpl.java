@@ -3,13 +3,12 @@ package com.ssd.admin.business.serviceImpl;
 import com.ssd.admin.business.entity.ArticleClaimEntity;
 import com.ssd.admin.business.entity.ArticleEntity;
 import com.ssd.admin.business.entity.OrganizationEntity;
+import com.ssd.admin.business.entity.StatisticBaseInfoEntity;
 import com.ssd.admin.business.qo.ArticleQO;
-import com.ssd.admin.business.service.ArticleClaimService;
-import com.ssd.admin.business.service.ArticleService;
-import com.ssd.admin.business.service.OrganizationService;
-import com.ssd.admin.business.service.StatisticService;
+import com.ssd.admin.business.service.*;
 import com.ssd.admin.common.PagerForDT;
 import com.ssd.admin.common.PagerResultForDT;
+import com.ssd.admin.util.BigDecimalUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -34,7 +33,8 @@ public class StatisticServiceImpl implements StatisticService {
     @Autowired
     private OrganizationService organizationService;
 
-
+    @Autowired
+    private StatisticBaseInfoService statisticBaseInfoService;
     @Override
     public PagerResultForDT<Map<String,Object>> findOrganizationIdAuthorCount(PagerForDT<ArticleQO> pager) {
         PagerResultForDT count = new PagerResultForDT();
@@ -85,6 +85,35 @@ public class StatisticServiceImpl implements StatisticService {
         }
         count.setData(mapList);
         return count;
+    }
+
+    @Override
+    public PagerResultForDT<ArticleEntity> findTcRate(PagerForDT<ArticleQO> pager) throws IllegalAccessException {
+        PagerResultForDT<ArticleEntity> articleEntityPagerResultForDT = articleService.selectPage(pager);
+        /**
+         * 按年份和学科查询某个学科在某个年份的总引用数
+         */
+        Map<String,Integer> articleAllTcByYearAndSubject = new HashMap<>();
+        List<StatisticBaseInfoEntity> statisticBaseInfoEntityList = statisticBaseInfoService.findAll();
+        if(statisticBaseInfoEntityList != null && statisticBaseInfoEntityList.size() > 0){
+            for (StatisticBaseInfoEntity statisticBaseInfoEntity : statisticBaseInfoEntityList) {
+                articleAllTcByYearAndSubject.put(statisticBaseInfoEntity.getSubject().toString()+statisticBaseInfoEntity.getYear().toString(),statisticBaseInfoEntity.getAllTc());
+            }
+        }
+        List<ArticleEntity> articleEntityList = articleEntityPagerResultForDT.getData();
+        if(articleEntityList != null && articleEntityList.size() > 0){
+            for (ArticleEntity articleEntity : articleEntityList) {
+                Integer allTc = articleAllTcByYearAndSubject.get(articleEntity.getSubject().toString() + articleEntity.getApy());
+                if(allTc == null){
+                    articleEntity.setAllAtc("未录入总引用数");
+                }else {
+                    articleEntity.setAllAtc(allTc.toString());
+                    articleEntity.setAtcRate(BigDecimalUtil.div(Double.valueOf(articleEntity.getAtc().trim()),allTc,5));
+                }
+
+            }
+        }
+        return articleEntityPagerResultForDT;
     }
 
     @Override

@@ -1,7 +1,7 @@
 package com.ssd.admin.business.service;
 
 
-import com.ssd.admin.business.entity.OrganizationEntity;
+import com.ssd.admin.business.entity.ArticleEntity;
 import com.ssd.admin.business.qo.ArticleQO;
 import com.ssd.admin.common.PagerForDT;
 import com.ssd.admin.common.PagerResultForDT;
@@ -23,6 +23,13 @@ public interface StatisticService{
      */
     PagerResultForDT<Map<String,Object>> findOrganizationIdAuthorCount(PagerForDT<ArticleQO> pager);
 
+
+    /**
+     * 统计每篇文章的引用占比
+     * @param pager
+     * @return
+     */
+    PagerResultForDT<ArticleEntity> findTcRate(PagerForDT<ArticleQO> pager) throws IllegalAccessException;
 
     List<Map<String,Object>> findColumnForOrganizationIdAuthorCount();
 
