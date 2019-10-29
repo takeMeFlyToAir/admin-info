@@ -172,6 +172,9 @@ public class ArticleClaimEntity extends BaseEntity {
     @Transient
     private String statusDisplay;
 
+    @Transient
+    private Integer claimCount;
+
     public String getSubjectStr(){
         return SubjectEnum.fromCode(subject).getDisplay();
     }

@@ -144,7 +144,7 @@ public class ArticleClaimServiceImpl extends BaseService<ArticleClaimEntity> imp
         articleClaimEntity.setClaimUserName(claimUser.getUserName());
         articleClaimEntity.setClaimUserId(claimUserId);
         articleClaimEntity.setClaimUserOrganizationId(claimUser.getOrganizationId());
-        articleClaimEntity.setClaimUserOrganizationName(operateUser.getOrganizationName());
+        articleClaimEntity.setClaimUserOrganizationName(organizationService.selectByKey(claimUser.getOrganizationId()).getName());
         //赋值操作人信息
         articleClaimEntity.setOperateNickName(operateUser.getNickName());
         articleClaimEntity.setOperateUserName(operateUser.getUserName());
@@ -200,5 +200,10 @@ public class ArticleClaimServiceImpl extends BaseService<ArticleClaimEntity> imp
         articleClaimEntity.setAuditUserOrganizationId(auditUser.getOrganizationId());
         articleClaimEntity.setAuditUserOrganizationName(auditUser.getOrganizationName());
         this.updateNotNull(articleClaimEntity);
+    }
+
+    @Override
+    public List<ArticleClaimEntity> findByArticleIdList(List<Integer> articleIdList) {
+        return articleClaimMapper.findByArticleIdList(articleIdList);
     }
 }

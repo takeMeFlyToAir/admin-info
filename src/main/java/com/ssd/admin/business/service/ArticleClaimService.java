@@ -66,4 +66,7 @@ public interface ArticleClaimService extends IService<ArticleClaimEntity> {
      */
     void audit(Integer id,Integer status,String remark);
 
+
+    List<ArticleClaimEntity> findByArticleIdList(List<Integer> articleIdList);
+
 }
