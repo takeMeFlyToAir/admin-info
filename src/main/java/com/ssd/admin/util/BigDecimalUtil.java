@@ -72,6 +72,17 @@ public class BigDecimalUtil {
     }
 
     /**
+     * 精确乘法
+     */
+    public static double mul(double value1, double value2, int scale) {
+        BigDecimal b1 = new BigDecimal(value1);
+        BigDecimal b2 = new BigDecimal(value2);
+        BigDecimal multiply = b1.multiply(b2);
+        multiply.setScale(scale,BigDecimal.ROUND_HALF_UP);
+        return multiply.doubleValue();
+    }
+
+    /**
      * 精确除法 使用默认精度
      */
     public static double div(double value1, double value2) throws IllegalAccessException {

@@ -25,12 +25,22 @@ public interface StatisticService{
 
 
     /**
+     * 统计每篇文章的贡献度
+     * @param pager
+     * @return
+     */
+    PagerResultForDT<Map<String,Object>> findContributionRate(PagerForDT<ArticleQO> pager) ;
+
+
+    /**
      * 统计每篇文章的引用占比
      * @param pager
      * @return
      */
-    PagerResultForDT<ArticleEntity> findTcRate(PagerForDT<ArticleQO> pager) throws IllegalAccessException;
+    PagerResultForDT<ArticleEntity> findTcRate(PagerForDT<ArticleQO> pager);
 
     List<Map<String,Object>> findColumnForOrganizationIdAuthorCount();
+
+    List<Map<String,Object>> findColumnForContributionRate();
 
 }

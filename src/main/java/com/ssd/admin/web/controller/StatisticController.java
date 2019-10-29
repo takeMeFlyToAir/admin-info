@@ -43,12 +43,15 @@ public class StatisticController {
     @RequestMapping(value = "/findTcRate", method = RequestMethod.GET)
     public PagerResultForDT findPage(HttpServletRequest request, PagerForDT pagerForDataTable, ArticleQO articleQO) {
         pagerForDataTable.setCondition(articleQO);
-        PagerResultForDT pagerResult = null;
-        try {
-            pagerResult = statisticService.findTcRate(pagerForDataTable);
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        }
+        PagerResultForDT pagerResult  = statisticService.findTcRate(pagerForDataTable);
+        return pagerResult.initsEcho(request.getParameter("sEcho"));
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/findContributionRate", method = RequestMethod.GET)
+    public PagerResultForDT findContributionRate(HttpServletRequest request, PagerForDT pagerForDataTable, ArticleQO articleQO) {
+        pagerForDataTable.setCondition(articleQO);
+        PagerResultForDT pagerResult  = statisticService.findContributionRate(pagerForDataTable);
         return pagerResult.initsEcho(request.getParameter("sEcho"));
     }
 
@@ -59,6 +62,20 @@ public class StatisticController {
         try {
             List<Map<String, Object>> columnForOrganizationIdAuthorCount = statisticService.findColumnForOrganizationIdAuthorCount();
             resp.isSuccess().setData(columnForOrganizationIdAuthorCount);
+        }catch (Exception e){
+            logger.error(e.getMessage(),e);
+            resp.isFail().setMessage("操作失败");
+        }
+        return resp;
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "findColumnForContributionRate", method = RequestMethod.GET)
+    public JsonResp findColumnForContributionRate() {
+        JsonResp resp = new JsonResp();
+        try {
+            List<Map<String, Object>> columnForContributionRate = statisticService.findColumnForContributionRate();
+            resp.isSuccess().setData(columnForContributionRate);
         }catch (Exception e){
             logger.error(e.getMessage(),e);
             resp.isFail().setMessage("操作失败");

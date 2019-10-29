@@ -6,6 +6,7 @@ import com.ssd.admin.business.entity.OrganizationEntity;
 import com.ssd.admin.business.entity.StatisticBaseInfoEntity;
 import com.ssd.admin.business.qo.ArticleQO;
 import com.ssd.admin.business.service.*;
+import com.ssd.admin.business.vo.Cons;
 import com.ssd.admin.common.PagerForDT;
 import com.ssd.admin.common.PagerResultForDT;
 import com.ssd.admin.util.BigDecimalUtil;
@@ -43,13 +44,39 @@ public class StatisticServiceImpl implements StatisticService {
         count.setRecordsTotal(articleEntityPagerResultForDT.getRecordsTotal());
         count.setsEcho(articleEntityPagerResultForDT.getsEcho());
 
-        List<Integer> articleIdList = new ArrayList<>();
         /**
          * 按文章+组织信息为key，存储每个文章对应的每个学院认领的作者数
          */
-        Map<String,Integer> articleClaimGroupInfo = new HashMap<>();
         List<ArticleEntity> articleEntityList = articleEntityPagerResultForDT.getData();
+        Map<String,Integer> articleClaimGroupInfo = articleClaimGroupInfo(articleEntityList);
+
+        List<OrganizationEntity> organizationEntityList = organizationService.findAll();
+
+        List<Map<String,Object>> mapList = new ArrayList<>();
         if(articleEntityList != null && articleEntityList.size() > 0){
+            for (ArticleEntity articleEntity : articleEntityList) {
+                int authorOrganizationCount = 0;
+                Map<String,Object> article = new HashMap<String,Object>();
+                article.put("articleId",articleEntity.getId());
+                article.put("aut",articleEntity.getAut());
+                article.put("apy",articleEntity.getApy());
+                for (OrganizationEntity organizationEntity : organizationEntityList) {
+                    int articleGroupCount = articleClaimGroupInfo.getOrDefault(articleEntity.getId().toString()+organizationEntity.getId().toString(),0);
+                    authorOrganizationCount += articleGroupCount;
+                    article.put(organizationEntity.getId().toString(),articleGroupCount);
+                }
+                article.put("allCount",authorOrganizationCount);
+                mapList.add(article);
+            }
+        }
+        count.setData(mapList);
+        return count;
+    }
+
+    private Map<String,Integer> articleClaimGroupInfo(List<ArticleEntity> articleEntityList ){
+        Map<String,Integer> articleClaimGroupInfo = new HashMap<>();
+        if(articleEntityList != null && articleEntityList.size() > 0){
+            List<Integer> articleIdList = new ArrayList<>();
             for (ArticleEntity articleEntity : articleEntityList) {
                 articleIdList.add(articleEntity.getId());
             }
@@ -63,23 +90,56 @@ public class StatisticServiceImpl implements StatisticService {
                 }
             }
         }
+        return articleClaimGroupInfo;
+    }
+
+
+    @Override
+    public PagerResultForDT<Map<String, Object>> findContributionRate(PagerForDT<ArticleQO> pager){
+        PagerResultForDT count = new PagerResultForDT();
+        PagerResultForDT<ArticleEntity> articleEntityPagerResultForDT = articleService.selectPage(pager);
+        count.setRecordsFiltered(articleEntityPagerResultForDT.getRecordsFiltered());
+        count.setRecordsTotal(articleEntityPagerResultForDT.getRecordsTotal());
+        count.setsEcho(articleEntityPagerResultForDT.getsEcho());
+
+        /**
+         * 按文章+组织信息为key，存储每个文章对应的每个学院认领的作者数
+         */
+        List<ArticleEntity> articleEntityList = articleEntityPagerResultForDT.getData();
+        Map<String,Integer> articleClaimGroupInfo = articleClaimGroupInfo(articleEntityList);
+        /**
+         * 按年份和学科查询某个学科在某个年份的总引用数
+         */
+        Map<String,Integer> articleAllTcByYearAndSubject = articleAllTcByYearAndSubject();
 
         List<OrganizationEntity> organizationEntityList = organizationService.findAll();
 
         List<Map<String,Object>> mapList = new ArrayList<>();
         if(articleEntityList != null && articleEntityList.size() > 0){
             for (ArticleEntity articleEntity : articleEntityList) {
-                int authorOriganzationCount = 0;
+                int authorOrganizationCount = 0;
                 Map<String,Object> article = new HashMap<String,Object>();
                 article.put("articleId",articleEntity.getId());
                 article.put("aut",articleEntity.getAut());
                 article.put("apy",articleEntity.getApy());
                 for (OrganizationEntity organizationEntity : organizationEntityList) {
                     int articleGroupCount = articleClaimGroupInfo.getOrDefault(articleEntity.getId().toString()+organizationEntity.getId().toString(),0);
-                    authorOriganzationCount += articleGroupCount;
-                    article.put(organizationEntity.getId().toString(),articleGroupCount);
+                    authorOrganizationCount += articleGroupCount;
                 }
-                article.put("allCount",authorOriganzationCount);
+                for (OrganizationEntity organizationEntity : organizationEntityList) {
+                    int articleGroupCount = articleClaimGroupInfo.getOrDefault(articleEntity.getId().toString()+organizationEntity.getId().toString(),0);
+                    Integer allTc = articleAllTcByYearAndSubject.get(articleEntity.getSubject().toString() + articleEntity.getApy());
+                    try {
+                        double tcRate=0, contributionRate=0;
+                        if(allTc != 0 && authorOrganizationCount != 0){
+                            tcRate = BigDecimalUtil.div(Double.valueOf(articleEntity.getAtc().trim()), allTc, Cons.TC_RATE);
+                            contributionRate = BigDecimalUtil.mul(BigDecimalUtil.div(articleGroupCount,authorOrganizationCount,Cons.CONTRIBUTION_RATE),tcRate, Cons.CONTRIBUTION_RATE);
+                        }
+                        article.put(organizationEntity.getId().toString(),contributionRate);
+                    } catch (IllegalAccessException e) {
+                        e.printStackTrace();
+                    }
+                }
                 mapList.add(article);
             }
         }
@@ -88,12 +148,12 @@ public class StatisticServiceImpl implements StatisticService {
     }
 
     @Override
-    public PagerResultForDT<ArticleEntity> findTcRate(PagerForDT<ArticleQO> pager) throws IllegalAccessException {
+    public PagerResultForDT<ArticleEntity> findTcRate(PagerForDT<ArticleQO> pager) {
         PagerResultForDT<ArticleEntity> articleEntityPagerResultForDT = articleService.selectPage(pager);
         /**
          * 按年份和学科查询某个学科在某个年份的总引用数
          */
-        Map<String,Integer> articleAllTcByYearAndSubject = new HashMap<>();
+        Map<String,Integer> articleAllTcByYearAndSubject = articleAllTcByYearAndSubject();
         List<StatisticBaseInfoEntity> statisticBaseInfoEntityList = statisticBaseInfoService.findAll();
         if(statisticBaseInfoEntityList != null && statisticBaseInfoEntityList.size() > 0){
             for (StatisticBaseInfoEntity statisticBaseInfoEntity : statisticBaseInfoEntityList) {
@@ -108,7 +168,11 @@ public class StatisticServiceImpl implements StatisticService {
                     articleEntity.setAllAtc("未录入总引用数");
                 }else {
                     articleEntity.setAllAtc(allTc.toString());
-                    articleEntity.setAtcRate(BigDecimalUtil.div(Double.valueOf(articleEntity.getAtc().trim()),allTc,5));
+                    try {
+                        articleEntity.setAtcRate(BigDecimalUtil.div(Double.valueOf(articleEntity.getAtc().trim()),allTc, Cons.TC_RATE));
+                    } catch (IllegalAccessException e) {
+                        e.printStackTrace();
+                    }
                 }
 
             }
@@ -116,8 +180,25 @@ public class StatisticServiceImpl implements StatisticService {
         return articleEntityPagerResultForDT;
     }
 
+    private Map<String,Integer> articleAllTcByYearAndSubject(){
+        Map<String,Integer> articleAllTcByYearAndSubject = new HashMap<>();
+        List<StatisticBaseInfoEntity> statisticBaseInfoEntityList = statisticBaseInfoService.findAll();
+        if(statisticBaseInfoEntityList != null && statisticBaseInfoEntityList.size() > 0){
+            for (StatisticBaseInfoEntity statisticBaseInfoEntity : statisticBaseInfoEntityList) {
+                articleAllTcByYearAndSubject.put(statisticBaseInfoEntity.getSubject().toString()+statisticBaseInfoEntity.getYear().toString(),statisticBaseInfoEntity.getAllTc());
+            }
+        }
+        return articleAllTcByYearAndSubject;
+    }
+
     @Override
-    public List<Map<String,Object>> findColumnForOrganizationIdAuthorCount() {
+    public List<Map<String,Object>> findColumnForContributionRate() {
+        List<Map<String,Object>> columnList = findBaseColumn();
+        return columnList;
+    }
+
+
+    private List<Map<String,Object>> findBaseColumn(){
         List<Map<String,Object>> columnList = new ArrayList<>();
         HashMap<String, Object> stringStringHashMap = new HashMap<>();
         stringStringHashMap.put("mData","articleId");
@@ -138,6 +219,13 @@ public class StatisticServiceImpl implements StatisticService {
             stringStringHashMap.put("title",organizationEntity.getName());
             columnList.add(stringStringHashMap);
         }
+        return columnList;
+    }
+
+    @Override
+    public List<Map<String,Object>> findColumnForOrganizationIdAuthorCount() {
+        List<Map<String,Object>> columnList = findBaseColumn();
+        HashMap<String, Object> stringStringHashMap = new HashMap<>();
         stringStringHashMap = new HashMap<>();
         stringStringHashMap.put("mData","allCount");
         stringStringHashMap.put("title","作者总数");
