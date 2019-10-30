@@ -67,6 +67,20 @@ public class ArticleController {
         return resp;
     }
 
+
+    @ResponseBody
+    @RequestMapping(value = "findAllYear", method = {RequestMethod.GET,RequestMethod.POST})
+    public JsonResp findAllYear() {
+        JsonResp resp = new JsonResp();
+        try {
+            resp.isSuccess().setData(articleService.findAllYear());
+        }catch (Exception e){
+            logger.error(e.getMessage(),e);
+            resp.isFail().setMessage("操作失败");
+        }
+        return resp;
+    }
+
     @ResponseBody
     @RequestMapping(value = "delete", method = RequestMethod.POST)
     public JsonResp delete(Integer id) {

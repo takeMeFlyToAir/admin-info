@@ -19,7 +19,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import tk.mybatis.mapper.entity.Example;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Created by zhaozhirong on 2019/3/1.
@@ -78,5 +80,25 @@ public class ArticleServiceImpl extends BaseService<ArticleEntity> implements Ar
             return articleEntityList.get(0);
         }
         return null;
+    }
+
+    @Override
+    public List<String> findAllYear() {
+        ArrayList<String> resultList = new ArrayList<>();
+        List<String> allYear = articleMapper.findAllYear();
+        for (String s : allYear) {
+            if(!resultList.contains(s.trim())){
+                resultList.add(s.trim());
+            }
+        }
+        return resultList;
+    }
+
+    @Override
+    public List<ArticleEntity> findByYear(String year) {
+        Example example = new Example(ArticleEntity.class);
+        example.createCriteria().andEqualTo("deleted",0).andLike("apy","%"+year.trim()+"%");
+        List<ArticleEntity> articleEntityList = this.selectByExample(example);
+        return articleEntityList;
     }
 }

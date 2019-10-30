@@ -1,5 +1,6 @@
 package com.ssd.admin.web.controller;
 
+import com.ssd.admin.business.enums.RoleEnum;
 import com.ssd.admin.business.qo.ArticleQO;
 import com.ssd.admin.business.service.StatisticService;
 import com.ssd.admin.common.JsonResp;
@@ -14,6 +15,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -31,6 +34,7 @@ public class StatisticController {
     @Autowired
     private StatisticService statisticService;
 
+
     @ResponseBody
     @RequestMapping(value = "/findOrganizationIdAuthorCount", method = RequestMethod.GET)
     public PagerResultForDT findOrganizationIdAuthorCount(HttpServletRequest request, PagerForDT pagerForDataTable, ArticleQO articleQO) {
@@ -38,6 +42,21 @@ public class StatisticController {
         PagerResultForDT pagerResult = statisticService.findOrganizationIdAuthorCount(pagerForDataTable);
         return pagerResult.initsEcho(request.getParameter("sEcho"));
     }
+    @ResponseBody
+    @RequestMapping(value = "findColumnForOrganizationIdAuthorCount", method = RequestMethod.GET)
+    public JsonResp findColumnForOrganizationIdAuthorCount() {
+        JsonResp resp = new JsonResp();
+        try {
+            List<Map<String, Object>> columnForOrganizationIdAuthorCount = statisticService.findColumnForOrganizationIdAuthorCount();
+            resp.isSuccess().setData(columnForOrganizationIdAuthorCount);
+        }catch (Exception e){
+            logger.error(e.getMessage(),e);
+            resp.isFail().setMessage("操作失败");
+        }
+        return resp;
+    }
+
+
 
     @ResponseBody
     @RequestMapping(value = "/findTcRate", method = RequestMethod.GET)
@@ -54,21 +73,6 @@ public class StatisticController {
         PagerResultForDT pagerResult  = statisticService.findContributionRate(pagerForDataTable);
         return pagerResult.initsEcho(request.getParameter("sEcho"));
     }
-
-    @ResponseBody
-    @RequestMapping(value = "findColumnForOrganizationIdAuthorCount", method = RequestMethod.GET)
-    public JsonResp findColumnForOrganizationIdAuthorCount() {
-        JsonResp resp = new JsonResp();
-        try {
-            List<Map<String, Object>> columnForOrganizationIdAuthorCount = statisticService.findColumnForOrganizationIdAuthorCount();
-            resp.isSuccess().setData(columnForOrganizationIdAuthorCount);
-        }catch (Exception e){
-            logger.error(e.getMessage(),e);
-            resp.isFail().setMessage("操作失败");
-        }
-        return resp;
-    }
-
     @ResponseBody
     @RequestMapping(value = "findColumnForContributionRate", method = RequestMethod.GET)
     public JsonResp findColumnForContributionRate() {
@@ -82,4 +86,43 @@ public class StatisticController {
         }
         return resp;
     }
+
+
+    @ResponseBody
+    @RequestMapping(value = "/findContributionRateForOrganization", method = RequestMethod.GET)
+    public PagerResultForDT findContributionRateForOrganization(HttpServletRequest request,  String year) {
+        List<Map<String, Object>> contributionRateForOrganization = statisticService.findContributionRateForOrganization(year);
+        PagerResultForDT pagerResult = new PagerResultForDT();
+        pagerResult.setData(contributionRateForOrganization);
+        pagerResult.setRecordsFiltered(contributionRateForOrganization.size());
+        pagerResult.setRecordsTotal(contributionRateForOrganization.size());
+        return pagerResult.initsEcho(request.getParameter("sEcho"));
+    }
+    @ResponseBody
+    @RequestMapping(value = "findColumnForContributionRateForOrganization", method = RequestMethod.GET)
+    public JsonResp findColumnForContributionRateForOrganization() {
+        JsonResp resp = new JsonResp();
+        try {
+            List<Map<String, Object>> columnForContributionRateForOrganization = statisticService.findColumnForContributionRateForOrganization();
+            resp.isSuccess().setData(columnForContributionRateForOrganization);
+        }catch (Exception e){
+            logger.error(e.getMessage(),e);
+            resp.isFail().setMessage("操作失败");
+        }
+        return resp;
+    }
+
+
+    @ResponseBody
+    @RequestMapping(value = "/findBonusForOrganization", method = RequestMethod.GET)
+    public PagerResultForDT findBonusForOrganization(HttpServletRequest request,  String year) {
+        List<Map<String, Object>> bonusForOrganization = statisticService.findBonusForOrganization(year);
+        PagerResultForDT pagerResult = new PagerResultForDT();
+        pagerResult.setData(bonusForOrganization);
+        pagerResult.setRecordsFiltered(bonusForOrganization.size());
+        pagerResult.setRecordsTotal(bonusForOrganization.size());
+        return pagerResult.initsEcho(request.getParameter("sEcho"));
+    }
+
+
 }

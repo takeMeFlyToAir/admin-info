@@ -15,4 +15,6 @@ public class Cons {
      */
     public static final Integer CONTRIBUTION_RATE = 9;
 
+    public static final Integer GROUP_LIST_LIMIT = 20;
+
 }

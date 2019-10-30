@@ -7,6 +7,8 @@ import com.ssd.admin.common.IService;
 import com.ssd.admin.common.PagerForDT;
 import com.ssd.admin.common.PagerResultForDT;
 
+import java.util.List;
+
 
 /**
  * @Author: zhaozhirong
@@ -24,5 +26,9 @@ public interface ArticleService extends IService<ArticleEntity> {
 
 
     ArticleEntity getByAut(String aut);
+
+    List<String> findAllYear();
+
+    List<ArticleEntity> findByYear(String year);
 
 }
