@@ -326,7 +326,7 @@ public class StatisticServiceImpl implements StatisticService {
                 }
                 for (OrganizationEntity organizationEntity : organizationEntityList) {
                     int articleGroupCount = articleClaimGroupInfo.getOrDefault(articleEntity.getId().toString()+organizationEntity.getId().toString(),0);
-                    Integer allTc = articleAllTcByYearAndSubject.get(articleEntity.getSubject().toString() + articleEntity.getApy());
+                    Integer allTc = articleAllTcByYearAndSubject.getOrDefault(articleEntity.getSubject().toString() + articleEntity.getApy(),0);
                     try {
                         double tcRate=0, contributionRate=0;
                         if(allTc != 0 && authorOrganizationCount != 0){

@@ -7,7 +7,6 @@
             SELECT
             COUNT(*) as claimCount,
             article_id as articleId,
-            claim_user_organization_name as claimUserOrganizationName,
             claim_user_organization_id as claimUserOrganizationId
             FROM
                 business_article_claim
