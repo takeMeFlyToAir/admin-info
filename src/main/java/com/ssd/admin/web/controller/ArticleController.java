@@ -100,6 +100,30 @@ public class ArticleController {
     }
 
 
+    @ResponseBody
+    @RequestMapping(value = "deleteByAut", method = {RequestMethod.GET,RequestMethod.POST})
+    public JsonResp deleteByAut(String auts) {
+        JsonResp resp = new JsonResp();
+
+        try {
+            if(StringUtils.isNotBlank(auts)){
+                List<String> stringList = Arrays.asList(auts.split(","));
+                for (String aut : stringList) {
+                    ArticleEntity byAut = articleService.getByAut(aut);
+                    if(byAut != null){
+                        articleService.delete(byAut.getId());
+                    }
+                }
+            }
+            resp.isSuccess().setMessage("删除成功");
+        }catch (Exception e){
+            logger.error(e.getMessage(),e);
+            resp.isFail().setMessage(e.getMessage());
+        }
+        return resp;
+    }
+
+
 
     @RequestMapping(value = "/detail")
     @ResponseBody
@@ -142,14 +166,21 @@ public class ArticleController {
                  resp.isFail().setMessage(errorList.get(0).error.get(0).getErrorMessage());
             }else {
                 for (ArticleEntity articleEntity : list) {
-                    articleEntity.setHighCited(0);
-                    articleEntity.setHotSpot(0);
-                    articleEntity.setSubject(subject);
-                    articleEntity.setApd(getDateTime(articleEntity.getApd()));
-                    if(StringUtils.isNotBlank(articleEntity.getAut())){
-                        articleEntity.setAut(articleEntity.getAut().trim());
-                    }
-                    articleService.save(articleEntity);
+                   try {
+                       articleEntity.setHighCited(0);
+                       articleEntity.setHotSpot(0);
+                       articleEntity.setSubject(subject);
+//                    articleEntity.setApd(getDateTime(articleEntity.getApd()));
+                       if(StringUtils.isNotBlank(articleEntity.getAut())){
+                           articleEntity.setAut(articleEntity.getAut().trim());
+                       }
+                       if(StringUtils.isBlank(articleEntity.getAtc())){
+                           articleEntity.setAtc("0");
+                       }
+                       articleService.save(articleEntity);
+                   }catch (Exception e){
+                       e.printStackTrace();
+                   }
                 }
                 resp.isSuccess().setMessage("导入成功");
             }
