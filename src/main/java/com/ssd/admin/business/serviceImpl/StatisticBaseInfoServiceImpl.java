@@ -94,4 +94,9 @@ public class StatisticBaseInfoServiceImpl extends BaseService<StatisticBaseInfoE
         }
         return allList.get(0);
     }
+
+    @Override
+    public List<String> findAllYear() {
+        return statisticBaseInfoMapper.findAllYear();
+    }
 }

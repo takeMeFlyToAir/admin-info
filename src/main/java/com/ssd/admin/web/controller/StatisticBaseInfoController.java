@@ -136,4 +136,17 @@ public class StatisticBaseInfoController {
         }
         return resp;
     }
+
+    @RequestMapping(value = "/findAllYear")
+    @ResponseBody
+    public JsonResp findAllYear(){
+        JsonResp resp = new JsonResp();
+        try {
+            resp.isSuccess().setData(statisticBaseInfoService.findAllYear());
+        }catch (Exception e){
+            resp.isFail().setMessage("查询异常");
+            logger.error(" statisticBaseInfo findAllYear is error,",e);
+        }
+        return resp;
+    }
 }

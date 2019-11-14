@@ -55,6 +55,27 @@ function initYearSelect(id) {
     });
 }
 
+
+function initStatisticInfoYearSelect(id) {
+    $.ajax({
+        type : "get",
+        url : '/statisticBaseInfo/findAllYear',
+        data : {},
+        dataType : "json",
+        async : false,
+        success : function(data) {
+            if(data.result){
+                var yearSelectHtml = "";
+                var yearArray = data.data;
+                for (var i=0; i < yearArray.length; i++){
+                    yearSelectHtml += "<option value='"+yearArray[i]+"'>"+yearArray[i]+"</option>"
+                }
+                $("#"+id).append(yearSelectHtml);
+            }
+        }
+    });
+}
+
 function isHasPower(code) {
     return isSysAdmin || appPower.indexOf(code) != -1;
 }

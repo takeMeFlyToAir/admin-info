@@ -29,4 +29,6 @@ public interface StatisticBaseInfoService extends IService<StatisticBaseInfoEnti
 
     StatisticBaseInfoEntity findByYearAndSubject(Integer year, Integer subject);
 
+    List<String> findAllYear();
+
 }
