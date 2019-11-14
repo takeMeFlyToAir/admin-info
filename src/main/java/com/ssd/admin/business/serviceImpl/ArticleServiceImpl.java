@@ -112,9 +112,13 @@ public class ArticleServiceImpl extends BaseService<ArticleEntity> implements Ar
     }
 
     @Override
-    public List<ArticleEntity> findByYear(String year) {
+    public List<ArticleEntity> findByYear(String statisticYear) {
         Example example = new Example(ArticleEntity.class);
-        example.createCriteria().andEqualTo("deleted",0).andLike("apy","%"+year.trim()+"%");
+        Example.Criteria criteria = example.createCriteria().andEqualTo("deleted", 0);
+        Integer endYear = Integer.parseInt(statisticYear);
+        Integer startYear = endYear - Cons.STATISTIC_GAP_YEAR;
+        criteria.andLessThanOrEqualTo("inputYear", statisticYear);
+        criteria.andBetween("apy", startYear, endYear);
         List<ArticleEntity> articleEntityList = this.selectByExample(example);
         return articleEntityList;
     }

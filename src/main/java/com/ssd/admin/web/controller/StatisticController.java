@@ -53,6 +53,18 @@ public class StatisticController {
     }
 
 
+    private String initStatisticYear(String statisticYear){
+        if(StrUtil.isBlank(statisticYear)){
+            List<String> allYear = statisticBaseInfoService.findAllYear();
+            if(CollUtil.isNotEmpty(allYear)){
+                statisticYear = allYear.get(0);
+                return statisticYear;
+            }
+        }
+        return statisticYear;
+    }
+
+
     /**
      * 引用占比
      * @param request
@@ -138,17 +150,28 @@ public class StatisticController {
         return resp;
     }
 
-
+    /**
+     * 查询贡献度
+     * @param request
+     * @param statisticYear
+     * @return
+     */
     @ResponseBody
     @RequestMapping(value = "/findContributionRateForOrganization", method = RequestMethod.GET)
-    public PagerResultForDT findContributionRateForOrganization(HttpServletRequest request,  String year) {
-        List<Map<String, Object>> contributionRateForOrganization = statisticService.findContributionRateForOrganization(year);
+    public PagerResultForDT findContributionRateForOrganization(HttpServletRequest request,  String statisticYear) {
+        statisticYear = initStatisticYear(statisticYear);
+        List<Map<String, Object>> contributionRateForOrganization = statisticService.findContributionRateForOrganization(statisticYear);
         PagerResultForDT pagerResult = new PagerResultForDT();
         pagerResult.setData(contributionRateForOrganization);
         pagerResult.setRecordsFiltered(contributionRateForOrganization.size());
         pagerResult.setRecordsTotal(contributionRateForOrganization.size());
         return pagerResult.initsEcho(request.getParameter("sEcho"));
     }
+
+    /**
+     * 查询贡献度表头
+     * @return
+     */
     @ResponseBody
     @RequestMapping(value = "findColumnForContributionRateForOrganization", method = RequestMethod.GET)
     public JsonResp findColumnForContributionRateForOrganization() {

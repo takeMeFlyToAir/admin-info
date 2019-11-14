@@ -29,7 +29,7 @@ public interface ArticleService extends IService<ArticleEntity> {
 
     List<String> findAllYear();
 
-    List<ArticleEntity> findByYear(String year);
+    List<ArticleEntity> findByYear(String statisticYear);
 
     void finish();
 

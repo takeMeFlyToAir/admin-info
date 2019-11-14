@@ -13,6 +13,7 @@ import com.ssd.admin.common.PagerResultForDT;
 import com.ssd.admin.util.BigDecimalUtil;
 import com.ssd.admin.util.ListUtils;
 import com.ssd.admin.util.PoolManager;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -153,15 +154,13 @@ public class StatisticServiceImpl implements StatisticService {
 
 
     @Override
-    public List<Map<String,Object>> findContributionRateForOrganization(String year){
+    public List<Map<String,Object>> findContributionRateForOrganization(String statisticYear){
         List<Map<String,Object>> resultList = new ArrayList<>();
-        year = (year == null ? getYear() : year);
-        if(year == null){
+        if(StringUtils.isBlank(statisticYear)){
             return resultList;
         }
-        String statisticYear = "";
 
-        List<ArticleEntity> articleEntityList = articleService.findByYear(year);
+        List<ArticleEntity> articleEntityList = articleService.findByYear(statisticYear);
         List<Map<String,Object>>  contributionRateForOrganization= new ArrayList<>();
 
         /**
@@ -188,7 +187,7 @@ public class StatisticServiceImpl implements StatisticService {
 
         for (Future<List<Map<String, Object>>> listFuture : futureList) {
             try {
-                List<Map<String, Object>> mapList = listFuture.get(10, TimeUnit.SECONDS);
+                List<Map<String, Object>> mapList = listFuture.get(60, TimeUnit.SECONDS);
                 contributionRateForOrganization.addAll(mapList);
             } catch (InterruptedException e) {
                 e.printStackTrace();
@@ -285,7 +284,7 @@ public class StatisticServiceImpl implements StatisticService {
         allSubjectSubmit.add(agriculturalScience_submit);
         for (Future<Map<String, Object>> mapFuture : allSubjectSubmit) {
             try {
-                resultList.add(mapFuture.get(10,TimeUnit.SECONDS));
+                resultList.add(mapFuture.get(60,TimeUnit.SECONDS));
             } catch (InterruptedException e) {
                 e.printStackTrace();
             } catch (ExecutionException e) {
