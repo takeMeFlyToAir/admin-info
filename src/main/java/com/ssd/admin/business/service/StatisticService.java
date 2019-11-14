@@ -45,10 +45,10 @@ public interface StatisticService{
 
 
 
-    List<Map<String,Object>> findContributionRateForOrganization(String year);
+    List<Map<String,Object>> findContributionRateForOrganization(String statisticYear);
 
      List<Map<String,Object>> findColumnForContributionRateForOrganization();
 
-    List<Map<String,Object>> findBonusForOrganization(String year);
+    List<Map<String,Object>> findBonusForOrganization(String statisticYear);
 
 }

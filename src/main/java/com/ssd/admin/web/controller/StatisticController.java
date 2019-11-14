@@ -189,8 +189,9 @@ public class StatisticController {
 
     @ResponseBody
     @RequestMapping(value = "/findBonusForOrganization", method = RequestMethod.GET)
-    public PagerResultForDT findBonusForOrganization(HttpServletRequest request,  String year) {
-        List<Map<String, Object>> bonusForOrganization = statisticService.findBonusForOrganization(year);
+    public PagerResultForDT findBonusForOrganization(HttpServletRequest request,  String statisticYear) {
+        statisticYear = initStatisticYear(statisticYear);
+        List<Map<String, Object>> bonusForOrganization = statisticService.findBonusForOrganization(statisticYear);
         PagerResultForDT pagerResult = new PagerResultForDT();
         pagerResult.setData(bonusForOrganization);
         pagerResult.setRecordsFiltered(bonusForOrganization.size());

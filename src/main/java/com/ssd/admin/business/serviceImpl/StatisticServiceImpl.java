@@ -298,10 +298,9 @@ public class StatisticServiceImpl implements StatisticService {
 
 
     @Override
-    public List<Map<String, Object>> findBonusForOrganization(String year) {
+    public List<Map<String, Object>> findBonusForOrganization(String statisticYear) {
         List<Map<String, Object>> resultList = new ArrayList<>();
-        year = (year == null ? getYear() : year);
-        if(year == null){
+        if(StringUtils.isBlank(statisticYear)){
             return resultList;
         }
         /**
@@ -317,11 +316,11 @@ public class StatisticServiceImpl implements StatisticService {
         List<OrganizationEntity> organizationEntityList = organizationService.findAll();
 
 
-        List<Map<String, Object>> contributionRateForOrganization = this.findContributionRateForOrganization(year);
+        List<Map<String, Object>> contributionRateForOrganization = this.findContributionRateForOrganization(statisticYear);
         for (Map<String, Object> objectMap : contributionRateForOrganization) {
             Map<String, Object> resultMap = new HashMap<>(objectMap);
             SubjectEnum subject = (SubjectEnum) objectMap.get("subject");
-            Double bonus = articleBonusByYearAndSubject.getOrDefault(subject.getCode()+year,0.0);
+            Double bonus = articleBonusByYearAndSubject.getOrDefault(subject.getCode()+statisticYear,0.0);
             for (OrganizationEntity organizationEntity : organizationEntityList) {
                 resultMap.put(organizationEntity.getId().toString(),BigDecimalUtil.mul(bonus,Double.valueOf(objectMap.get(organizationEntity.getId().toString()).toString()),Cons.CONTRIBUTION_RATE));
             }
