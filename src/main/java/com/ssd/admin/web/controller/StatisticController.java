@@ -41,13 +41,13 @@ public class StatisticController {
     private StatisticBaseInfoService statisticBaseInfoService;
 
     private ArticleQO initArticleQO(ArticleQO articleQO){
-        if(StrUtil.isBlank(articleQO.getYear())){
+        if(StrUtil.isBlank(articleQO.getStatisticYear())){
             List<String> allYear = statisticBaseInfoService.findAllYear();
             if(CollUtil.isNotEmpty(allYear)){
-                articleQO.setYear(allYear.get(0));
+                articleQO.setStatisticYear(allYear.get(0));
                 return articleQO;
             }
-            articleQO.setYear(String.valueOf(DateUtil.thisYear()));
+            articleQO.setStatisticYear(String.valueOf(DateUtil.thisYear()));
         }
         return articleQO;
     }

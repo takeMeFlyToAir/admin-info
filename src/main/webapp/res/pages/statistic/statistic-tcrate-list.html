@@ -26,7 +26,7 @@
 <div class="page-container">
 	<div class="text-c">
 		<span class="select-box" style="width:200px" >
-			<select class="select"  size="1" id="year" name="year">
+			<select class="select"  size="1" id="statisticYear" name="statisticYear">
 
 			</select>
 		</span>
@@ -75,7 +75,7 @@
 <script type="text/javascript">
 
 	$(function () {
-        initStatisticInfoYearSelect("year");
+        initStatisticInfoYearSelect("statisticYear");
     })
 
 
@@ -146,7 +146,7 @@
         dataTableSettings.fnServerParams = function (aoData) {
             aoData._rand = Math.random();
             aoData.push(
-                { "name": "year", "value": $('#year').val() }
+                { "name": "statisticYear", "value": $('#statisticYear').val() }
             );
         }
         //搜索就是设置参数，然后销毁datatable重新再建一个
