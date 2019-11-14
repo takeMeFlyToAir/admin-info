@@ -5,4 +5,8 @@
         <select id="findAllYear" resultType="java.lang.String" >
             SELECT apy FROM business_article GROUP BY apy ORDER BY apy DESC
         </select>
+
+    <update id="finish">
+            UPDATE business_article SET `status` = 1;
+    </update>
 </mapper>

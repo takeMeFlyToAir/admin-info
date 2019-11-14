@@ -5,6 +5,7 @@ import com.github.pagehelper.PageInfo;
 import com.ssd.admin.business.entity.ArticleEntity;
 import com.ssd.admin.business.enums.ArticleStatusClaimEnum;
 import com.ssd.admin.business.enums.RoleEnum;
+import com.ssd.admin.business.mapper.ArticleClaimMapper;
 import com.ssd.admin.business.mapper.ArticleMapper;
 import com.ssd.admin.business.qo.ArticleQO;
 import com.ssd.admin.business.service.ArticleService;
@@ -34,6 +35,9 @@ public class ArticleServiceImpl extends BaseService<ArticleEntity> implements Ar
     private ArticleMapper articleMapper;
 
     @Autowired
+    private ArticleClaimMapper articleClaimMapper;
+
+    @Autowired
     private UserService userService;
 
     @Override
@@ -61,6 +65,9 @@ public class ArticleServiceImpl extends BaseService<ArticleEntity> implements Ar
         }
         if(StringUtils.isNotBlank(articleQO.getAc1())){
             criteria.andLike("ac1","%"+articleQO.getAc1()+"%");
+        }
+        if(articleQO.getStatus() != null){
+            criteria.andEqualTo("status", articleQO.getStatus());
         }
         PageHelper.offsetPage(pager.getiDisplayStart(),pager.getiDisplayLength());
         List<ArticleEntity> articleEntityList = this.selectByExample(example);
@@ -100,5 +107,11 @@ public class ArticleServiceImpl extends BaseService<ArticleEntity> implements Ar
         example.createCriteria().andEqualTo("deleted",0).andLike("apy","%"+year.trim()+"%");
         List<ArticleEntity> articleEntityList = this.selectByExample(example);
         return articleEntityList;
+    }
+
+    @Override
+    public void finish() {
+        articleMapper.finish();
+        articleClaimMapper.finish();
     }
 }

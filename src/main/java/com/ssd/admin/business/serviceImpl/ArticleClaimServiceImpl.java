@@ -139,6 +139,7 @@ public class ArticleClaimServiceImpl extends BaseService<ArticleClaimEntity> imp
         articleClaimEntity.setArticleId(articleId);
         articleClaimEntity.setAuthor(author);
         articleClaimEntity.setId(null);
+        articleClaimEntity.setArticleStatus(0);
         //赋值认领信息
         articleClaimEntity.setClaimNickName(claimUser.getNickName());
         articleClaimEntity.setClaimUserName(claimUser.getUserName());

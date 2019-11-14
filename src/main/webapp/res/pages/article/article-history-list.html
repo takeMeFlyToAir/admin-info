@@ -30,16 +30,6 @@
 		著作人及单位：<input type="text" class="input-text" style="width:200px" placeholder="著作人及单位" id="ac1" name="ac1">
 		<button type="button" class="btn btn-success radius" id="btn_search" name=""><i class="Hui-iconfont">&#xe665;</i> 搜索</button>
 	</div>
-	<div class="cl pd-5 bg-1 bk-gray mt-20 hide power "  code="article:add">
-		<span class="l">
-			<!--<a href="javascript:;" onclick="article_add('添加文章','/res/pages/article/article-add.html')" class="btn btn-primary radius"><i class="Hui-iconfont">&#xe604;</i> 添加</a>-->
-			<a   class="btn btn-primary radius" onclick="article_finish()"><i class="Hui-iconfont">&#xe60e;</i> 归档文章</a>
-			<a href="/article/downloadTemplate" class="btn btn-primary radius"><i class="Hui-iconfont">&#xe640;</i> 下载模板</a>
-			<a href="javascript:;" onclick="article_import('导入原始文章','/res/pages/article/article-import.html','','300')" class="btn btn-primary radius"><i class="Hui-iconfont">&#xe645;</i> 导入原始文章</a>
-			<a href="javascript:;" onclick="article_import('导入高被引文章','/res/pages/article/article-import-highcited.html','','300')" class="btn btn-primary radius"><i class="Hui-iconfont">&#xe645;</i> 导入高被引文章</a>
-			<a href="javascript:;" onclick="article_import('导入热点文章','/res/pages/article/article-import-hotspot.html','','300')" class="btn btn-primary radius"><i class="Hui-iconfont">&#xe645;</i> 导入热点文章</a>
-		</span>
-	</div>
 	<div class="mt-20">
 		<table class="table table-border table-bordered table-bg table-hover table-sort table-responsive">
 			<thead>
@@ -82,7 +72,6 @@
 <script type="text/javascript" src="/res/static/h-ui/js/H-ui.min.js"></script>
 <script type="text/javascript" src="/res/static/h-ui.admin/js/H-ui.admin.js"></script> <!--/_footer 作为公共模版分离出去-->
 <script type="text/javascript"  src="/res/static/js/common.js"></script>
-<script type="text/javascript"  src="/res/static/js/ajaxfileupload.js"></script>
 
 <!--请在下方写此页面业务相关的脚本-->
 <script type="text/javascript" src="/res/lib/My97DatePicker/4.8/WdatePicker.js"></script>
@@ -90,49 +79,8 @@
 <script type="text/javascript" src="/res/lib/laypage/1.2/laypage.js"></script>
 
 <script type="text/javascript">
-    function article_import(title,url,w,h){
-        layer_show(title,url,w,h);
-    }
-
-    function article_finish(){
-        var message = "确定要归档文章吗，一旦归档，文章将不能再被认领和退领？";
-        layer.confirm(message,function(){
-            $.ajax({
-                type: 'POST',
-                url: '/article/finish',
-                dataType: 'json',
-                success: function(data){
-                    if(data.result){
-                        layer.msg(data.message,{icon:1,time:1000});
-                        dataTable.api().ajax.reload();
-                    }else{
-                        layer.msg(data.message,{icon:2,time:1000});
-                    }
-                },
-                error:function(data) {
-                    console.log(data.msg);
-                },
-            });
-        });
-    }
-
-    function article_add(title,url){
-        var index = layer.open({
-            type: 2,
-            title: title,
-            content: url
-        });
-        layer.full(index);
-    }
 
     function article_claim(title,url){
-//        var index = layer.open({
-//            type: 2,
-//            title: title,
-//            content: url
-//        });
-//        layer.full(index);
-
         layer_show(title,url);
     }
     dataTableSettings = {
@@ -143,7 +91,7 @@
         },
         "bStateSave": true,//状态保存
         "pading":false,
-        "sAjaxSource": "/article/findPage?status=0",
+        "sAjaxSource": "/article/findPage?status=1",
         "columns": [
             {"mData": "id", "bSortable": false},
             {"mData": "subjectStr"},
@@ -185,10 +133,7 @@
                 "data": "id",
                 "render": function(data, type, full) {
                     var html = "";
-//                    if(isHasPower("article:edit")){
-//                        html += '<button class="btn btn-default round"  onclick="article_edit(\'编辑文章\',\'/res/pages/article/article-edit.html?articleId='+full.id+'\')" title="编辑" >编辑</button>';
-//                    }
-                    html += '<button class="btn btn-secondary round"   onclick="article_claim(\'认领文章\',\'/res/pages/article/article-claim.html?articleId='+full.id+'\')"  title="认领文章" >认领</button>';
+                    html += '<button class="btn btn-secondary round"   onclick="layer_show(\'查看文章详情\',\'/res/pages/article/article-detail-claim-info.html?articleId='+full.id+'\')"   title="查看" >查看</button>';
                     return html;
                 }
             }

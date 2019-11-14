@@ -9,6 +9,7 @@ public class ArticleQO {
     private String aso;
     private String apy;
     private String ac1;
+    private Integer status;
 
 
 }

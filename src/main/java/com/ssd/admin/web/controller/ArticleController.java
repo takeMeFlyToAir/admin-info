@@ -139,12 +139,12 @@ public class ArticleController {
     }
 
 
-    @RequestMapping(value = "/modifyArticleStatus")
+    @RequestMapping(value = "/finish")
     @ResponseBody
-    public JsonResp modifyArticleStatus(Integer id,Integer status){
+    public JsonResp finish(){
         JsonResp resp = new JsonResp();
         try {
-//            articleService.modifyArticleStatus(id, ArticleStatusClaimEnum.fromCode(status));
+            articleService.finish();
             resp.isSuccess().setMessage("操作成功");
         }catch (Exception e){
             resp.isFail().setMessage("操作异常");
@@ -156,7 +156,8 @@ public class ArticleController {
 
     @RequestMapping(value = "/importArticle")
     @ResponseBody
-    public JsonResp importArticle(@RequestParam("file") MultipartFile file,@RequestParam(value = "subject",required = true) Integer subject){
+    public JsonResp importArticle(@RequestParam("file") MultipartFile file,@RequestParam(value = "subject",required = true) Integer subject
+            ,@RequestParam(value = "inputYear",required = true) String inputYear){
         JsonResp resp = new JsonResp();
         try {
             ExcelDataUtil.ExcelData importArticle = ExcelDataUtil.readExcel(file, "ImportArticle");
@@ -169,7 +170,9 @@ public class ArticleController {
                    try {
                        articleEntity.setHighCited(0);
                        articleEntity.setHotSpot(0);
+                       articleEntity.setStatus(0);
                        articleEntity.setSubject(subject);
+                       articleEntity.setInputYear(inputYear);
 //                    articleEntity.setApd(getDateTime(articleEntity.getApd()));
                        if(StringUtils.isNotBlank(articleEntity.getAut())){
                            articleEntity.setAut(articleEntity.getAut().trim());

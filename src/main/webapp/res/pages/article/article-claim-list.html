@@ -90,15 +90,7 @@
 <script type="text/javascript"  src="/res/lib/jquery.validation/1.14.0/messages_zh.js"></script>
 <script type="text/javascript">
     function article_query(title,url){
-//        var index = layer.open({
-//            type: 2,
-//            title: title,
-//            content: url
-//        });
-//        layer.full(index);
-
         layer_show(title,url);
-
     }
 
     dataTableSettings = {
@@ -166,10 +158,15 @@
                 "data": "id",
                 "render": function(data, type, full) {
                     var html = "";
-                    html += '<button class="btn btn-secondary round"    onclick="article_query(\'查看认领\',\'/res/pages/article/article-reject-claim.html?id='+full.id+'\')"  title="查看认领" >查看</button>';
-                    if(full.status == 0 || full.status == 20){
-                        html += '<button class="btn btn-danger round"  onClick="rejectClaimArticle(\''+data+'\')" title="退领" >退领</button>';
+                    if(full.articleStatus == 0){
+                        html += '<button class="btn btn-secondary round"    onclick="article_query(\'查看认领\',\'/res/pages/article/article-reject-claim.html?id='+full.id+'\')"  title="查看认领" >查看</button>';
+                        if(full.status == 0 || full.status == 20){
+                            html += '<button class="btn btn-danger round"  onClick="rejectClaimArticle(\''+data+'\')" title="退领" >退领</button>';
+                        }
+					}else if(full.articleStatus == 1){
+                        html += '<button class="btn btn-secondary round"   onclick="layer_show(\'查看文章详情\',\'/res/pages/article/article-detail-claim-info.html?articleId='+full.articleId+'\')"   title="查看" >查看</button>';
                     }
+
                     return html;
                 }
             }

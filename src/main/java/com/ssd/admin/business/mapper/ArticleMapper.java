@@ -11,4 +11,6 @@ public interface ArticleMapper extends MyMapper<ArticleEntity> {
 
     List<String> findAllYear();
 
+    void finish();
+
 }

@@ -10,4 +10,6 @@ import java.util.List;
 public interface ArticleClaimMapper extends MyMapper<ArticleClaimEntity> {
     List<ArticleClaimEntity> findByArticleIdList(List<Integer> articleIdList);
 
+    void finish();
+
 }

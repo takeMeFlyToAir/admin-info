@@ -24,6 +24,16 @@ public class ArticleEntity extends BaseEntity {
     private Integer hotSpot;
 
     /**
+     * 录入数据的年份
+     */
+    private String inputYear;
+
+    /**
+     * 0:未归档（可以认领），1：已归档（不能认领）
+     */
+    private Integer status;
+
+    /**
      * 学科：0：材料科学，10：工程学 20：化学，30：农业科学
      * 具体值见---SubjectEnum
      */

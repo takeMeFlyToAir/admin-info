@@ -31,4 +31,6 @@ public interface ArticleService extends IService<ArticleEntity> {
 
     List<ArticleEntity> findByYear(String year);
 
+    void finish();
+
 }

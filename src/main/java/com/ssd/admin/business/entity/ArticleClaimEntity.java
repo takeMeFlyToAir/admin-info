@@ -23,6 +23,11 @@ public class ArticleClaimEntity extends BaseEntity {
     private Integer status;
 
     /**
+     * 0:未归档（可以退领），1：已归档（不能退领）
+     */
+    private Integer articleStatus;
+
+    /**
      * 备注，用于驳回或者退领说明
      */
     private String remark;

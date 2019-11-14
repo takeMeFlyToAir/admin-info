@@ -32,6 +32,19 @@
 <article class="page-container">
 	<form class="form form-horizontal" id="form-organization">
 		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>录入年份：</label>
+			<div class="formControls col-xs-8 col-sm-9"> <span class="select-box">
+				<select name="inputYear" class="select" id="inputYear">
+					<option value="">请选择录入年份</option>
+					<option value="2018">2018</option>
+					<option value="2019">2019</option>
+					<option value="2020">2020</option>
+					<option value="2021">2021</option>
+					<option value="2022">2022</option>
+				</select>
+				</span> </div>
+		</div>
+		<div class="row cl">
 			<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>学科：</label>
 			<div class="formControls col-xs-8 col-sm-9"> <span class="select-box">
 				<select name="subject" class="select" id="subject">
@@ -75,7 +88,12 @@
     //导入文章
     function importArticle(fileElementId){
         var subject = $("#subject").val();
+        var inputYear = $("#inputYear").val();
         var uploadArticle = $("#uploadArticle").val();
+        if(!inputYear){
+            tip("请选择录入年份")
+            return;
+        }
         if(!subject){
             tip("请选择学科")
             return;
@@ -87,7 +105,7 @@
 		var windowName = window.name;
         $.ajaxFileUpload({
             url:"/article/importArticle",
-            data: {"subject":subject},
+            data: {"subject":subject,"inputYear":inputYear},
             async : false,   //是否是异步
             dataType: 'json', // 这里修改为content
             fileElementId:fileElementId,

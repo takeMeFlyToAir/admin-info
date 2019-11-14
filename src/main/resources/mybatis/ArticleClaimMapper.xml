@@ -23,5 +23,9 @@
         </select>
 
 
+    <update id="finish">
+        UPDATE business_article_claim SET article_status = 1;
+    </update>
+
 
 </mapper>
