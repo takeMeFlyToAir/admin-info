@@ -50,6 +50,80 @@ public class StatisticServiceImpl implements StatisticService {
         return allYear.get(0);
     }
 
+
+    @Override
+    public PagerResultForDT<ArticleEntity> findTcRate(PagerForDT<ArticleQO> pager) {
+        PagerResultForDT<ArticleEntity> articleEntityPagerResultForDT = articleService.selectPage(pager);
+        String statisticYear = pager.getCondition().getStatisticYear();
+        /**
+         * 按年份和学科查询某个学科在某个年份的总引用数
+         */
+        Map<String,Integer> articleAllTcByYearAndSubject = articleAllTcByYearAndSubject();
+        List<StatisticBaseInfoEntity> statisticBaseInfoEntityList = statisticBaseInfoService.findAll();
+        if(statisticBaseInfoEntityList != null && statisticBaseInfoEntityList.size() > 0){
+            for (StatisticBaseInfoEntity statisticBaseInfoEntity : statisticBaseInfoEntityList) {
+                articleAllTcByYearAndSubject.put(statisticBaseInfoEntity.getSubject().toString()+statisticBaseInfoEntity.getYear().toString(),statisticBaseInfoEntity.getAllTc());
+            }
+        }
+        List<ArticleEntity> articleEntityList = articleEntityPagerResultForDT.getData();
+        if(articleEntityList != null && articleEntityList.size() > 0){
+            for (ArticleEntity articleEntity : articleEntityList) {
+                Integer allTc = articleAllTcByYearAndSubject.get(articleEntity.getSubject().toString()+statisticYear);
+                if(allTc == null){
+                    articleEntity.setAllAtc("未录入总引用数");
+                }else {
+                    articleEntity.setAllAtc(allTc.toString());
+                    try {
+                        articleEntity.setAtcRate(BigDecimalUtil.div(Double.valueOf(articleEntity.getAtc().trim()),allTc, Cons.TC_RATE));
+                    } catch (IllegalAccessException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+            }
+        }
+        return articleEntityPagerResultForDT;
+    }
+
+
+    @Override
+    public PagerResultForDT<Map<String,Object>> findOrganizationIdAuthorCount(PagerForDT<ArticleQO> pager) {
+        PagerResultForDT count = new PagerResultForDT();
+        PagerResultForDT<ArticleEntity> articleEntityPagerResultForDT = articleService.selectPage(pager);
+        count.setRecordsFiltered(articleEntityPagerResultForDT.getRecordsFiltered());
+        count.setRecordsTotal(articleEntityPagerResultForDT.getRecordsTotal());
+        count.setsEcho(articleEntityPagerResultForDT.getsEcho());
+
+        /**
+         * 按文章+组织信息为key，存储每个文章对应的每个学院认领的作者数
+         */
+        List<ArticleEntity> articleEntityList = articleEntityPagerResultForDT.getData();
+
+        Map<String,Integer> articleClaimGroupInfo = articleClaimGroupInfo(articleEntityList);
+
+        List<OrganizationEntity> organizationEntityList = organizationService.findAll();
+
+        List<Map<String,Object>> mapList = new ArrayList<>();
+        if(articleEntityList != null && articleEntityList.size() > 0){
+            for (ArticleEntity articleEntity : articleEntityList) {
+                int authorOrganizationCount = 0;
+                Map<String,Object> article = new HashMap<String,Object>();
+                article.put("articleId",articleEntity.getId());
+                article.put("aut",articleEntity.getAut());
+                article.put("apy",articleEntity.getApy());
+                for (OrganizationEntity organizationEntity : organizationEntityList) {
+                    int articleGroupCount = articleClaimGroupInfo.getOrDefault(articleEntity.getId().toString()+organizationEntity.getId().toString(),0);
+                    authorOrganizationCount += articleGroupCount;
+                    article.put(organizationEntity.getId().toString(),articleGroupCount);
+                }
+                article.put("allCount",authorOrganizationCount);
+                mapList.add(article);
+            }
+        }
+        count.setData(mapList);
+        return count;
+    }
+
     @Override
     public List<Map<String,Object>> findContributionRateForOrganization(String year){
         List<Map<String,Object>> resultList = new ArrayList<>();
@@ -228,42 +302,6 @@ public class StatisticServiceImpl implements StatisticService {
         return resultList;
     }
 
-    @Override
-    public PagerResultForDT<Map<String,Object>> findOrganizationIdAuthorCount(PagerForDT<ArticleQO> pager) {
-        PagerResultForDT count = new PagerResultForDT();
-        PagerResultForDT<ArticleEntity> articleEntityPagerResultForDT = articleService.selectPage(pager);
-        count.setRecordsFiltered(articleEntityPagerResultForDT.getRecordsFiltered());
-        count.setRecordsTotal(articleEntityPagerResultForDT.getRecordsTotal());
-        count.setsEcho(articleEntityPagerResultForDT.getsEcho());
-
-        /**
-         * 按文章+组织信息为key，存储每个文章对应的每个学院认领的作者数
-         */
-        List<ArticleEntity> articleEntityList = articleEntityPagerResultForDT.getData();
-        Map<String,Integer> articleClaimGroupInfo = articleClaimGroupInfo(articleEntityList);
-
-        List<OrganizationEntity> organizationEntityList = organizationService.findAll();
-
-        List<Map<String,Object>> mapList = new ArrayList<>();
-        if(articleEntityList != null && articleEntityList.size() > 0){
-            for (ArticleEntity articleEntity : articleEntityList) {
-                int authorOrganizationCount = 0;
-                Map<String,Object> article = new HashMap<String,Object>();
-                article.put("articleId",articleEntity.getId());
-                article.put("aut",articleEntity.getAut());
-                article.put("apy",articleEntity.getApy());
-                for (OrganizationEntity organizationEntity : organizationEntityList) {
-                    int articleGroupCount = articleClaimGroupInfo.getOrDefault(articleEntity.getId().toString()+organizationEntity.getId().toString(),0);
-                    authorOrganizationCount += articleGroupCount;
-                    article.put(organizationEntity.getId().toString(),articleGroupCount);
-                }
-                article.put("allCount",authorOrganizationCount);
-                mapList.add(article);
-            }
-        }
-        count.setData(mapList);
-        return count;
-    }
 
     private Map<String,Integer> articleClaimGroupInfo(List<ArticleEntity> articleEntityList ){
         Map<String,Integer> articleClaimGroupInfo = new HashMap<>();
@@ -342,40 +380,6 @@ public class StatisticServiceImpl implements StatisticService {
             }
         }
         return mapList;
-    }
-
-    @Override
-    public PagerResultForDT<ArticleEntity> findTcRate(PagerForDT<ArticleQO> pager) {
-        PagerResultForDT<ArticleEntity> articleEntityPagerResultForDT = articleService.selectPage(pager);
-        String statisticYear = pager.getCondition().getStatisticYear();
-        /**
-         * 按年份和学科查询某个学科在某个年份的总引用数
-         */
-        Map<String,Integer> articleAllTcByYearAndSubject = articleAllTcByYearAndSubject();
-        List<StatisticBaseInfoEntity> statisticBaseInfoEntityList = statisticBaseInfoService.findAll();
-        if(statisticBaseInfoEntityList != null && statisticBaseInfoEntityList.size() > 0){
-            for (StatisticBaseInfoEntity statisticBaseInfoEntity : statisticBaseInfoEntityList) {
-                articleAllTcByYearAndSubject.put(statisticBaseInfoEntity.getSubject().toString()+statisticBaseInfoEntity.getYear().toString(),statisticBaseInfoEntity.getAllTc());
-            }
-        }
-        List<ArticleEntity> articleEntityList = articleEntityPagerResultForDT.getData();
-        if(articleEntityList != null && articleEntityList.size() > 0){
-            for (ArticleEntity articleEntity : articleEntityList) {
-                Integer allTc = articleAllTcByYearAndSubject.get(articleEntity.getSubject().toString()+statisticYear);
-                if(allTc == null){
-                    articleEntity.setAllAtc("未录入总引用数");
-                }else {
-                    articleEntity.setAllAtc(allTc.toString());
-                    try {
-                        articleEntity.setAtcRate(BigDecimalUtil.div(Double.valueOf(articleEntity.getAtc().trim()),allTc, Cons.TC_RATE));
-                    } catch (IllegalAccessException e) {
-                        e.printStackTrace();
-                    }
-                }
-
-            }
-        }
-        return articleEntityPagerResultForDT;
     }
 
     private Map<String,Integer> articleAllTcByYearAndSubject(){

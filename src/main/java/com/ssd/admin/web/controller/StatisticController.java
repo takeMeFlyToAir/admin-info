@@ -53,13 +53,42 @@ public class StatisticController {
     }
 
 
+    /**
+     * 引用占比
+     * @param request
+     * @param pagerForDataTable
+     * @param articleQO
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping(value = "/findTcRate", method = RequestMethod.GET)
+    public PagerResultForDT findPage(HttpServletRequest request, PagerForDT pagerForDataTable, ArticleQO articleQO) {
+        initArticleQO(articleQO);
+        pagerForDataTable.setCondition(articleQO);
+        PagerResultForDT pagerResult  = statisticService.findTcRate(pagerForDataTable);
+        return pagerResult.initsEcho(request.getParameter("sEcho"));
+    }
+
+
+    /**
+     * 分学院统计作者数
+     * @param request
+     * @param pagerForDataTable
+     * @param articleQO
+     * @return
+     */
     @ResponseBody
     @RequestMapping(value = "/findOrganizationIdAuthorCount", method = RequestMethod.GET)
     public PagerResultForDT findOrganizationIdAuthorCount(HttpServletRequest request, PagerForDT pagerForDataTable, ArticleQO articleQO) {
+        initArticleQO(articleQO);
         pagerForDataTable.setCondition(articleQO);
         PagerResultForDT pagerResult = statisticService.findOrganizationIdAuthorCount(pagerForDataTable);
         return pagerResult.initsEcho(request.getParameter("sEcho"));
     }
+
+
+
+
     @ResponseBody
     @RequestMapping(value = "findColumnForOrganizationIdAuthorCount", method = RequestMethod.GET)
     public JsonResp findColumnForOrganizationIdAuthorCount() {
@@ -76,14 +105,6 @@ public class StatisticController {
 
 
 
-    @ResponseBody
-    @RequestMapping(value = "/findTcRate", method = RequestMethod.GET)
-    public PagerResultForDT findPage(HttpServletRequest request, PagerForDT pagerForDataTable, ArticleQO articleQO) {
-        initArticleQO(articleQO);
-        pagerForDataTable.setCondition(articleQO);
-        PagerResultForDT pagerResult  = statisticService.findTcRate(pagerForDataTable);
-        return pagerResult.initsEcho(request.getParameter("sEcho"));
-    }
 
     @ResponseBody
     @RequestMapping(value = "/findContributionRate", method = RequestMethod.GET)

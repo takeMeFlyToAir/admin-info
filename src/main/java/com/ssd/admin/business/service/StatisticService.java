@@ -17,6 +17,13 @@ import java.util.Map;
 public interface StatisticService{
 
     /**
+     * 统计每篇文章的引用占比
+     * @param pager
+     * @return
+     */
+    PagerResultForDT<ArticleEntity> findTcRate(PagerForDT<ArticleQO> pager);
+
+    /**
      * 统计每篇文章各个学院认领人数
      * @param pager
      * @return
@@ -32,12 +39,7 @@ public interface StatisticService{
     PagerResultForDT<Map<String,Object>> findContributionRate(PagerForDT<ArticleQO> pager) ;
 
 
-    /**
-     * 统计每篇文章的引用占比
-     * @param pager
-     * @return
-     */
-    PagerResultForDT<ArticleEntity> findTcRate(PagerForDT<ArticleQO> pager);
+
 
     List<Map<String,Object>> findColumnForOrganizationIdAuthorCount();
 
