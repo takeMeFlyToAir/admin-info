@@ -10,6 +10,7 @@ public class ArticleQO {
     private String apy;
     private String ac1;
     private Integer status;
+    private String year;
 
 
 }

@@ -13,6 +13,7 @@
             deleted = 0
         GROUP BY
 	        `year`
+	    ORDER BY  `year` DESC
     </select>
 
 </mapper>

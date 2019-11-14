@@ -25,8 +25,11 @@
 <nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span> 文章管理 <span class="c-gray en">&gt;</span> 文章认领 <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a></nav>
 <div class="page-container">
 	<div class="text-c">
-		文章名：<input type="text" class="input-text" style="width:200px" placeholder="文章名" id="ati" name="ati">
-		刊登年份：<input type="text" class="input-text" style="width:200px" placeholder="刊登年份" id="apy" name="apy">
+		<span class="select-box" style="width:200px" >
+			<select class="select"  size="1" id="year" name="year">
+
+			</select>
+		</span>
 		<button type="button" class="btn btn-success radius" id="btn_search" name=""><i class="Hui-iconfont">&#xe665;</i> 搜索</button>
 	</div>
 	<div class="mt-20">
@@ -70,6 +73,10 @@
 <script type="text/javascript" src="/res/lib/laypage/1.2/laypage.js"></script>
 
 <script type="text/javascript">
+
+	$(function () {
+        initStatisticInfoYearSelect("year");
+    })
 
 
     function article_detail(title,url){
@@ -139,8 +146,7 @@
         dataTableSettings.fnServerParams = function (aoData) {
             aoData._rand = Math.random();
             aoData.push(
-                { "name": "ati", "value": $('#ati').val() },
-                { "name": "apy", "value": $('#apy').val() }
+                { "name": "year", "value": $('#year').val() }
             );
         }
         //搜索就是设置参数，然后销毁datatable重新再建一个

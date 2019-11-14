@@ -1,7 +1,11 @@
 package com.ssd.admin.web.controller;
 
+import cn.hutool.core.collection.CollUtil;
+import cn.hutool.core.date.DateUtil;
+import cn.hutool.core.util.StrUtil;
 import com.ssd.admin.business.enums.RoleEnum;
 import com.ssd.admin.business.qo.ArticleQO;
+import com.ssd.admin.business.service.StatisticBaseInfoService;
 import com.ssd.admin.business.service.StatisticService;
 import com.ssd.admin.common.JsonResp;
 import com.ssd.admin.common.PagerForDT;
@@ -33,6 +37,20 @@ public class StatisticController {
 
     @Autowired
     private StatisticService statisticService;
+    @Autowired
+    private StatisticBaseInfoService statisticBaseInfoService;
+
+    private ArticleQO initArticleQO(ArticleQO articleQO){
+        if(StrUtil.isBlank(articleQO.getYear())){
+            List<String> allYear = statisticBaseInfoService.findAllYear();
+            if(CollUtil.isNotEmpty(allYear)){
+                articleQO.setYear(allYear.get(0));
+                return articleQO;
+            }
+            articleQO.setYear(String.valueOf(DateUtil.thisYear()));
+        }
+        return articleQO;
+    }
 
 
     @ResponseBody
@@ -61,6 +79,7 @@ public class StatisticController {
     @ResponseBody
     @RequestMapping(value = "/findTcRate", method = RequestMethod.GET)
     public PagerResultForDT findPage(HttpServletRequest request, PagerForDT pagerForDataTable, ArticleQO articleQO) {
+        initArticleQO(articleQO);
         pagerForDataTable.setCondition(articleQO);
         PagerResultForDT pagerResult  = statisticService.findTcRate(pagerForDataTable);
         return pagerResult.initsEcho(request.getParameter("sEcho"));
