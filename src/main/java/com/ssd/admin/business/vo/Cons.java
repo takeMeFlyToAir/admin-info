@@ -14,6 +14,7 @@ public class Cons {
      * 贡献度占比保留的小数位
      */
     public static final Integer CONTRIBUTION_RATE = 6;
+    public static final Integer BONUS = 2;
 
     public static final Integer GROUP_LIST_LIMIT = 20;
 

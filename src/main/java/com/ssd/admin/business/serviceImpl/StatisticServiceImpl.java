@@ -322,10 +322,21 @@ public class StatisticServiceImpl implements StatisticService {
             SubjectEnum subject = (SubjectEnum) objectMap.get("subject");
             Double bonus = articleBonusByYearAndSubject.getOrDefault(subject.getCode()+statisticYear,0.0);
             for (OrganizationEntity organizationEntity : organizationEntityList) {
-                resultMap.put(organizationEntity.getId().toString(),BigDecimalUtil.mul(bonus,Double.valueOf(objectMap.get(organizationEntity.getId().toString()).toString()),Cons.CONTRIBUTION_RATE));
+                resultMap.put(organizationEntity.getId().toString(),BigDecimalUtil.mul(bonus,Double.valueOf(objectMap.get(organizationEntity.getId().toString()).toString()),Cons.BONUS));
             }
             resultList.add(resultMap);
         }
+        Map<String, Object> sum = new HashMap<>();
+        sum.put("subjectStr","奖励合计（元）");
+        for (OrganizationEntity organizationEntity : organizationEntityList) {
+            Double sumMoney = 0.0;
+            for (Map<String, Object> objectMap : resultList) {
+                Object orDefault = objectMap.getOrDefault(organizationEntity.getId().toString(), 0);
+                sumMoney = BigDecimalUtil.add(sumMoney, Double.valueOf(orDefault.toString()),Cons.BONUS);
+            }
+            sum.put(organizationEntity.getId().toString(),sumMoney);
+        }
+        resultList.add(sum);
         return resultList;
     }
 

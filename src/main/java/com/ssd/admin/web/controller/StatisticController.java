@@ -10,6 +10,7 @@ import com.ssd.admin.business.service.StatisticService;
 import com.ssd.admin.common.JsonResp;
 import com.ssd.admin.common.PagerForDT;
 import com.ssd.admin.common.PagerResultForDT;
+import com.ssd.admin.util.BigDecimalUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,10 +20,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @Author: zhaozhirong
@@ -161,6 +159,18 @@ public class StatisticController {
     public PagerResultForDT findContributionRateForOrganization(HttpServletRequest request,  String statisticYear) {
         statisticYear = initStatisticYear(statisticYear);
         List<Map<String, Object>> contributionRateForOrganization = statisticService.findContributionRateForOrganization(statisticYear);
+        for (Map<String, Object> objectMap : contributionRateForOrganization) {
+            Iterator<Map.Entry<String, Object>> entries = objectMap.entrySet().iterator();
+            while(entries.hasNext()){
+                Map.Entry<String, Object> entry = entries.next();
+                String key = entry.getKey();
+                Object value = entry.getValue();
+                if(!key.equals("subjectStr") && !key.equals("subject")){
+                    String percent = BigDecimalUtil.mul(Double.valueOf(value.toString()), 100, 2) +"%";
+                    objectMap.put(key,percent);
+                }
+            }
+        }
         PagerResultForDT pagerResult = new PagerResultForDT();
         pagerResult.setData(contributionRateForOrganization);
         pagerResult.setRecordsFiltered(contributionRateForOrganization.size());

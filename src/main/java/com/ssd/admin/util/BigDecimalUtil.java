@@ -25,6 +25,14 @@ public class BigDecimalUtil {
         BigDecimal b2 = BigDecimal.valueOf(value2);
         return b1.add(b2).doubleValue();
     }
+    /**
+     * 精确加法
+     */
+    public static double add(double value1, double value2, int scale) {
+        BigDecimal b1 = BigDecimal.valueOf(value1);
+        BigDecimal b2 = BigDecimal.valueOf(value2);
+        return b1.add(b2).setScale(scale,BigDecimal.ROUND_DOWN).doubleValue();
+    }
 
     /**
      * 精确加法
