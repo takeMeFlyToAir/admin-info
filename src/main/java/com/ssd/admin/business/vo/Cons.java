@@ -17,4 +17,6 @@ public class Cons {
 
     public static final Integer GROUP_LIST_LIMIT = 20;
 
+    public static final Integer STATISTIC_GAP_YEAR = 10;
+
 }

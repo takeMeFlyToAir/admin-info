@@ -347,6 +347,7 @@ public class StatisticServiceImpl implements StatisticService {
     @Override
     public PagerResultForDT<ArticleEntity> findTcRate(PagerForDT<ArticleQO> pager) {
         PagerResultForDT<ArticleEntity> articleEntityPagerResultForDT = articleService.selectPage(pager);
+        String statisticYear = pager.getCondition().getStatisticYear();
         /**
          * 按年份和学科查询某个学科在某个年份的总引用数
          */
@@ -360,7 +361,7 @@ public class StatisticServiceImpl implements StatisticService {
         List<ArticleEntity> articleEntityList = articleEntityPagerResultForDT.getData();
         if(articleEntityList != null && articleEntityList.size() > 0){
             for (ArticleEntity articleEntity : articleEntityList) {
-                Integer allTc = articleAllTcByYearAndSubject.get(articleEntity.getSubject().toString() + articleEntity.getApy());
+                Integer allTc = articleAllTcByYearAndSubject.get(articleEntity.getSubject().toString()+statisticYear);
                 if(allTc == null){
                     articleEntity.setAllAtc("未录入总引用数");
                 }else {

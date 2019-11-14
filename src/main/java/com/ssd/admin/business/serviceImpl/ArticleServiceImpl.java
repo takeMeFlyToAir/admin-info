@@ -1,5 +1,6 @@
 package com.ssd.admin.business.serviceImpl;
 
+import cn.hutool.core.date.DateUtil;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.ssd.admin.business.entity.ArticleEntity;
@@ -10,6 +11,7 @@ import com.ssd.admin.business.mapper.ArticleMapper;
 import com.ssd.admin.business.qo.ArticleQO;
 import com.ssd.admin.business.service.ArticleService;
 import com.ssd.admin.business.service.UserService;
+import com.ssd.admin.business.vo.Cons;
 import com.ssd.admin.common.BaseService;
 import com.ssd.admin.common.PagerForDT;
 import com.ssd.admin.common.PagerResultForDT;
@@ -50,7 +52,7 @@ public class ArticleServiceImpl extends BaseService<ArticleEntity> implements Ar
         example = new Example(ArticleEntity.class);
         Example.Criteria criteria = example.createCriteria()
                 .andEqualTo("deleted",0);
-        example.setOrderByClause("id desc");
+        example.setOrderByClause(" apy DESC,subject ASC ");
         if(StringUtils.isNotBlank(articleQO.getAut())){
             criteria.andLike("aut","%"+articleQO.getAut()+"%");
         }
@@ -68,6 +70,14 @@ public class ArticleServiceImpl extends BaseService<ArticleEntity> implements Ar
         }
         if(articleQO.getStatus() != null){
             criteria.andEqualTo("status", articleQO.getStatus());
+        }
+        //用于统计
+        if(StringUtils.isNotBlank(articleQO.getStatisticYear())){
+            String statisticYear = articleQO.getStatisticYear();
+            Integer endYear = Integer.parseInt(statisticYear);
+            Integer startYear = endYear - Cons.STATISTIC_GAP_YEAR;
+            criteria.andLessThanOrEqualTo("inputYear", statisticYear);
+            criteria.andBetween("apy", startYear, endYear);
         }
         PageHelper.offsetPage(pager.getiDisplayStart(),pager.getiDisplayLength());
         List<ArticleEntity> articleEntityList = this.selectByExample(example);
