@@ -86,9 +86,10 @@ public class StatisticController {
         return pagerResult.initsEcho(request.getParameter("sEcho"));
     }
 
-
-
-
+    /**
+     * 分学院统计作者数的表头
+     * @return
+     */
     @ResponseBody
     @RequestMapping(value = "findColumnForOrganizationIdAuthorCount", method = RequestMethod.GET)
     public JsonResp findColumnForOrganizationIdAuthorCount() {
@@ -103,16 +104,26 @@ public class StatisticController {
         return resp;
     }
 
-
-
-
+    /**
+     * 查询单篇文章贡献度
+     * @param request
+     * @param pagerForDataTable
+     * @param articleQO
+     * @return
+     */
     @ResponseBody
     @RequestMapping(value = "/findContributionRate", method = RequestMethod.GET)
     public PagerResultForDT findContributionRate(HttpServletRequest request, PagerForDT pagerForDataTable, ArticleQO articleQO) {
+        initArticleQO(articleQO);
         pagerForDataTable.setCondition(articleQO);
         PagerResultForDT pagerResult  = statisticService.findContributionRate(pagerForDataTable);
         return pagerResult.initsEcho(request.getParameter("sEcho"));
     }
+
+    /**
+     * 查询单篇文章贡献度的表头
+     * @return
+     */
     @ResponseBody
     @RequestMapping(value = "findColumnForContributionRate", method = RequestMethod.GET)
     public JsonResp findColumnForContributionRate() {

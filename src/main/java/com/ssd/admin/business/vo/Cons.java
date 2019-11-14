@@ -8,12 +8,12 @@ public class Cons {
     /**
      * 引用占比保留的小数位
      */
-    public static final Integer TC_RATE = 9;
+    public static final Integer TC_RATE = 6;
 
     /**
      * 贡献度占比保留的小数位
      */
-    public static final Integer CONTRIBUTION_RATE = 9;
+    public static final Integer CONTRIBUTION_RATE = 6;
 
     public static final Integer GROUP_LIST_LIMIT = 20;
 

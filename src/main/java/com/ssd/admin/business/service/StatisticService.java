@@ -29,6 +29,7 @@ public interface StatisticService{
      * @return
      */
     PagerResultForDT<Map<String,Object>> findOrganizationIdAuthorCount(PagerForDT<ArticleQO> pager);
+    List<Map<String,Object>> findColumnForOrganizationIdAuthorCount();
 
 
     /**
@@ -37,13 +38,12 @@ public interface StatisticService{
      * @return
      */
     PagerResultForDT<Map<String,Object>> findContributionRate(PagerForDT<ArticleQO> pager) ;
-
-
-
-
-    List<Map<String,Object>> findColumnForOrganizationIdAuthorCount();
-
     List<Map<String,Object>> findColumnForContributionRate();
+
+
+
+
+
 
     List<Map<String,Object>> findContributionRateForOrganization(String year);
 

@@ -124,6 +124,34 @@ public class StatisticServiceImpl implements StatisticService {
         return count;
     }
 
+
+
+    @Override
+    public PagerResultForDT<Map<String, Object>> findContributionRate(PagerForDT<ArticleQO> pager){
+        String statisticYear = pager.getCondition().getStatisticYear();
+        PagerResultForDT count = new PagerResultForDT();
+        PagerResultForDT<ArticleEntity> articleEntityPagerResultForDT = articleService.selectPage(pager);
+        count.setRecordsFiltered(articleEntityPagerResultForDT.getRecordsFiltered());
+        count.setRecordsTotal(articleEntityPagerResultForDT.getRecordsTotal());
+        count.setsEcho(articleEntityPagerResultForDT.getsEcho());
+        List<ArticleEntity> articleEntityList = articleEntityPagerResultForDT.getData();
+        /**
+         * 按文章+组织信息为key，存储每个文章对应的每个学院认领的作者数
+         */
+        Map<String,Integer> articleClaimGroupInfo = articleClaimGroupInfo(articleEntityList);
+        /**
+         * 按年份和学科查询某个学科在某个年份的总引用数
+         */
+        Map<String,Integer> articleAllTcByYearAndSubject = articleAllTcByYearAndSubject();
+        List<OrganizationEntity> organizationEntityList = organizationService.findAll();
+
+        List<Map<String,Object>> mapList = getContributionRateFromArticleList(statisticYear, articleEntityList,organizationEntityList,articleClaimGroupInfo,articleAllTcByYearAndSubject);
+        count.setData(mapList);
+        return count;
+    }
+
+
+
     @Override
     public List<Map<String,Object>> findContributionRateForOrganization(String year){
         List<Map<String,Object>> resultList = new ArrayList<>();
@@ -131,6 +159,7 @@ public class StatisticServiceImpl implements StatisticService {
         if(year == null){
             return resultList;
         }
+        String statisticYear = "";
 
         List<ArticleEntity> articleEntityList = articleService.findByYear(year);
         List<Map<String,Object>>  contributionRateForOrganization= new ArrayList<>();
@@ -151,7 +180,7 @@ public class StatisticServiceImpl implements StatisticService {
             Future<List<Map<String, Object>>> signalContributionRateSubmit = PoolManager.statisticPool.submit(new Callable<List<Map<String, Object>>>() {
                 @Override
                 public List<Map<String, Object>> call() throws Exception {
-                    return getContributionRateFromArticleList(articleEntities,organizationEntityList,articleClaimGroupInfo,articleAllTcByYearAndSubject);
+                    return getContributionRateFromArticleList(statisticYear,articleEntities,organizationEntityList,articleClaimGroupInfo,articleAllTcByYearAndSubject);
                 }
             });
             futureList.add(signalContributionRateSubmit);
@@ -323,31 +352,7 @@ public class StatisticServiceImpl implements StatisticService {
         return articleClaimGroupInfo;
     }
 
-
-    @Override
-    public PagerResultForDT<Map<String, Object>> findContributionRate(PagerForDT<ArticleQO> pager){
-        PagerResultForDT count = new PagerResultForDT();
-        PagerResultForDT<ArticleEntity> articleEntityPagerResultForDT = articleService.selectPage(pager);
-        count.setRecordsFiltered(articleEntityPagerResultForDT.getRecordsFiltered());
-        count.setRecordsTotal(articleEntityPagerResultForDT.getRecordsTotal());
-        count.setsEcho(articleEntityPagerResultForDT.getsEcho());
-        List<ArticleEntity> articleEntityList = articleEntityPagerResultForDT.getData();
-        /**
-         * 按文章+组织信息为key，存储每个文章对应的每个学院认领的作者数
-         */
-        Map<String,Integer> articleClaimGroupInfo = articleClaimGroupInfo(articleEntityList);
-        /**
-         * 按年份和学科查询某个学科在某个年份的总引用数
-         */
-        Map<String,Integer> articleAllTcByYearAndSubject = articleAllTcByYearAndSubject();
-        List<OrganizationEntity> organizationEntityList = organizationService.findAll();
-
-        List<Map<String,Object>> mapList = getContributionRateFromArticleList(articleEntityList,organizationEntityList,articleClaimGroupInfo,articleAllTcByYearAndSubject);
-        count.setData(mapList);
-        return count;
-    }
-
-    private List<Map<String,Object>> getContributionRateFromArticleList(List<ArticleEntity> articleEntityList ,List<OrganizationEntity> organizationEntityList,Map<String,Integer> articleClaimGroupInfo,
+    private List<Map<String,Object>> getContributionRateFromArticleList(String statisticYear, List<ArticleEntity> articleEntityList ,List<OrganizationEntity> organizationEntityList,Map<String,Integer> articleClaimGroupInfo,
                                                                         Map<String,Integer> articleAllTcByYearAndSubject ){
         List<Map<String,Object>> mapList = new ArrayList<>();
         if(articleEntityList != null && articleEntityList.size() > 0){
@@ -364,7 +369,7 @@ public class StatisticServiceImpl implements StatisticService {
                 }
                 for (OrganizationEntity organizationEntity : organizationEntityList) {
                     int articleGroupCount = articleClaimGroupInfo.getOrDefault(articleEntity.getId().toString()+organizationEntity.getId().toString(),0);
-                    Integer allTc = articleAllTcByYearAndSubject.getOrDefault(articleEntity.getSubject().toString() + articleEntity.getApy(),0);
+                    Integer allTc = articleAllTcByYearAndSubject.getOrDefault(articleEntity.getSubject().toString() + statisticYear,0);
                     try {
                         double tcRate=0, contributionRate=0;
                         if(allTc != 0 && authorOrganizationCount != 0){

@@ -78,7 +78,7 @@ public class BigDecimalUtil {
         BigDecimal b1 = new BigDecimal(value1);
         BigDecimal b2 = new BigDecimal(value2);
         BigDecimal multiply = b1.multiply(b2);
-        multiply.setScale(scale,BigDecimal.ROUND_HALF_UP);
+        multiply = multiply.setScale(scale,BigDecimal.ROUND_DOWN);
         return multiply.doubleValue();
     }
 
@@ -109,7 +109,7 @@ public class BigDecimalUtil {
         BigDecimal b1 = BigDecimal.valueOf(value1);
         BigDecimal b2 = BigDecimal.valueOf(value2);
         // return b1.divide(b2, scale).doubleValue();
-        return b1.divide(b2, scale, BigDecimal.ROUND_HALF_UP).doubleValue();
+        return b1.divide(b2, scale, BigDecimal.ROUND_DOWN).doubleValue();
     }
 
     /**
@@ -125,7 +125,7 @@ public class BigDecimalUtil {
         BigDecimal b1 = new BigDecimal(value1);
         BigDecimal b2 = new BigDecimal(value2);
         // return b1.divide(b2, scale).doubleValue();
-        return b1.divide(b2, scale, BigDecimal.ROUND_HALF_UP).doubleValue();
+        return b1.divide(b2, scale, BigDecimal.ROUND_DOWN).doubleValue();
     }
 
     /**
