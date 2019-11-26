@@ -28,6 +28,28 @@
 		文章名：<input type="text" class="input-text" style="width:200px" placeholder="文章名" id="ati" name="ati">
 		刊登年份：<input type="text" class="input-text" style="width:200px" placeholder="刊登年份" id="apy" name="apy">
 		著作人及单位：<input type="text" class="input-text" style="width:200px" placeholder="著作人及单位" id="ac1" name="ac1">
+		<br/><br/>
+		高被引：<span class="select-box" style="width:150px" >
+			<select class="select"  size="1" id="highCited" name="highCited">
+				<option value="">全部</option>
+				<option value="0">否</option>
+				<option value="1">是</option>
+			</select>
+		</span>
+		热点：<span class="select-box" style="width:150px" >
+			<select class="select"  size="1" id="hotSpot" name="hotSpot">
+					<option value="">全部</option>
+				<option value="0">否</option>
+				<option value="1">是</option>
+			</select>
+		</span>
+		认领：<span class="select-box" style="width:150px" >
+			<select class="select"  size="1" id="claimed" name="claimed">
+				<option value="">全部</option>
+				<option value="0">未认领</option>
+				<option value="1">已认领</option>
+			</select>
+		</span>
 		<button type="button" class="btn btn-success radius" id="btn_search" name=""><i class="Hui-iconfont">&#xe665;</i> 搜索</button>
 	</div>
 	<div class="cl pd-5 bg-1 bk-gray mt-20 hide power "  code="article:add">
@@ -204,7 +226,10 @@
             aoData.push(
                 { "name": "ati", "value": $('#ati').val() },
                 { "name": "apy", "value": $('#apy').val() },
-                { "name": "ac1", "value": $('#ac1').val() }
+                { "name": "ac1", "value": $('#ac1').val() },
+                { "name": "highCited", "value": $('#highCited').val() },
+                { "name": "hotSpot", "value": $('#hotSpot').val() },
+                { "name": "claimed", "value": $('#claimed').val() }
             );
         }
         //搜索就是设置参数，然后销毁datatable重新再建一个

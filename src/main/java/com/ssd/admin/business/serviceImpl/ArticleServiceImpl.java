@@ -44,11 +44,15 @@ public class ArticleServiceImpl extends BaseService<ArticleEntity> implements Ar
 
     @Override
     public PagerResultForDT<ArticleEntity> selectPage(PagerForDT<ArticleQO> pager) {
+        ArticleQO articleQO = pager.getCondition();
         Example example = new Example(ArticleEntity.class);
-        example.createCriteria().andEqualTo("deleted",0);
+        Example.Criteria allCriteria = example.createCriteria().andEqualTo("deleted", 0);
+        if(articleQO.getStatus() != null){
+            allCriteria.andEqualTo("status", articleQO.getStatus());
+        }
         List<ArticleEntity> allList = this.selectByExample(example);
 
-        ArticleQO articleQO = pager.getCondition();
+
         example = new Example(ArticleEntity.class);
         Example.Criteria criteria = example.createCriteria()
                 .andEqualTo("deleted",0);
@@ -70,6 +74,24 @@ public class ArticleServiceImpl extends BaseService<ArticleEntity> implements Ar
         }
         if(articleQO.getStatus() != null){
             criteria.andEqualTo("status", articleQO.getStatus());
+        }
+        if(articleQO.getHighCited() != null){
+            criteria.andEqualTo("highCited", articleQO.getHighCited());
+        }
+        if(articleQO.getHotSpot() != null){
+            criteria.andEqualTo("hotSpot", articleQO.getHotSpot());
+        }
+        Integer claimed = articleQO.getClaimed();
+        if(claimed != null){
+            List<Integer> claimedArticleIdList = new ArrayList<>();
+            claimedArticleIdList = articleClaimMapper.findArticleIdListByStatus();
+            claimedArticleIdList.add(-1);
+            if(claimed == 0){
+                criteria.andNotIn("id", claimedArticleIdList);
+            }else if (claimed == 1){
+                criteria.andIn("id", claimedArticleIdList);
+            }
+
         }
         //用于统计
         if(StringUtils.isNotBlank(articleQO.getStatisticYear())){

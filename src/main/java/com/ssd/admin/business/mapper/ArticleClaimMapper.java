@@ -12,4 +12,7 @@ public interface ArticleClaimMapper extends MyMapper<ArticleClaimEntity> {
 
     void finish();
 
+    List<Integer> findArticleIdListByStatus();
+
+
 }

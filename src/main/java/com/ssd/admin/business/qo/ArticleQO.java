@@ -11,6 +11,9 @@ public class ArticleQO {
     private String ac1;
     private Integer status;
     private String statisticYear;
+    private Integer highCited;
+    private Integer hotSpot;
+    private Integer claimed;
 
 
 }

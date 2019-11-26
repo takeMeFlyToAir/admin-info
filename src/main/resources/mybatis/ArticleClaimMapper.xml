@@ -28,4 +28,17 @@
     </update>
 
 
+    <select id="findArticleIdListByStatus" resultType="java.lang.Integer" >
+        SELECT
+        article_id
+        FROM
+        business_article_claim
+        WHERE
+        deleted = 0
+        AND STATUS IN (0, 20)
+        GROUP BY
+        article_id
+    </select>
+
+
 </mapper>
