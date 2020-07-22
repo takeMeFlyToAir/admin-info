@@ -14,11 +14,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.List;
 
-/**
- * @Author: zhaozhirong
- * @Date: 2019/04/28
- * @Description:
- */
+
 @Controller
 @RequestMapping("rolePower")
 public class RolePowerController {

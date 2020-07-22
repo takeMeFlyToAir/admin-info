@@ -3,7 +3,6 @@ package com.ssd.admin.web.controller;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.util.StrUtil;
-import com.ssd.admin.business.enums.RoleEnum;
 import com.ssd.admin.business.qo.ArticleQO;
 import com.ssd.admin.business.service.StatisticBaseInfoService;
 import com.ssd.admin.business.service.StatisticService;
@@ -22,11 +21,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import javax.servlet.http.HttpServletRequest;
 import java.util.*;
 
-/**
- * @Author: zhaozhirong
- * @Date: 2019/01/14
- * @Description:
- */
 @Controller
 @RequestMapping("statistic")
 public class StatisticController {

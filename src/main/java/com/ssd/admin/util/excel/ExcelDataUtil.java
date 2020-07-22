@@ -24,16 +24,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-/**
- * 解析excel 工具类
- * 
- * @return map：包括下面三个属性 validate 是产生异常时的错误信息(io异常，文件不存在，模板校验失败) errorList
- *         是未发生异常，解析完Excel文件后校验获得的错误数据信息 数据类型 List<Map<>> datas
- *         是未发生异常，解析完Excel后获得的没有错误的正确数据 数据类型list<vo>
- * 
- * @author 张艳蕊
- * 
- */
 @Slf4j
 public class ExcelDataUtil {
 	/** excel导入配置文件 */
@@ -137,17 +127,11 @@ public class ExcelDataUtil {
 						for(ErrorMessage e:listError){
 							List<ErrorMessage> list = new ArrayList<ErrorMessage>();
 							list.add(e);
-//							Map<Object, Object> h=new HashMap<Object,Object>();
-//							h.put("row", 0);
-//							h.put("error", list);
-//							floorList.add(h);
 							ErrorLine errorLine = new ErrorLine();
 							errorLine.error = listError;
 							errorLine.row = 0;
 							floorList.add(errorLine);
 						}
-//						datasMap.put("datas", listDatas);
-//						datasMap.put("errorList", floorList);
 						excelData.datas = listDatas;
 						excelData.errorList = floorList;
 					}else{
@@ -186,7 +170,6 @@ public class ExcelDataUtil {
 	 */
 	public static ExcelData readComplexExcel(MultipartFile excelFile, String propPrefixName) {
 		List<ErrorMessage> listError = new ArrayList<ErrorMessage>();
-//		Map<Object, Object> datasMap = new HashMap<Object,Object>();
 		List<Object> listDatas = new ArrayList<Object>();
 		List<ErrorLine> floorList = new ArrayList<ErrorLine>();
 		
@@ -212,17 +195,11 @@ public class ExcelDataUtil {
 						for(ErrorMessage e:listError){
 							List<ErrorMessage> list = new ArrayList<ErrorMessage>();
 							list.add(e);
-//							Map<Object, Object> h=new HashMap<Object,Object>();
-//							h.put("row", 0);
-//							h.put("error", list);
-//							floorList.add(h);
 							ErrorLine errorLine = new ErrorLine();
 							errorLine.error = listError;
 							errorLine.row = 0;
 							floorList.add(errorLine);
 						}
-//						datasMap.put("datas", listDatas);
-//						datasMap.put("errorList", floorList);
 						excelData.datas = listDatas;
 						excelData.errorList = floorList;
 					}else{
@@ -240,17 +217,11 @@ public class ExcelDataUtil {
 						for(ErrorMessage e:listError){
 							List<ErrorMessage> list = new ArrayList<ErrorMessage>();
 							list.add(e);
-//							Map<Object, Object> h=new HashMap<Object,Object>();
-//							h.put("row", 0);
-//							h.put("error", list);
-//							floorList.add(h);
 							ErrorLine errorLine = new ErrorLine();
 							errorLine.error = listError;
 							errorLine.row = 0;
 							floorList.add(errorLine);
 						}
-//						datasMap.put("datas", listDatas);
-//						datasMap.put("errorList", floorList);
 						excelData.datas = listDatas;
 						excelData.errorList = floorList;
 					}else{

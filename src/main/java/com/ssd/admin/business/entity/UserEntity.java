@@ -9,11 +9,6 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * UserEntity
- * @author zzr
- * @date 2017-7-4 下午2:49:38
- */
 @Data
 @Table(name = "sys_user")
 public class UserEntity extends BaseEntity implements Serializable {

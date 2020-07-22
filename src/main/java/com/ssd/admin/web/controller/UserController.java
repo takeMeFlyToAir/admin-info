@@ -1,6 +1,5 @@
 package com.ssd.admin.web.controller;
 
-import com.ssd.admin.business.entity.OrganizationEntity;
 import com.ssd.admin.business.entity.UserEntity;
 import com.ssd.admin.business.enums.RoleEnum;
 import com.ssd.admin.business.qo.UserEditQO;
@@ -8,7 +7,6 @@ import com.ssd.admin.business.qo.UserModifyPasswordQO;
 import com.ssd.admin.business.qo.UserQO;
 import com.ssd.admin.business.service.UserService;
 import com.ssd.admin.business.vo.UserFindVO;
-import com.ssd.admin.business.vo.UserVO;
 import com.ssd.admin.common.JsonResp;
 import com.ssd.admin.common.PagerForDT;
 import com.ssd.admin.common.PagerResultForDT;
@@ -26,9 +24,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
-/**
- * Created by zhaozhirong on 2019/3/1.
- */
+
 @Controller
 @RequestMapping(value = "/user")
 public class UserController {

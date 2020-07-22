@@ -20,9 +20,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 
-/**
- * Created by sjgtw-zzr on 2018/3/8.
- */
 @Slf4j
 @Controller
 @RequestMapping(value = "/")

@@ -13,9 +13,7 @@ import org.apache.shiro.subject.PrincipalCollection;
 import org.springframework.beans.factory.annotation.Autowired;
 
 
-/**
- * @data 2015年9月24日 下午5:22:33修改
- */
+
 @Slf4j
 public class AccountAuthorizationRealm extends AuthorizingRealm {
 

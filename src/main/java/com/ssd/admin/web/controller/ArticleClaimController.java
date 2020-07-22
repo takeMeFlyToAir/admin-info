@@ -1,18 +1,12 @@
 package com.ssd.admin.web.controller;
 
 import com.ssd.admin.business.entity.ArticleClaimEntity;
-import com.ssd.admin.business.entity.ArticleEntity;
 import com.ssd.admin.business.enums.ArticleStatusClaimEnum;
 import com.ssd.admin.business.qo.ArticleClaimQO;
-import com.ssd.admin.business.qo.ArticleQO;
 import com.ssd.admin.business.service.ArticleClaimService;
-import com.ssd.admin.business.service.ArticleService;
 import com.ssd.admin.common.JsonResp;
 import com.ssd.admin.common.PagerForDT;
 import com.ssd.admin.common.PagerResultForDT;
-import com.ssd.admin.util.FileDownloadUtil;
-import com.ssd.admin.util.excel.ExcelDataUtil;
-import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,12 +15,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**

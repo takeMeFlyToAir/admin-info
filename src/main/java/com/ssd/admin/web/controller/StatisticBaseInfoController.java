@@ -18,11 +18,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
-/**
- * @Author: zhaozhirong
- * @Date: 2019/01/14
- * @Description:
- */
 @Controller
 @RequestMapping("statisticBaseInfo")
 public class StatisticBaseInfoController {
