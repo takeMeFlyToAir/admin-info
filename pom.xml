@@ -30,7 +30,7 @@
     <jdk.version>1.7</jdk.version>
     <commons.bdcp.version>1.4</commons.bdcp.version>
     <mapper.version>4.0.3</mapper.version>
-    <shiro.version>1.2.3</shiro.version>
+    <shiro.version>1.7.1</shiro.version>
     <lombok.version>1.14.2</lombok.version>
     <!-- properties -->
   </properties>
