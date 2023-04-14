@@ -39,7 +39,6 @@ import java.util.*;
 public class ArticleClaimController {
 
     private final Logger logger = LoggerFactory.getLogger(ArticleClaimController.class);
-
     @Autowired
     private ArticleClaimService articleClaimService;
 
